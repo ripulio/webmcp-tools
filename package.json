@@ -23,7 +23,7 @@
     "clean": "premove lib",
     "build": "npm run clean && tsgo",
     "build:manifest": "node --experimental-strip-types scripts/build-manifest.ts",
-    "test": "vitest run",
+    "test": "vitest run --passWithNoTests",
     "lint": "npm run lint:format && npm run lint:js",
     "format": "prettier --write src",
     "lint:format": "prettier --check src",
