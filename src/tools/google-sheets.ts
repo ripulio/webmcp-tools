@@ -394,7 +394,10 @@ function setEditorText(editor: HTMLElement, value: string) {
     selection.addRange(range);
   }
 
-  if ('value' in editor && typeof (editor as HTMLInputElement).value === 'string') {
+  if (
+    'value' in editor &&
+    typeof (editor as HTMLInputElement).value === 'string'
+  ) {
     (editor as HTMLInputElement).value = value;
   } else {
     editor.textContent = value;
@@ -570,8 +573,7 @@ const setCellValueTool: ToolDefinition = {
         content: [
           {
             type: 'text',
-            text:
-              'Invalid input: provide either a single cell/value or an "updates" array.'
+            text: 'Invalid input: provide either a single cell/value or an "updates" array.'
           }
         ],
         isError: true
@@ -584,7 +586,10 @@ const setCellValueTool: ToolDefinition = {
       if (typeof update?.value !== 'string') {
         return {
           content: [
-            {type: 'text', text: 'Invalid input: every update needs a string "value".'}
+            {
+              type: 'text',
+              text: 'Invalid input: every update needs a string "value".'
+            }
           ],
           isError: true
         };
