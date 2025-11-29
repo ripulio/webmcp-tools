@@ -1,4 +1,4 @@
-import type {ToolDefinition} from '@ripul/web-mcp';
+import type {ToolDefinition} from 'webmcp-polyfill';
 
 export interface ToolBinding {
   tool: ToolDefinition;
