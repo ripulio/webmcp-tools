@@ -26,11 +26,8 @@ jobs:
           node-version: 22.x
           cache: npm
 
-      - name: Checkout web-mcp
-        uses: actions/checkout@v4
-        with:
-          repository: ripulio/web-mcp
-          path: ../web-mcp
+      - name: Clone web-mcp
+        run: git clone --depth 1 https://github.com/ripulio/web-mcp.git ../web-mcp
 
       - name: Build web-mcp polyfill
         run: |
