@@ -26,6 +26,18 @@ jobs:
           node-version: 22.x
           cache: npm
 
+      - name: Checkout web-mcp
+        uses: actions/checkout@v4
+        with:
+          repository: ripulio/web-mcp
+          path: ../web-mcp
+
+      - name: Build web-mcp polyfill
+        run: |
+          cd ../web-mcp/packages/polyfill
+          npm install
+          npm run build
+
       - name: Install dependencies
         run: npm ci
 
