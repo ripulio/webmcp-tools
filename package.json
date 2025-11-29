@@ -22,6 +22,7 @@
   "scripts": {
     "clean": "premove lib",
     "build": "npm run clean && tsgo",
+    "build:manifest": "node --experimental-strip-types scripts/build-manifest.ts",
     "test": "vitest run",
     "lint": "npm run lint:format && npm run lint:js",
     "format": "prettier --write src",
@@ -30,9 +31,11 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
+    "@types/node": "^24.10.1",
     "@typescript/native-preview": "^7.0.0-dev.20251127.1",
     "@vitest/browser-playwright": "^4.0.14",
     "@vitest/coverage-v8": "^4.0.14",
+    "esbuild": "^0.25.0",
     "eslint": "^9.39.1",
     "globals": "^16.5.0",
     "playwright": "^1.57.0",
