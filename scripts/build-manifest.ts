@@ -50,11 +50,12 @@ async function bundleToolFile(toolFilePath: string): Promise<string> {
 
 function extractToolFromBundle(
   bundledCode: string,
-  toolExportName: string
+  registryExportName: string,
+  toolIndex: number
 ): string {
   // The bundled code assigns exports to ___bundle
-  // We wrap it to extract just the tool we need
-  return `(function(){${bundledCode};return ___bundle.${toolExportName};})()`;
+  // Access the tool via the registry entry's tools array
+  return `(function(){${bundledCode};return ___bundle.${registryExportName}.tools[${toolIndex}].tool;})()`;
 }
 
 async function buildManifest() {
@@ -136,23 +137,12 @@ async function buildManifest() {
     // Bundle the entire tool file once
     const bundledCode = await bundleToolFile(join(rootDir, entry.sourceFile));
 
-    for (const binding of entry.tools) {
+    for (let i = 0; i < entry.tools.length; i++) {
+      const binding = entry.tools[i];
       const toolName = binding.tool.name;
 
-      // For each tool, we need to find its export name in the source file
-      // The tools are exported as named constants, we need to map tool.name to export name
-      const toolExportMap: Record<string, string> = {
-        google_sheets_get_content: 'getContentTool',
-        google_sheets_set_cell_value: 'setCellValueTool'
-      };
-
-      const toolExportName = toolExportMap[toolName];
-      if (!toolExportName) {
-        console.warn(`Unknown tool export for ${toolName}, skipping`);
-        continue;
-      }
-
-      const toolSource = extractToolFromBundle(bundledCode, toolExportName);
+      // Extract tool via registry entry's tools array - no string-based lookup needed
+      const toolSource = extractToolFromBundle(bundledCode, entry.exportName, i);
 
       if (OUTPUT_MODE === 'inline') {
         manifestEntry.tools.push({
