@@ -1,8 +1,8 @@
-import type {ToolRegistryEntry} from '../shared.js';
+import type {DomainToolServer} from '../shared.js';
 import {tool as getContentTool} from '../tools/google_sheets_get_content.js';
 import {tool as setCellValueTool} from '../tools/google_sheets_set_cell_value.js';
 
-export const googleSheetsTools: ToolRegistryEntry = {
+export const googleSheetsTools: DomainToolServer = {
   id: 'google-sheets',
   name: 'Google Sheets',
   version: '1.0.0',

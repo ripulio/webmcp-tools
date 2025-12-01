@@ -6,31 +6,6 @@ import {fileURLToPath} from 'node:url';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const rootDir = join(__dirname, '..');
 
-// Config from environment variables
-const BASE_URL = process.env.BASE_URL || '';
-
-interface ManifestTool {
-  name: string;
-  description: string;
-  pathPattern?: string;
-}
-
-interface ManifestEntry {
-  id: string;
-  name: string;
-  version: string;
-  description: string;
-  domains: string[];
-  tools: ManifestTool[];
-}
-
-interface Manifest {
-  version: string;
-  baseUrl?: string;
-  generatedAt: string;
-  registry: ManifestEntry[];
-}
-
 interface ToolRegistryEntry {
   id: string;
   name: string;
@@ -105,27 +80,9 @@ async function buildManifest() {
     }
   }
 
-  const manifest: Manifest = {
-    version: '1.0.0',
-    generatedAt: new Date().toISOString(),
-    registry: []
-  };
-
-  if (BASE_URL) {
-    manifest.baseUrl = BASE_URL;
-  }
-
-  await mkdir(join(rootDir, 'dist'), {recursive: true});
+  await mkdir(join(rootDir, 'dist/servers'), {recursive: true});
 
   for (const {entry} of entries) {
-    const manifestEntry: ManifestEntry = {
-      id: entry.id,
-      name: entry.name,
-      version: entry.version,
-      description: entry.description,
-      domains: entry.domains,
-      tools: []
-    };
 
     for (const binding of entry.tools) {
       const toolName = binding.name;
@@ -144,32 +101,23 @@ async function buildManifest() {
       const toolSource = await bundleToolFile(toolSourcePath);
 
       // Write to dist
-      const toolDir = join(rootDir, 'dist', 'tools', entry.id);
+      const toolDir = join(rootDir, 'dist', 'servers', entry.id, 'tool');
       await mkdir(toolDir, {recursive: true});
 
       const toolFileName = `${toolName}.js`;
       await writeFile(join(toolDir, toolFileName), toolSource);
-
-      manifestEntry.tools.push({
-        name: binding.name,
-        description: binding.description,
-        pathPattern: binding.pathPattern
-      });
     }
-
-    manifest.registry.push(manifestEntry);
   }
 
   await writeFile(
-    join(rootDir, 'dist/manifest.json'),
-    JSON.stringify(manifest, null, 2)
+    join(rootDir, 'dist/servers/index.json'),
+    JSON.stringify(entries.map((e) => e.entry), null, 2)
   );
 
-  console.log(`Manifest written to dist/manifest.json`);
-  console.log(`  Base URL: ${BASE_URL || '(none)'}`);
-  console.log(`  Tool groups: ${manifest.registry.length}`);
+  console.log(`Servers written to dist/servers/index.json`);
+  console.log(`  Servers: ${entries.length}`);
   console.log(
-    `  Total tools: ${manifest.registry.reduce((sum, e) => sum + e.tools.length, 0)}`
+    `  Total tools: ${entries.reduce((sum, e) => sum + e.entry.tools.length, 0)}`
   );
 }
 
