@@ -35,7 +35,7 @@
     "@typescript/native-preview": "^7.0.0-dev.20251127.1",
     "@vitest/browser-playwright": "^4.0.14",
     "@vitest/coverage-v8": "^4.0.14",
-    "esbuild": "^0.25.0",
+    "esbuild": "^0.25.5",
     "eslint": "^9.39.1",
     "globals": "^16.5.0",
     "playwright": "^1.57.0",
