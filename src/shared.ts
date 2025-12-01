@@ -1,7 +1,19 @@
-import type {ToolDefinition} from 'webmcp-polyfill';
+import {ToolDefinition} from 'webmcp-polyfill';
 
-export interface ToolBinding {
-  tool: ToolDefinition;
+export interface ToolBindingInfo extends Omit<
+  Omit<ToolDefinition, 'inputSchema'>,
+  'execute'
+> {
+  /**
+   * A regex to run against the URL path to determine if the tool should be available.
+   */
+  pathPattern?: string;
+}
+
+export interface ToolBinding extends ToolDefinition {
+  /**
+   * A regex to run against the URL path to determine if the tool should be available.
+   */
   pathPattern?: string;
 }
 
@@ -11,5 +23,5 @@ export interface ToolRegistryEntry {
   version: string;
   description: string;
   domains: string[];
-  tools: ToolBinding[];
+  tools: ToolBindingInfo[];
 }
