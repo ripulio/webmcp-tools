@@ -111,7 +111,18 @@ async function buildManifest() {
 
   await writeFile(
     join(rootDir, 'dist/servers/index.json'),
-    JSON.stringify(entries.map((e) => e.entry), null, 2)
+    JSON.stringify(
+      entries.map((e) => ({
+        ...e.entry,
+        tools: e.entry.tools.map((t) => ({
+          name: t.name,
+          description: t.description,
+          pathPattern: t.pathPattern
+        }))
+      })),
+      null,
+      2
+    )
   );
 
   console.log(`Servers written to dist/servers/index.json`);
