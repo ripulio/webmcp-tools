@@ -1,7 +1,14 @@
 import {ToolBinding} from '../shared.js';
 
+/** Maximum number of rows to return by default. */
 const MAX_ROWS = 50;
 
+/**
+ * Locates the Google Sheets bootstrap script element containing spreadsheet data.
+ * First tries a specific selector, then falls back to searching all scripts for
+ * the characteristic `bootstrapData` and `trixApp` markers.
+ * @returns The script element if found, otherwise null.
+ */
 function findBootstrapDataScript(): HTMLScriptElement | null {
   return (
     document.querySelector<HTMLScriptElement>('body > script:nth-child(13)') ||
@@ -15,6 +22,14 @@ function findBootstrapDataScript(): HTMLScriptElement | null {
   );
 }
 
+/**
+ * Parses the bootstrapData object from a Google Sheets script element.
+ * Handles both direct object literal assignments and JSON.parse() wrapper patterns.
+ * Caches the result on globalThis to avoid repeated parsing.
+ * @param scriptEl - The script element containing bootstrapData, or null.
+ * @returns The parsed bootstrapData object.
+ * @throws If the script element is null or bootstrapData cannot be extracted.
+ */
 function parseBootstrapDataFromScript(
   scriptEl: HTMLScriptElement | null
 ): unknown {
@@ -58,6 +73,13 @@ function parseBootstrapDataFromScript(
   );
 }
 
+/**
+ * Decodes a cell value from Google Sheets' internal bootstrap data format.
+ * The cell data uses property key '3' for the actual value, which may be
+ * a string, number, array of rich text segments, or nested object.
+ * @param cell - The raw cell object from bootstrapData.
+ * @returns The decoded string value, or empty string if no value.
+ */
 function decodeCellValue(cell: Record<PropertyKey, unknown> | undefined) {
   if (!cell || typeof cell !== 'object') {
     return '';
@@ -105,6 +127,12 @@ function decodeCellValue(cell: Record<PropertyKey, unknown> | undefined) {
   return '';
 }
 
+/**
+ * Normalizes a row of cell values by trimming whitespace and removing
+ * trailing empty cells.
+ * @param cells - Array of raw cell values.
+ * @returns Array of trimmed string values with trailing empties removed.
+ */
 function normalizeRow(cells: unknown[]): string[] {
   const normalized = cells.map((cell) => {
     if (cell == null) {
@@ -122,6 +150,10 @@ function normalizeRow(cells: unknown[]): string[] {
   return normalized.slice(0, lastIndex + 1);
 }
 
+/**
+ * Type guard to check if data has the expected bootstrapData structure
+ * with a `changes.firstchunk` property.
+ */
 function isBootstrapDataLike(
   data: unknown
 ): data is {changes: {firstchunk: unknown}} {
@@ -135,6 +167,7 @@ function isBootstrapDataLike(
   );
 }
 
+/** Options for slicing the spreadsheet data by row/column range. */
 type SliceOptions = {
   startRow?: number;
   endRow?: number;
@@ -143,6 +176,15 @@ type SliceOptions = {
   maxRows?: number;
 };
 
+/**
+ * Extracts row data from the parsed bootstrapData structure.
+ * Processes chunks from `changes.firstchunk`, applying row/column slicing
+ * and respecting the maxRows limit.
+ * @param bootstrapData - The parsed bootstrapData object.
+ * @param slice - Options controlling which rows/columns to extract.
+ * @returns Object containing extracted rows, total row count, and truncation flag.
+ * @throws If bootstrapData has an invalid structure.
+ */
 function extractRowsFromBootstrapData(
   bootstrapData: unknown,
   slice: SliceOptions
@@ -244,6 +286,12 @@ function extractRowsFromBootstrapData(
   };
 }
 
+/**
+ * Formats row data as a Markdown table with headers and alignment separators.
+ * Pads rows to ensure consistent column count and marks empty headers as "(empty)".
+ * @param rows - Array of string arrays representing spreadsheet rows.
+ * @returns Markdown-formatted table string.
+ */
 function formatAsMarkdownTable(rows: Array<string[]>): string {
   if (!rows.length) {
     return '';
@@ -285,12 +333,19 @@ function formatAsMarkdownTable(rows: Array<string[]>): string {
   });
 
   if (!header) {
-    return rows.map((row) => row.join(' | ')).join('\\n');
+    return rows.map((row) => row.join(' | ')).join('\n');
   }
 
-  return tableLines.join('\\n');
+  return tableLines.join('\n');
 }
 
+/**
+ * Main entry point for retrieving Google Sheets content.
+ * Locates the bootstrap script, parses data, extracts rows within the
+ * specified slice, and formats as Markdown.
+ * @param slice - Optional row/column range and max rows configuration.
+ * @returns Object with rows array, totalRows count, truncation flag, and Markdown string.
+ */
 function getGoogleSheetsContent(slice: SliceOptions = {}) {
   const scriptEl = findBootstrapDataScript();
   const bootstrapData = parseBootstrapDataFromScript(scriptEl);
@@ -365,7 +420,7 @@ export const tool: ToolBinding = {
         content: [
           {
             type: 'text',
-            text: lines.join('\\n')
+            text: lines.join('\n')
           }
         ],
         structuredContent: {

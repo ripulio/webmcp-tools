@@ -1,5 +1,11 @@
 import {ToolBinding} from '../shared.js';
 
+/**
+ * Converts a 1-based column number to Excel-style letter notation (A, B, ..., Z, AA, AB, ...).
+ * @param col - The 1-based column number.
+ * @returns The column letter(s) (e.g., 1 -> "A", 27 -> "AA").
+ * @throws If col is not a positive integer.
+ */
 function columnNumberToLetters(col: number): string {
   if (!Number.isInteger(col) || col < 1) {
     throw new Error('Column must be a positive integer.');
@@ -15,6 +21,14 @@ function columnNumberToLetters(col: number): string {
   return letters;
 }
 
+/**
+ * Resolves a cell reference from either A1 notation or row/col coordinates.
+ * If `cell` is provided and non-empty, it is returned as-is.
+ * Otherwise, converts numeric row/col to A1 notation.
+ * @param input - Object with optional cell string or row/col numbers.
+ * @returns The cell reference in A1 notation (e.g., "A1", "C5").
+ * @throws If neither a valid cell nor valid row/col coordinates are provided.
+ */
 function resolveCellReference(input: {
   cell?: string;
   row?: number;
@@ -39,6 +53,11 @@ function resolveCellReference(input: {
   );
 }
 
+/**
+ * Dispatches keyboard events simulating an Enter key press to commit input.
+ * Sends keydown, keypress, and keyup events with the Enter key code.
+ * @param target - The HTML element to receive the keyboard events.
+ */
 function commitEnter(target: HTMLElement) {
   ['keydown', 'keypress', 'keyup'].forEach((type) => {
     target.dispatchEvent(
@@ -53,6 +72,11 @@ function commitEnter(target: HTMLElement) {
   });
 }
 
+/**
+ * Locates the Google Sheets Name Box input element used for cell navigation.
+ * Tries the known ID first, then falls back to class/aria-label selectors.
+ * @returns The Name Box input element if found, otherwise null.
+ */
 function findNameBoxInput(): HTMLInputElement | null {
   const idMatch = document.getElementById('t-name-box');
   if (idMatch instanceof HTMLInputElement) {
@@ -64,6 +88,11 @@ function findNameBoxInput(): HTMLInputElement | null {
   );
 }
 
+/**
+ * Locates the Google Sheets cell editor element where cell values are typed.
+ * Tries multiple known selectors as the editor element varies by context.
+ * @returns The cell editor element if found, otherwise null.
+ */
 function findCellEditor(): HTMLElement | null {
   return (
     document.getElementById('waffle-rich-text-editor') ||
@@ -76,6 +105,12 @@ function findCellEditor(): HTMLElement | null {
   );
 }
 
+/**
+ * Sets the text content of a cell editor element and dispatches an input event.
+ * Handles both contenteditable elements and input elements.
+ * @param editor - The editor element to set text on.
+ * @param value - The string value to set.
+ */
 function setEditorText(editor: HTMLElement, value: string) {
   // Try to select existing text so the next input replace is clean.
   const selection = window.getSelection();
