@@ -45,6 +45,6 @@
     "vitest": "^4.0.14"
   },
   "dependencies": {
-    "webmcp-polyfill": "../web-mcp/packages/polyfill"
+    "webmcp-polyfill": "^0.0.1"
   }
 }
