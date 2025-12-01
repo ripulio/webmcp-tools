@@ -17,7 +17,7 @@ export interface ToolBinding extends ToolDefinition {
   pathPattern?: string;
 }
 
-export interface ToolRegistryEntry {
+export interface DomainToolServer {
   id: string;
   name: string;
   version: string;
