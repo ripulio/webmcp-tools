@@ -1,22 +1,43 @@
 # WebMCP Tools
 
-This repository is the source collection for tools made available by the [WebMCP catalog](https://github.com/ripulio/webmcp-catalog).
+Source collection for tools published to the [WebMCP catalog](https://github.com/ripulio/webmcp-catalog).
+
+Tools belong to **servers** that run on specific domains. Each tool defines a `pathPattern`—a regex matching URL paths where the tool activates.
 
 ## Available Tools
 
 TBD
 
-## Contributing Tools
+## Contributing
 
-In order to publish tools to the WebMCP catalog, they must be added to this repository. They will then automatically be published to the catalog when the next sync occurs.
+Tools are automatically published to the catalog on merge. To contribute:
 
-If you'd like to contribute a tool, please follow these steps:
+1. Fork this repository
+2. Create a new file in `src/tools/` exporting a `ToolBinding`:
 
-- Fork this repository.
-- Add your tool to the `src/tools` directory
-- Create a pull request to merge your changes into the main repository
+   ```typescript
+   import {ToolBinding} from '../shared.js';
 
-We will then review this and, if everything is in order, merge it so that your tool becomes part of the WebMCP catalog.
+   export const tool: ToolBinding = {
+     name: 'your_tool_name',
+     description: 'What your tool does.',
+     inputSchema: {
+       type: 'object',
+       properties: {
+         // Define input parameters
+       }
+     },
+     pathPattern: '^/your-path/',
+     async execute(rawInput: unknown) {
+       return {
+         content: [{type: 'text', text: 'Result'}]
+       };
+     }
+   };
+   ```
+
+3. Run `npm run lint && npm run build`
+4. Open a pull request
 
 ## License
 
