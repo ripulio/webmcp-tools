@@ -26,22 +26,6 @@ jobs:
           node-version: 22.x
           cache: npm
 
-      - name: Checkout web-mcp
-        uses: actions/checkout@v4
-        with:
-          repository: ripulio/web-mcp
-          token: ${{ secrets.WEB_MCP_TOKEN }}
-          path: web-mcp
-
-      - name: Link web-mcp to expected path
-        run: ln -s $GITHUB_WORKSPACE/web-mcp ../web-mcp
-
-      - name: Build web-mcp polyfill
-        run: |
-          cd ../web-mcp/packages/polyfill
-          npm install
-          npm run build:js
-
       - name: Install dependencies
         run: npm ci
 
