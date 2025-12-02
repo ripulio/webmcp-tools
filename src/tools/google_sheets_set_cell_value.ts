@@ -144,6 +144,7 @@ export const tool: ToolBinding = {
   name: 'google_sheets_set_cell_value',
   description:
     'Set one or more values into specific Google Sheets cells using A1 notation or row/col coordinates.',
+  domains: ['docs.google.com'],
   inputSchema: {
     type: 'object',
     properties: {

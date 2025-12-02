@@ -366,6 +366,7 @@ export const tool: ToolBinding = {
   name: 'google_sheets_get_content',
   description:
     'Return the current Google Sheets grid content (optional row/column slice, defaults to first 50 rows). If the range is empty, it returns a "No data in the specified range." message (not an error); parsing failures return an error.',
+  domains: ['docs.google.com'],
   inputSchema: {
     type: 'object',
     properties: {
