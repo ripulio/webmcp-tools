@@ -8,6 +8,10 @@ export interface ToolBindingInfo extends Omit<
    * A regex to run against the URL path to determine if the tool should be available.
    */
   pathPattern?: string;
+  /**
+   * The domains this tool should be available on.
+   */
+  domains: string[];
 }
 
 export interface ToolBinding extends ToolDefinition {
@@ -15,13 +19,8 @@ export interface ToolBinding extends ToolDefinition {
    * A regex to run against the URL path to determine if the tool should be available.
    */
   pathPattern?: string;
-}
-
-export interface DomainToolServer {
-  id: string;
-  name: string;
-  version: string;
-  description: string;
+  /**
+   * The domains this tool should be available on.
+   */
   domains: string[];
-  tools: ToolBindingInfo[];
 }

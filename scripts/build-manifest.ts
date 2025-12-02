@@ -1,5 +1,5 @@
 import * as esbuild from 'esbuild';
-import {writeFile, mkdir, readdir, access} from 'node:fs/promises';
+import {writeFile, mkdir, readdir} from 'node:fs/promises';
 import {join, dirname} from 'node:path';
 import {fileURLToPath} from 'node:url';
 
@@ -7,32 +7,21 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const rootDir = join(__dirname, '..');
 
 interface ToolRegistryEntry {
-  id: string;
   name: string;
-  version: string;
   description: string;
   domains: string[];
-  tools: Array<{name: string; description: string; pathPattern?: string}>;
+  pathPattern?: string;
 }
 
-function isToolRegistryEntry(value: unknown): value is ToolRegistryEntry {
+function isToolBinding(value: unknown): value is ToolRegistryEntry {
   return (
     value != null &&
     typeof value === 'object' &&
-    'id' in value &&
-    'tools' in value &&
+    'name' in value &&
+    'description' in value &&
     'domains' in value &&
-    Array.isArray((value as ToolRegistryEntry).tools)
+    Array.isArray((value as ToolRegistryEntry).domains)
   );
-}
-
-async function fileExists(path: string): Promise<boolean> {
-  try {
-    await access(path);
-    return true;
-  } catch {
-    return false;
-  }
 }
 
 async function bundleToolFile(toolFilePath: string): Promise<string> {
@@ -55,81 +44,50 @@ async function bundleToolFile(toolFilePath: string): Promise<string> {
 }
 
 async function buildManifest() {
-  // Scan src/servers/ directory for server files
-  const serversDir = join(rootDir, 'src/servers');
-  const serverFiles = await readdir(serversDir);
-  const tsFiles = serverFiles.filter(
-    (f) => f.endsWith('.ts') && !f.endsWith('.d.ts')
+  // Scan src/tools/ directory for tool files
+  const toolsDir = join(rootDir, 'src/tools');
+  const toolFiles = await readdir(toolsDir);
+  const tsFiles = toolFiles.filter(
+    (f) => f.endsWith('.ts') && !f.endsWith('.d.ts') && !f.endsWith('.test.ts')
   );
 
-  // Discover registry entries from server files
-  const entries: Array<{entry: ToolRegistryEntry}> = [];
+  const entries: ToolRegistryEntry[] = [];
 
-  for (const serverFile of tsFiles) {
+  for (const toolFile of tsFiles) {
     const modulePath = join(
       rootDir,
-      'lib/servers',
-      serverFile.replace('.ts', '.js')
+      'lib/tools',
+      toolFile.replace('.ts', '.js')
     );
-    const serverModule = await import(modulePath);
+    const toolModule = await import(modulePath);
 
-    for (const [, value] of Object.entries(serverModule)) {
-      if (isToolRegistryEntry(value)) {
-        entries.push({entry: value});
-      }
+    if (isToolBinding(toolModule.tool)) {
+      entries.push({
+        name: toolModule.tool.name,
+        description: toolModule.tool.description,
+        domains: toolModule.tool.domains,
+        pathPattern: toolModule.tool.pathPattern
+      });
     }
   }
 
-  await mkdir(join(rootDir, 'dist/servers'), {recursive: true});
+  await mkdir(join(rootDir, 'dist/tools'), {recursive: true});
 
-  for (const {entry} of entries) {
+  for (const entry of entries) {
+    const toolSourcePath = join(rootDir, 'src/tools', `${entry.name}.ts`);
+    const toolSource = await bundleToolFile(toolSourcePath);
 
-    for (const binding of entry.tools) {
-      const toolName = binding.name;
-
-      // Find tool source file using naming convention: src/tools/<tool.name>.ts
-      const toolSourcePath = join(rootDir, 'src/tools', `${toolName}.ts`);
-
-      if (!(await fileExists(toolSourcePath))) {
-        throw new Error(
-          `Tool source file not found: ${toolSourcePath}\n` +
-            `Expected file named "${toolName}.ts" for tool with name "${toolName}"`
-        );
-      }
-
-      // Bundle just this tool file
-      const toolSource = await bundleToolFile(toolSourcePath);
-
-      // Write to dist
-      const toolDir = join(rootDir, 'dist', 'servers', entry.id, 'tool');
-      await mkdir(toolDir, {recursive: true});
-
-      const toolFileName = `${toolName}.js`;
-      await writeFile(join(toolDir, toolFileName), toolSource);
-    }
+    const toolFileName = `${entry.name}.js`;
+    await writeFile(join(rootDir, 'dist/tools', toolFileName), toolSource);
   }
 
   await writeFile(
-    join(rootDir, 'dist/servers/index.json'),
-    JSON.stringify(
-      entries.map((e) => ({
-        ...e.entry,
-        tools: e.entry.tools.map((t) => ({
-          name: t.name,
-          description: t.description,
-          pathPattern: t.pathPattern
-        }))
-      })),
-      null,
-      2
-    )
+    join(rootDir, 'dist/index.json'),
+    JSON.stringify(entries, null, 2)
   );
 
-  console.log(`Servers written to dist/servers/index.json`);
-  console.log(`  Servers: ${entries.length}`);
-  console.log(
-    `  Total tools: ${entries.reduce((sum, e) => sum + e.entry.tools.length, 0)}`
-  );
+  console.log(`Manifest written to dist/index.json`);
+  console.log(`  Tools: ${entries.length}`);
 }
 
 buildManifest().catch((err) => {
