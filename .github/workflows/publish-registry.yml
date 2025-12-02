@@ -41,6 +41,15 @@ jobs:
       - name: Build manifest
         run: npm run build:manifest
 
+      - name: List files to publish
+        run: |
+          echo "Publishing to: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/"
+          echo ""
+          echo "Files:"
+          for f in $(find dist -type f | sort); do
+            echo "https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/${f#dist/}"
+          done
+
       - name: Configure Pages
         uses: actions/configure-pages@v4
 
