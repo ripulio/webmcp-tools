@@ -1,1 +1,1 @@
-export type {ToolBinding, DomainToolServer} from './shared.js';
+export type {ToolMetadata, ToolGroup} from './shared.js';
