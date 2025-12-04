@@ -1,4 +1,4 @@
-import {ToolBinding} from '../shared.js';
+import {ToolDefinition} from 'webmcp-polyfill';
 
 /** Maximum number of rows to return by default. */
 const MAX_ROWS = 50;
@@ -362,11 +362,10 @@ function getGoogleSheetsContent(slice: SliceOptions = {}) {
   };
 }
 
-export const tool: ToolBinding = {
+export const tool: ToolDefinition = {
   name: 'google_sheets_get_content',
   description:
     'Return the current Google Sheets grid content (optional row/column slice, defaults to first 50 rows). If the range is empty, it returns a "No data in the specified range." message (not an error); parsing failures return an error.',
-  domains: ['docs.google.com'],
   inputSchema: {
     type: 'object',
     properties: {
@@ -445,6 +444,5 @@ export const tool: ToolBinding = {
         isError: true
       };
     }
-  },
-  pathPattern: '^/spreadsheets/'
+  }
 };

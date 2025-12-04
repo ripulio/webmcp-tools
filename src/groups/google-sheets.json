@@ -1,0 +1,5 @@
+{
+  "name": "google-sheets",
+  "description": "Tools for reading and writing Google Sheets spreadsheets",
+  "tools": ["google_sheets_get_content", "google_sheets_set_cell_value"]
+}

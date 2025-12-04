@@ -1,4 +1,4 @@
-import {ToolBinding} from '../shared.js';
+import {ToolDefinition} from 'webmcp-polyfill';
 
 /**
  * Converts a 1-based column number to Excel-style letter notation (A, B, ..., Z, AA, AB, ...).
@@ -140,11 +140,10 @@ function setEditorText(editor: HTMLElement, value: string) {
   );
 }
 
-export const tool: ToolBinding = {
+export const tool: ToolDefinition = {
   name: 'google_sheets_set_cell_value',
   description:
     'Set one or more values into specific Google Sheets cells using A1 notation or row/col coordinates.',
-  domains: ['docs.google.com'],
   inputSchema: {
     type: 'object',
     properties: {
@@ -313,6 +312,5 @@ export const tool: ToolBinding = {
         isError: true
       };
     }
-  },
-  pathPattern: '^/spreadsheets/'
+  }
 };

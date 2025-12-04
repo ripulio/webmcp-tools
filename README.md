@@ -6,7 +6,7 @@ Tools belong to **groups** that provide related functionality. Each tool has a m
 
 ## Available Groups
 
-TBD
+- **google-sheets** - Tools for reading and writing Google Sheets spreadsheets
 
 ## Contributing
 

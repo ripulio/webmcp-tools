@@ -1,0 +1,6 @@
+{
+  "name": "google_sheets_set_cell_value",
+  "userDescription": "Write values to cells in the current Google Sheets spreadsheet",
+  "domains": ["docs.google.com"],
+  "pathPattern": "^/spreadsheets/"
+}
