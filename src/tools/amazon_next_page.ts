@@ -26,21 +26,37 @@ export const tool = {
 
     if (!nextButton) {
       // Check if we're on the last page by looking for a disabled next button
-      const disabledNext = document.querySelector('.s-pagination-next.s-pagination-disabled, a[aria-label*="next"][aria-disabled="true"]');
+      const disabledNext = document.querySelector(
+        '.s-pagination-next.s-pagination-disabled, a[aria-label*="next"][aria-disabled="true"]'
+      );
       if (disabledNext) {
         return {
-          content: [{ type: 'text' as const, text: 'Already on the last page of results.' }],
+          content: [
+            {
+              type: 'text' as const,
+              text: 'Already on the last page of results.'
+            }
+          ],
           isError: true
         };
       }
       return {
-        content: [{ type: 'text' as const, text: 'Next page button not found. Make sure you are on an Amazon search results page.' }],
+        content: [
+          {
+            type: 'text' as const,
+            text: 'Next page button not found. Make sure you are on an Amazon search results page.'
+          }
+        ],
         isError: true
       };
     }
 
     // Get current page from multiple possible selectors
-    const currentPageSelectors = ['.s-pagination-selected', '.a-pagination .a-selected', '[aria-current="page"]'];
+    const currentPageSelectors = [
+      '.s-pagination-selected',
+      '.a-pagination .a-selected',
+      '[aria-current="page"]'
+    ];
     let currentPage = '1';
     for (const selector of currentPageSelectors) {
       const el = document.querySelector(selector);
@@ -54,8 +70,17 @@ export const tool = {
     nextButton.click();
 
     return {
-      content: [{ type: 'text' as const, text: `Navigating to page ${nextPage} of search results.` }],
-      structuredContent: { fromPage: parseInt(currentPage, 10), toPage: nextPage, action: 'navigating_to_next_page' }
+      content: [
+        {
+          type: 'text' as const,
+          text: `Navigating to page ${nextPage} of search results.`
+        }
+      ],
+      structuredContent: {
+        fromPage: parseInt(currentPage, 10),
+        toPage: nextPage,
+        action: 'navigating_to_next_page'
+      }
     };
   }
 };

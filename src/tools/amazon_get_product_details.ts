@@ -1,6 +1,7 @@
 export const tool = {
   name: 'amazon_get_product_details',
-  description: 'Get detailed information about the current Amazon product page including title, price, rating, availability, and description.',
+  description:
+    'Get detailed information about the current Amazon product page including title, price, rating, availability, and description.',
   inputSchema: {
     type: 'object',
     properties: {},
@@ -10,7 +11,12 @@ export const tool = {
     const titleEl = document.querySelector('#productTitle');
     if (!titleEl) {
       return {
-        content: [{ type: 'text' as const, text: 'Product title not found. Make sure you are on an Amazon product page.' }],
+        content: [
+          {
+            type: 'text' as const,
+            text: 'Product title not found. Make sure you are on an Amazon product page.'
+          }
+        ],
         isError: true
       };
     }
@@ -34,7 +40,9 @@ export const tool = {
       }
     }
     if (!asin) {
-      asin = document.querySelector('[data-asin]')?.getAttribute('data-asin') || null;
+      asin =
+        document.querySelector('[data-asin]')?.getAttribute('data-asin') ||
+        null;
     }
 
     // Get price - comprehensive selector list covering various Amazon layouts
@@ -62,19 +70,26 @@ export const tool = {
 
     // Get rating
     const ratingEl = document.querySelector('#acrPopover, .a-icon-star-small');
-    const rating = ratingEl?.getAttribute('title') ||
-                   ratingEl?.querySelector('.a-icon-alt')?.textContent?.trim() || null;
+    const rating =
+      ratingEl?.getAttribute('title') ||
+      ratingEl?.querySelector('.a-icon-alt')?.textContent?.trim() ||
+      null;
 
     // Get review count
     const reviewCountEl = document.querySelector('#acrCustomerReviewText');
-    const reviewCount = reviewCountEl?.textContent?.trim()?.replace(/[()]/g, '') || null;
+    const reviewCount =
+      reviewCountEl?.textContent?.trim()?.replace(/[()]/g, '') || null;
 
     // Get availability
-    const availabilityEl = document.querySelector('#availability span, #availability');
+    const availabilityEl = document.querySelector(
+      '#availability span, #availability'
+    );
     const availability = availabilityEl?.textContent?.trim() || null;
 
     // Get product features/bullets
-    const featureEls = document.querySelectorAll('#feature-bullets li span.a-list-item');
+    const featureEls = document.querySelectorAll(
+      '#feature-bullets li span.a-list-item'
+    );
     const features: string[] = [];
     featureEls.forEach((el, i) => {
       if (i < 5) {
@@ -86,8 +101,12 @@ export const tool = {
     });
 
     // Check for variants
-    const colorVariants = document.querySelectorAll('#variation_color_name li, [id*="color_name"] li');
-    const sizeVariants = document.querySelectorAll('#variation_size_name li, [id*="size_name"] li');
+    const colorVariants = document.querySelectorAll(
+      '#variation_color_name li, [id*="color_name"] li'
+    );
+    const sizeVariants = document.querySelectorAll(
+      '#variation_size_name li, [id*="size_name"] li'
+    );
     const hasVariants = colorVariants.length > 0 || sizeVariants.length > 0;
 
     const details = {
@@ -111,11 +130,15 @@ export const tool = {
       `Price: ${price || 'N/A'}`,
       `Rating: ${rating || 'N/A'} (${reviewCount || 'N/A'} reviews)`,
       `Availability: ${availability || 'N/A'}`,
-      features.length > 0 ? `\nKey Features:\n${features.map(f => `• ${f.substring(0, 80)}${f.length > 80 ? '...' : ''}`).join('\n')}` : ''
-    ].filter(Boolean).join('\n');
+      features.length > 0
+        ? `\nKey Features:\n${features.map((f) => `• ${f.substring(0, 80)}${f.length > 80 ? '...' : ''}`).join('\n')}`
+        : ''
+    ]
+      .filter(Boolean)
+      .join('\n');
 
     return {
-      content: [{ type: 'text' as const, text: summary }],
+      content: [{type: 'text' as const, text: summary}],
       structuredContent: details
     };
   }

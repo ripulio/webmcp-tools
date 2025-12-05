@@ -10,7 +10,12 @@ export const tool = {
     const cartCountElement = document.querySelector('#nav-cart-count');
     if (!cartCountElement) {
       return {
-        content: [{ type: 'text' as const, text: 'Cart count element not found. Make sure you are on Amazon.' }],
+        content: [
+          {
+            type: 'text' as const,
+            text: 'Cart count element not found. Make sure you are on Amazon.'
+          }
+        ],
         isError: true
       };
     }
@@ -26,8 +31,8 @@ export const tool = {
       : `Cart contains ${count} item${count === 1 ? '' : 's'}.`;
 
     return {
-      content: [{ type: 'text' as const, text: displayText }],
-      structuredContent: { count, isOverflow }
+      content: [{type: 'text' as const, text: displayText}],
+      structuredContent: {count, isOverflow}
     };
   }
 };
