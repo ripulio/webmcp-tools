@@ -1,0 +1,6 @@
+{
+  "name": "google_sheets_get_content",
+  "userDescription": "Read data from the current Google Sheets spreadsheet",
+  "domains": ["docs.google.com"],
+  "pathPattern": "^/spreadsheets/"
+}
