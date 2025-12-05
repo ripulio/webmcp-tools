@@ -1,0 +1,6 @@
+{
+  "name": "googledocs_get_document_content",
+  "userDescription": "Get text content of the current document",
+  "domains": ["docs.google.com"],
+  "pathPattern": "^/document/d/"
+}

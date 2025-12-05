@@ -1,0 +1,6 @@
+{
+  "name": "googledocs_get_recent_documents",
+  "userDescription": "Get list of recent documents",
+  "domains": ["docs.google.com"],
+  "pathPattern": "^/document(/u/\\d+)?/?$"
+}

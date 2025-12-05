@@ -1,0 +1,6 @@
+{
+  "name": "googledocs_open_document",
+  "userDescription": "Open a document from recent documents list",
+  "domains": ["docs.google.com"],
+  "pathPattern": "^/document(/u/\\d+)?/?$"
+}

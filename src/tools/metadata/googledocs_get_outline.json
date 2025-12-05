@@ -1,0 +1,6 @@
+{
+  "name": "googledocs_get_outline",
+  "userDescription": "Get the document outline (headings)",
+  "domains": ["docs.google.com"],
+  "pathPattern": "^/document/d/"
+}

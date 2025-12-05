@@ -1,0 +1,6 @@
+{
+  "name": "googledocs_create_blank_document",
+  "userDescription": "Create a new blank document",
+  "domains": ["docs.google.com"],
+  "pathPattern": "^/document(/u/\\d+)?/?$"
+}
