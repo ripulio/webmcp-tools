@@ -1,0 +1,6 @@
+{
+  "name": "amazon_add_to_cart",
+  "userDescription": "Add an Amazon product to your cart",
+  "domains": ["amazon.com", "www.amazon.com"],
+  "pathPattern": "^/(dp|gp/product)/[A-Z0-9]+"
+}
