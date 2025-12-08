@@ -42,6 +42,6 @@
     "vitest": "^4.0.14"
   },
   "dependencies": {
-    "@ripul/web-mcp": "../webmcp-poc/packages/web-mcp"
+    "webmcp-polyfill": "^0.0.1"
   }
 }
