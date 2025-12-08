@@ -2,7 +2,7 @@ export interface ToolBinding {
   id: string;
   description?: string;
   domains: string[];
-  pathFilter?: RegExp;
+  pathFilter?: string;
 }
 
 export interface ToolRegistryMeta {
