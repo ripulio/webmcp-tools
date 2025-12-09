@@ -23,25 +23,30 @@
     "clean": "premove lib",
     "build": "npm run clean && tsgo",
     "test": "vitest run",
-    "lint": "npm run lint:format && npm run lint:js",
+    "lint": "npm run lint:format && npm run lint:js && npm run lint:meta && npm run lint:script-types",
     "format": "prettier --write src",
+    "lint:script-types": "tsc -p tsconfig.scripts.json",
     "lint:format": "prettier --check src",
-    "lint:js": "eslint src"
+    "lint:js": "eslint src",
+    "lint:meta": "node --experimental-strip-types scripts/lint-meta.ts"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
+    "@types/node": "^24.10.2",
     "@typescript/native-preview": "^7.0.0-dev.20251127.1",
     "@vitest/browser-playwright": "^4.0.14",
     "@vitest/coverage-v8": "^4.0.14",
+    "ajv": "^8.17.1",
     "eslint": "^9.39.1",
     "globals": "^16.5.0",
     "playwright": "^1.57.0",
     "premove": "^4.0.0",
     "prettier": "^3.6.2",
+    "tinyglobby": "^0.2.15",
     "typescript-eslint": "^8.48.0",
     "vitest": "^4.0.14"
   },
   "dependencies": {
-    "@ripul/web-mcp": "../webmcp-poc/packages/web-mcp"
+    "webmcp-polyfill": "^0.0.1"
   }
 }

@@ -1,14 +1,24 @@
-import type {ToolDefinition} from '@ripul/web-mcp';
-
-export interface ToolBinding {
-  tool: ToolDefinition;
-  pathMatches?: (path: string) => boolean;
+export interface DomainFilter {
+  type: 'domain';
+  domains: string[];
 }
 
-export interface ToolRegistryEntry {
+export interface PathFilter {
+  type: 'path';
+  patterns: string[];
+}
+
+export type ToolFilter = DomainFilter | PathFilter;
+
+export interface ToolMetadata {
+  id: string;
+  description?: string;
+  filters?: ToolFilter[];
+}
+
+export interface ToolRegistryMeta {
   id: string;
   name: string;
   description: string;
-  domains: string[];
-  tools: ToolBinding[];
+  tools: string[];
 }

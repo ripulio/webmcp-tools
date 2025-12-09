@@ -1,0 +1,92 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://example.com/webmcp-tools/definitions.json",
+  "definitions": {
+    "DomainFilter": {
+      "type": "object",
+      "required": ["type", "domains"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "domain"
+        },
+        "domains": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "PathFilter": {
+      "type": "object",
+      "required": ["type", "patterns"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "path"
+        },
+        "patterns": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "description": "A regular expression matched against the browser's current path"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "ToolFilter": {
+      "oneOf": [
+        {
+          "$ref": "#/definitions/DomainFilter"
+        },
+        {
+          "$ref": "#/definitions/PathFilter"
+        }
+      ]
+    },
+    "ToolMetadata": {
+      "type": "object",
+      "required": ["id"],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "filters": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ToolFilter"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "ToolRegistryMeta": {
+      "type": "object",
+      "required": ["id", "name", "description", "tools"],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "tools": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}
