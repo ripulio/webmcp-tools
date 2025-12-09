@@ -1,1 +1,1 @@
-export type {ToolBinding, ToolRegistryMeta} from './shared.js';
+export type {ToolMetadata, ToolRegistryMeta} from './shared.js';

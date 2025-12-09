@@ -1,0 +1,7 @@
+{
+  "$schema": "../../../schemas/toolRegistryMeta.json",
+  "id": "example-group",
+  "name": "Example Tool Group",
+  "description": "An example group of tools for demonstration purposes",
+  "tools": ["example-tool"]
+}
