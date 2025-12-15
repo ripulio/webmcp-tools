@@ -22,7 +22,8 @@
   "scripts": {
     "clean": "premove lib",
     "build": "npm run clean && tsgo",
-    "test": "vitest run",
+    "build:manifest": "node --experimental-strip-types scripts/build-manifest.ts",
+    "test": "vitest run --passWithNoTests",
     "lint": "npm run lint:format && npm run lint:js && npm run lint:meta && npm run lint:script-types",
     "format": "prettier --write src",
     "lint:script-types": "tsc -p tsconfig.scripts.json",
@@ -38,6 +39,7 @@
     "@vitest/coverage-v8": "^4.0.14",
     "ajv": "^8.17.1",
     "cloudflare": "^5.2.0",
+    "esbuild": "^0.25.5",
     "eslint": "^9.39.1",
     "globals": "^16.5.0",
     "playwright": "^1.57.0",

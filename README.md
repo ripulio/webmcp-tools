@@ -1,14 +1,16 @@
 # WebMCP Tools
 
-This repository is the source collection for tools made available by the [WebMCP catalog](https://github.com/ripulio/webmcp-catalog).
+Source collection for tools published to the [WebMCP catalog](https://github.com/ripulio/webmcp-catalog).
 
-## Available Tools
+Tools belong to **groups** that provide related functionality. Each tool has a metadata file specifying the domains and URL path patterns where it activates.
 
-TBD
+## Available Groups
 
-## Contributing Tools
+- **googledocs** - Tools for browsing and viewing documents in Google Docs
 
-In order to publish tools to the WebMCP catalog, they must be added to this repository. They will then automatically be published to the catalog when the next sync occurs.
+## Contributing
+
+In order to publish tools to the WebMCP catalog, they must be added to this repo.
 
 If you'd like to contribute a tool, please follow these steps:
 

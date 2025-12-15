@@ -1,0 +1,6 @@
+{
+  "name": "googledocs_get_document_title",
+  "userDescription": "Get the title of the current document",
+  "domains": ["docs.google.com"],
+  "pathPattern": "^/document/d/"
+}

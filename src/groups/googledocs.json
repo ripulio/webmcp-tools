@@ -1,0 +1,13 @@
+{
+  "name": "googledocs",
+  "description": "Tools for browsing and viewing documents in Google Docs",
+  "tools": [
+    "googledocs_search",
+    "googledocs_create_blank_document",
+    "googledocs_get_recent_documents",
+    "googledocs_open_document",
+    "googledocs_get_document_title",
+    "googledocs_get_document_content",
+    "googledocs_get_outline"
+  ]
+}

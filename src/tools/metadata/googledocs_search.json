@@ -1,0 +1,6 @@
+{
+  "name": "googledocs_search",
+  "userDescription": "Search for documents in Google Docs",
+  "domains": ["docs.google.com"],
+  "pathPattern": "^/document(/u/\\d+)?/?$"
+}
