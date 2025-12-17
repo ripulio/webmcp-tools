@@ -1,0 +1,7 @@
+{
+  "$schema": "../../../schemas/toolRegistryMeta.json",
+  "id": "amazon",
+  "name": "Amazon Tools",
+  "description": "Tools for searching and browsing products on Amazon",
+  "tools": ["amazon-search", "amazon-list-results"]
+}

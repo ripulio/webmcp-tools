@@ -1,0 +1,11 @@
+{
+  "$schema": "../../../schemas/toolMetadata.json",
+  "id": "amazon-search",
+  "description": "Search for products on Amazon",
+  "filters": [
+    {
+      "type": "domain",
+      "domains": ["amazon.com", "www.amazon.com"]
+    }
+  ]
+}
