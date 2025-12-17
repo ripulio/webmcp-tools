@@ -25,18 +25,9 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Publish to Catalog (Prerelease)
-        env:
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID_PRE }}
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CF_API_TOKEN_PRE }}
-          CF_KV_NAMESPACE_ID: ${{ secrets.CF_KV_NAMESPACE_ID_PRE }}
-        run: node --experimental-strip-types scripts/sync-to-kv.ts
-        if: github.event.release.prerelease
-
-      - name: Publish to Catalog
+      - name: Sync to KV
         env:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
           CLOUDFLARE_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
-          CF_KV_NAMESPACE_ID: ${{ secrets.CF_KV_NAMESPACE_ID }}
+          CF_KV_NAMESPACE_ID: ${{ vars.CF_KV_NAMESPACE_ID }}
         run: node --experimental-strip-types scripts/sync-to-kv.ts
-        if: !github.event.release.prerelease
