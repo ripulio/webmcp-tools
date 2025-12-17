@@ -150,7 +150,7 @@ async function main(): Promise<void> {
 
   try {
     console.log('\n📤 Uploading to KV via wrangler...');
-    execSync(`npx wrangler kv bulk put "${tempFile}" --namespace-id "${namespaceId}"`, {
+    execSync(`npx wrangler kv bulk put "${tempFile}" --namespace-id "${namespaceId}" --remote`, {
       stdio: 'inherit',
       cwd: rootDir
     });
