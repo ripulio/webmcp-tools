@@ -31,7 +31,7 @@
           "type": "array",
           "items": {
             "type": "string",
-            "description": "A regular expression matched against the browser's current path"
+            "description": "A picomatch glob pattern matched against the browser's current path"
           }
         }
       },
