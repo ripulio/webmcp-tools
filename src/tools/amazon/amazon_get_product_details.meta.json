@@ -1,0 +1,15 @@
+{
+  "$schema": "../../../schemas/toolMetadata.json",
+  "id": "amazon_get_product_details",
+  "description": "Get detailed product information from Amazon product page",
+  "filters": [
+    {
+      "type": "domain",
+      "domains": ["amazon.com", "www.amazon.com"]
+    },
+    {
+      "type": "path",
+      "patterns": ["/dp/*", "/gp/product/*"]
+    }
+  ]
+}

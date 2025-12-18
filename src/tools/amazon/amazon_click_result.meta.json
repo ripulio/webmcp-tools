@@ -1,0 +1,15 @@
+{
+  "$schema": "../../../schemas/toolMetadata.json",
+  "id": "amazon_click_result",
+  "description": "Click on a product from Amazon search results to view its details",
+  "filters": [
+    {
+      "type": "domain",
+      "domains": ["amazon.com", "www.amazon.com"]
+    },
+    {
+      "type": "path",
+      "patterns": ["/s", "/s?*"]
+    }
+  ]
+}
