@@ -153,6 +153,9 @@ async function main(): Promise<void> {
 
   try {
     console.log('\n📤 Uploading to KV via wrangler...');
+    console.log("CLOUDFLARE_ACCOUNT_ID:", process.env.CLOUDFLARE_ACCOUNT_ID);
+    console.log("CF_KV_NAMESPACE_ID:", process.env.CF_KV_NAMESPACE_ID);
+    console.log("CLOUDFLARE_API_TOKEN present:", !!process.env.CLOUDFLARE_API_TOKEN);
     execSync(`npx wrangler kv bulk put "${tempFile}" --namespace-id "${namespaceId}" --remote`, {
       stdio: 'inherit',
       cwd: rootDir
