@@ -9,6 +9,8 @@ const rootDir = resolve(__dirname, '..');
 const toolsDir = resolve(rootDir, 'src/tools');
 const libDir = resolve(rootDir, 'lib/tools');
 
+const EXCLUDED_GROUPS = ['example-group'];
+
 interface ToolWithMeta extends ToolMetadata {
   groupId: string;
   sourceFile: string;
@@ -29,6 +31,7 @@ async function scanToolsDirectory(): Promise<{
   const entries = await readdir(toolsDir, {withFileTypes: true});
   const groupDirs = entries
     .filter(entry => entry.isDirectory() && !entry.name.startsWith('.'))
+    .filter(entry => !EXCLUDED_GROUPS.includes(entry.name))
     .map(entry => entry.name);
 
   for (const groupName of groupDirs) {
