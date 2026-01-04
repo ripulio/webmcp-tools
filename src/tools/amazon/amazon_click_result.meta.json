@@ -5,11 +5,18 @@
   "filters": [
     {
       "type": "domain",
-      "domains": ["amazon.com", "www.amazon.com"]
+      "domains": [
+        "amazon.com",
+        "www.amazon.com"
+      ]
     },
     {
       "type": "path",
-      "patterns": ["/s", "/s?*"]
+      "patterns": [
+        "/s",
+        "/s?*"
+      ]
     }
-  ]
+  ],
+  "groupId": "amazon"
 }

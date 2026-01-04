@@ -5,7 +5,11 @@
   "filters": [
     {
       "type": "domain",
-      "domains": ["amazon.com", "www.amazon.com"]
+      "domains": [
+        "amazon.com",
+        "www.amazon.com"
+      ]
     }
-  ]
+  ],
+  "groupId": "amazon"
 }
