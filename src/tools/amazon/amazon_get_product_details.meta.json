@@ -13,8 +13,8 @@
     {
       "type": "path",
       "patterns": [
-        "/dp/*",
-        "/gp/product/*"
+        "/dp/.*",
+        "/gp/product/.*"
       ]
     }
   ],
