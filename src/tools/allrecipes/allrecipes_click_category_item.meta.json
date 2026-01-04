@@ -1,0 +1,21 @@
+{
+  "$schema": "../../../schemas/toolMetadata.json",
+  "id": "allrecipes_click_category_item",
+  "description": "Click on an item from the category page",
+  "filters": [
+    {
+      "type": "domain",
+      "domains": [
+        "allrecipes.com",
+        "www.allrecipes.com"
+      ]
+    },
+    {
+      "type": "path",
+      "patterns": [
+        "/recipes/**"
+      ]
+    }
+  ],
+  "groupId": "allrecipes"
+}

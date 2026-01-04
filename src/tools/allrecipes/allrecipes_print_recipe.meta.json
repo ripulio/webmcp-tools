@@ -1,0 +1,21 @@
+{
+  "$schema": "../../../schemas/toolMetadata.json",
+  "id": "allrecipes_print_recipe",
+  "description": "Print the current recipe",
+  "filters": [
+    {
+      "type": "domain",
+      "domains": [
+        "allrecipes.com",
+        "www.allrecipes.com"
+      ]
+    },
+    {
+      "type": "path",
+      "patterns": [
+        "/recipe/**"
+      ]
+    }
+  ],
+  "groupId": "allrecipes"
+}
