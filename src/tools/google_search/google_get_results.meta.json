@@ -1,0 +1,21 @@
+{
+  "$schema": "../../../schemas/toolMetadata.json",
+  "id": "google_get_results",
+  "description": "Get search results from Google search results page including AI Overview if present",
+  "filters": [
+    {
+      "type": "domain",
+      "domains": [
+        "google.com",
+        "www.google.com"
+      ]
+    },
+    {
+      "type": "path",
+      "patterns": [
+        "/search*"
+      ]
+    }
+  ],
+  "groupId": "google_search"
+}
