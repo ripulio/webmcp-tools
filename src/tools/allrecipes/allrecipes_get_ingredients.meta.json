@@ -1,0 +1,21 @@
+{
+  "$schema": "../../../schemas/toolMetadata.json",
+  "id": "allrecipes_get_ingredients",
+  "description": "Get the list of ingredients for a recipe",
+  "filters": [
+    {
+      "type": "domain",
+      "domains": [
+        "allrecipes.com",
+        "www.allrecipes.com"
+      ]
+    },
+    {
+      "type": "path",
+      "patterns": [
+        "/recipe/**"
+      ]
+    }
+  ],
+  "groupId": "allrecipes"
+}
