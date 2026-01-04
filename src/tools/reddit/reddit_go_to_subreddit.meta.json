@@ -1,0 +1,22 @@
+{
+  "$schema": "../../../schemas/toolMetadata.json",
+  "id": "reddit_go_to_subreddit",
+  "description": "Navigate to a specific subreddit by name",
+  "filters": [
+    {
+      "type": "domain",
+      "domains": [
+        "reddit.com",
+        "www.reddit.com",
+        "old.reddit.com"
+      ]
+    },
+    {
+      "type": "path",
+      "patterns": [
+        "/**"
+      ]
+    }
+  ],
+  "groupId": "reddit"
+}
