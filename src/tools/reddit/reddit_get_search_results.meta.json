@@ -1,0 +1,21 @@
+{
+  "$schema": "../../../schemas/toolMetadata.json",
+  "id": "reddit_get_search_results",
+  "description": "Extract search results from a Reddit search page",
+  "filters": [
+    {
+      "type": "domain",
+      "domains": [
+        "reddit.com",
+        "www.reddit.com"
+      ]
+    },
+    {
+      "type": "path",
+      "patterns": [
+        "/search/**"
+      ]
+    }
+  ],
+  "groupId": "reddit"
+}

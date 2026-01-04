@@ -1,0 +1,21 @@
+{
+  "$schema": "../../../schemas/toolMetadata.json",
+  "id": "reddit_get_post_details",
+  "description": "Extract detailed information about a Reddit post",
+  "filters": [
+    {
+      "type": "domain",
+      "domains": [
+        "reddit.com",
+        "www.reddit.com"
+      ]
+    },
+    {
+      "type": "path",
+      "patterns": [
+        "/r/*/comments/**"
+      ]
+    }
+  ],
+  "groupId": "reddit"
+}

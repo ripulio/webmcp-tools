@@ -1,0 +1,22 @@
+{
+  "$schema": "../../../schemas/toolMetadata.json",
+  "id": "reddit_filter_feed",
+  "description": "Filter the Reddit homepage feed by category",
+  "filters": [
+    {
+      "type": "domain",
+      "domains": [
+        "reddit.com",
+        "www.reddit.com"
+      ]
+    },
+    {
+      "type": "path",
+      "patterns": [
+        "/",
+        "/?*"
+      ]
+    }
+  ],
+  "groupId": "reddit"
+}
