@@ -1,0 +1,15 @@
+{
+  "$schema": "../../../schemas/toolMetadata.json",
+  "id": "allrecipes_get_categories",
+  "description": "Get the list of main recipe categories",
+  "filters": [
+    {
+      "type": "domain",
+      "domains": [
+        "allrecipes.com",
+        "www.allrecipes.com"
+      ]
+    }
+  ],
+  "groupId": "allrecipes"
+}

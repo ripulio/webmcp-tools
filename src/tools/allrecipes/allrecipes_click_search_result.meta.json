@@ -1,0 +1,21 @@
+{
+  "$schema": "../../../schemas/toolMetadata.json",
+  "id": "allrecipes_click_search_result",
+  "description": "Click on a search result to view the recipe",
+  "filters": [
+    {
+      "type": "domain",
+      "domains": [
+        "allrecipes.com",
+        "www.allrecipes.com"
+      ]
+    },
+    {
+      "type": "path",
+      "patterns": [
+        "/search*"
+      ]
+    }
+  ],
+  "groupId": "allrecipes"
+}
