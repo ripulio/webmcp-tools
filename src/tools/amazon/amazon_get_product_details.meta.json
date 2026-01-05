@@ -9,7 +9,7 @@
     },
     {
       "type": "path",
-      "patterns": ["/dp/*", "/gp/product/*"]
+      "patterns": ["/dp/.*", "/gp/product/.*"]
     }
   ]
 }
