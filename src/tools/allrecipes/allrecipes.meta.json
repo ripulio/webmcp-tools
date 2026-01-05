@@ -1,0 +1,21 @@
+{
+  "$schema": "../../../schemas/toolRegistryMeta.json",
+  "id": "allrecipes",
+  "name": "Allrecipes",
+  "description": "Tools for searching, browsing, and extracting recipes from Allrecipes.com",
+  "tools": [
+    "allrecipes_search",
+    "allrecipes_get_search_results",
+    "allrecipes_click_search_result",
+    "allrecipes_next_search_page",
+    "allrecipes_get_recipe_details",
+    "allrecipes_get_ingredients",
+    "allrecipes_get_instructions",
+    "allrecipes_get_nutrition",
+    "allrecipes_print_recipe",
+    "allrecipes_get_categories",
+    "allrecipes_go_to_category",
+    "allrecipes_get_category_recipes",
+    "allrecipes_click_category_item"
+  ]
+}

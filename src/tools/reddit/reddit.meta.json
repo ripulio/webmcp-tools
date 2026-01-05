@@ -1,0 +1,16 @@
+{
+  "$schema": "../../../schemas/toolRegistryMeta.json",
+  "id": "reddit",
+  "name": "Reddit",
+  "description": "Tools for searching, browsing, and reading content on Reddit",
+  "tools": [
+    "reddit_search",
+    "reddit_get_search_results",
+    "reddit_go_to_subreddit",
+    "reddit_get_feed_posts",
+    "reddit_click_post",
+    "reddit_get_post_details",
+    "reddit_get_comments",
+    "reddit_filter_feed"
+  ]
+}
