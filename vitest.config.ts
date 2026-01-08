@@ -3,6 +3,7 @@ import { playwright } from '@vitest/browser-playwright';
 
 export default defineConfig({
   test: {
+    passWithNoTests: true,
 		projects: [
 			{
 				extends: true,

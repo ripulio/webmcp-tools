@@ -1,26 +1,37 @@
-import {glob} from 'tinyglobby';
-import {readFile, readdir} from 'node:fs/promises';
+import {execSync} from 'node:child_process';
+import {readFile, readdir, writeFile, unlink} from 'node:fs/promises';
 import {resolve, dirname, basename} from 'node:path';
 import {fileURLToPath} from 'node:url';
-import Cloudflare from 'cloudflare';
 import type {ToolMetadata, ToolRegistryMeta} from '../src/shared.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const rootDir = resolve(__dirname, '..');
 const toolsDir = resolve(rootDir, 'src/tools');
+const libDir = resolve(rootDir, 'lib/tools');
 
-interface SyncResult {
-  groups: Map<string, ToolRegistryMeta>;
-  tools: Map<string, ToolMetadata & {groupId: string}>;
+const EXCLUDED_GROUPS = ['example-group'];
+
+interface ToolWithMeta extends ToolMetadata {
+  groupId: string;
+  sourceFile: string;
 }
 
-async function scanToolsDirectory(): Promise<SyncResult> {
+interface KVEntry {
+  key: string;
+  value: string;
+}
+
+async function scanToolsDirectory(): Promise<{
+  groups: Map<string, ToolRegistryMeta>;
+  tools: Map<string, ToolWithMeta>;
+}> {
   const groups = new Map<string, ToolRegistryMeta>();
-  const tools = new Map<string, ToolMetadata & {groupId: string}>();
+  const tools = new Map<string, ToolWithMeta>();
 
   const entries = await readdir(toolsDir, {withFileTypes: true});
   const groupDirs = entries
     .filter(entry => entry.isDirectory() && !entry.name.startsWith('.'))
+    .filter(entry => !EXCLUDED_GROUPS.includes(entry.name))
     .map(entry => entry.name);
 
   for (const groupName of groupDirs) {
@@ -28,11 +39,10 @@ async function scanToolsDirectory(): Promise<SyncResult> {
     const groupMetaPath = resolve(groupDir, `${groupName}.meta.json`);
 
     let groupMeta: ToolRegistryMeta;
-
     try {
       const content = await readFile(groupMetaPath, 'utf-8');
       groupMeta = JSON.parse(content);
-    } catch (error) {
+    } catch {
       console.warn(`⚠️  Skipping ${groupName}: missing or invalid ${groupName}.meta.json`);
       continue;
     }
@@ -40,138 +50,120 @@ async function scanToolsDirectory(): Promise<SyncResult> {
     groups.set(groupMeta.id, groupMeta);
     console.log(`✓ Found group: ${groupMeta.id} (${groupMeta.name})`);
 
-    const tsFiles = await glob(['*.ts'], {
-      cwd: groupDir,
-      absolute: false
-    });
+    const files = await readdir(groupDir);
+    const tsFiles = files.filter(f => f.endsWith('.ts'));
 
     for (const tsFile of tsFiles) {
       const toolName = basename(tsFile, '.ts');
       const toolMetaPath = resolve(groupDir, `${toolName}.meta.json`);
+      const sourceFile = resolve(libDir, groupName, `${toolName}.js`);
 
+      let toolMeta: ToolMetadata;
       try {
         const content = await readFile(toolMetaPath, 'utf-8');
-        const toolMeta: ToolMetadata = JSON.parse(content);
-
-        tools.set(`${groupMeta.id}:${toolMeta.id}`, {
-          ...toolMeta,
-          groupId: groupMeta.id
-        });
-        console.log(`  ✓ Found tool: ${toolMeta.id}`);
-      } catch (error) {
+        toolMeta = JSON.parse(content);
+      } catch {
         continue;
       }
+
+      // Validate source file exists
+      try {
+        await readFile(sourceFile);
+      } catch {
+        console.warn(`  ⚠️  Skipping ${toolMeta.id}: missing built file ${sourceFile}`);
+        continue;
+      }
+
+      tools.set(toolMeta.id, {
+        ...toolMeta,
+        groupId: groupMeta.id,
+        sourceFile
+      });
+      console.log(`  ✓ Found tool: ${toolMeta.id}`);
     }
   }
 
   return {groups, tools};
 }
 
-async function uploadToKV(result: SyncResult): Promise<void> {
-  const accountId = process.env.CF_ACCOUNT_ID;
-  const namespaceId = process.env.CF_KV_NAMESPACE_ID;
-  const apiToken = process.env.CF_API_TOKEN;
-  const dryRun = process.env.CF_DRY_RUN === 'true';
+async function buildKVEntries(
+  groups: Map<string, ToolRegistryMeta>,
+  tools: Map<string, ToolWithMeta>
+): Promise<KVEntry[]> {
+  const entries: KVEntry[] = [];
 
-  if (dryRun) {
-    console.log('\n🏃 DRY RUN MODE - Not uploading to KV\n');
-    printSummary(result);
-    return;
+  // Add groups
+  for (const [id, group] of groups) {
+    entries.push({key: `group_${id}`, value: JSON.stringify(group)});
   }
 
-  if (!accountId || !namespaceId || !apiToken) {
-    console.error('\n❌ Missing required environment variables:');
-    console.error('   CF_ACCOUNT_ID, CF_KV_NAMESPACE_ID, CF_API_TOKEN');
-    console.error('\n   Or set CF_DRY_RUN=true to skip upload\n');
-    process.exit(1);
+  // Add tools (without sourceFile)
+  for (const tool of tools.values()) {
+    const {sourceFile, ...meta} = tool;
+    entries.push({key: `tool_${tool.id}`, value: JSON.stringify(meta)});
   }
 
-  const client = new Cloudflare({apiToken});
-
-  // Upload groups
-  console.log('\n📤 Uploading groups to KV...');
-  for (const [id, group] of result.groups) {
-    const key = `group_${id}`;
-
-    try {
-      await client.kv.namespaces.values.update(
-        namespaceId,
-        key,
-        {
-          account_id: accountId,
-          value: JSON.stringify(group)
-        }
-      );
-
-      console.log(`  ✓ Uploaded group: ${key}`);
-    } catch (error) {
-      console.error(`  ❌ Failed to upload ${key}:`, error);
-      throw error;
-    }
+  // Add sources
+  for (const tool of tools.values()) {
+    const source = await readFile(tool.sourceFile, 'utf-8');
+    entries.push({key: `source_${tool.id}`, value: source});
   }
 
-  // Upload tools
-  console.log('\n📤 Uploading tools to KV...');
-  for (const [, tool] of result.tools) {
-    const key = `tool_${tool.id}`;
-
-    try {
-      await client.kv.namespaces.values.update(
-        namespaceId,
-        key,
-        {
-          account_id: accountId,
-          value: JSON.stringify(tool)
-        }
-      );
-
-      console.log(`  ✓ Uploaded tool: ${key}`);
-    } catch (error) {
-      console.error(`  ❌ Failed to upload ${key}:`, error);
-      throw error;
-    }
-  }
-
-  // Upload an index for easier querying (optional but recommended)
+  // Add registry index
   const index = {
-    groups: Array.from(result.groups.keys()),
-    tools: Array.from(result.tools.values()).map(t => ({
-      id: t.id,
-      groupId: t.groupId
-    })),
+    groups: Array.from(groups.keys()),
+    tools: Array.from(tools.values()).map(t => ({id: t.id, groupId: t.groupId})),
     lastUpdated: new Date().toISOString()
   };
+  entries.push({key: '_registry_index', value: JSON.stringify(index)});
 
-  try {
-    await client.kv.namespaces.values.update(
-      namespaceId,
-      '_registry_index',
-      {
-        account_id: accountId,
-        value: JSON.stringify(index)
-      }
-    );
-
-    console.log('\n  ✓ Uploaded registry index: _registry_index');
-  } catch (error) {
-    console.error('  ❌ Failed to upload index:', error);
-    throw error;
-  }
-
-  printSummary(result);
-}
-
-function printSummary(result: SyncResult): void {
-  console.log('\n📊 Summary:');
-  console.log(`   Groups: ${result.groups.size}`);
-  console.log(`   Tools:  ${result.tools.size}`);
-  console.log('\n✅ Sync completed successfully\n');
+  return entries;
 }
 
 async function main(): Promise<void> {
+  const namespaceId = process.env.CF_KV_NAMESPACE_ID;
+  const dryRun = process.env.CF_DRY_RUN === 'true';
+
   console.log('🔍 Scanning src/tools directory...\n');
-  const result = await scanToolsDirectory();
-  await uploadToKV(result);
+  const {groups, tools} = await scanToolsDirectory();
+
+  console.log('\n📦 Building KV entries...');
+  const entries = await buildKVEntries(groups, tools);
+
+  console.log('\n📊 Summary:');
+  console.log(`   Groups:  ${groups.size}`);
+  console.log(`   Tools:   ${tools.size}`);
+  console.log(`   Sources: ${tools.size}`);
+  console.log(`   Total:   ${entries.length} KV entries`);
+
+  if (dryRun) {
+    console.log('\n🏃 DRY RUN MODE - Not uploading to KV\n');
+    return;
+  }
+
+  if (!namespaceId) {
+    console.error('\n❌ Missing CF_KV_NAMESPACE_ID environment variable');
+    console.error('   Or set CF_DRY_RUN=true to skip upload\n');
+    process.exit(1);
+  }
+
+  // Write entries to temp file
+  const tempFile = resolve(rootDir, '.kv-bulk-upload.json');
+  await writeFile(tempFile, JSON.stringify(entries));
+
+  try {
+    console.log('\n📤 Uploading to KV via wrangler...');
+    console.log("CLOUDFLARE_ACCOUNT_ID:", process.env.CLOUDFLARE_ACCOUNT_ID);
+    console.log("CF_KV_NAMESPACE_ID:", process.env.CF_KV_NAMESPACE_ID);
+    console.log("CLOUDFLARE_API_TOKEN present:", !!process.env.CLOUDFLARE_API_TOKEN);
+    execSync(`npx wrangler kv bulk put "${tempFile}" --namespace-id "${namespaceId}" --remote`, {
+      stdio: 'inherit',
+      cwd: rootDir
+    });
+    console.log('\n✅ Sync completed successfully\n');
+  } finally {
+    await unlink(tempFile);
+  }
 }
 
 main().catch((error: Error) => {
