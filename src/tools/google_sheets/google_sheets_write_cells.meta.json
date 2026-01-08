@@ -1,7 +1,7 @@
 {
   "$schema": "../../../schemas/toolMetadata.json",
-  "id": "google_sheets_write_cell",
-  "description": "Write a value to a specific cell in the currently open spreadsheet",
+  "id": "google_sheets_write_cells",
+  "description": "Write values to cells in the currently open spreadsheet",
   "groupId": "google_sheets",
   "filters": [
     {
