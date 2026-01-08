@@ -1,0 +1,14 @@
+{
+  "$schema": "../../../schemas/toolMetadata.json",
+  "id": "slack_click_channel",
+  "description": "Click on a channel in the Slack sidebar to open it",
+  "groupId": "slack",
+  "filters": [
+    {
+      "type": "domain",
+      "domains": [
+        "app.slack.com"
+      ]
+    }
+  ]
+}

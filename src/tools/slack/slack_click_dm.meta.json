@@ -1,0 +1,14 @@
+{
+  "$schema": "../../../schemas/toolMetadata.json",
+  "id": "slack_click_dm",
+  "description": "Open a direct message conversation by clicking on it",
+  "groupId": "slack",
+  "filters": [
+    {
+      "type": "domain",
+      "domains": [
+        "app.slack.com"
+      ]
+    }
+  ]
+}
