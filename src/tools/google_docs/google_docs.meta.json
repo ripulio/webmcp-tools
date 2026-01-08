@@ -1,0 +1,23 @@
+{
+  "$schema": "../../../schemas/toolRegistryMeta.json",
+  "id": "google_docs",
+  "name": "Google Docs",
+  "description": "Tools for creating, editing, and managing documents in Google Docs",
+  "tools": [
+    "google_docs_search_documents",
+    "google_docs_list_recent_documents",
+    "google_docs_open_document",
+    "google_docs_create_blank_document",
+    "google_docs_get_document_title",
+    "google_docs_rename_document",
+    "google_docs_open_file_menu",
+    "google_docs_open_edit_menu",
+    "google_docs_share_document",
+    "google_docs_toggle_editing_mode",
+    "google_docs_format_text",
+    "google_docs_insert_comment",
+    "google_docs_open_comments_panel",
+    "google_docs_get_document_content",
+    "google_docs_edit_document_content"
+  ]
+}
