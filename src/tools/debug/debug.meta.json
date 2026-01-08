@@ -1,0 +1,7 @@
+{
+  "$schema": "../../../schemas/toolRegistryMeta.json",
+  "id": "debug",
+  "name": "Debug",
+  "description": "Tools for debugging by intercepting and collecting console logs",
+  "tools": ["debug_start_collecting", "debug_get_logs", "debug_pick_element"]
+}
