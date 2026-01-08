@@ -1,0 +1,16 @@
+{
+  "$schema": "../../../schemas/toolMetadata.json",
+  "id": "companies_house_get_filings",
+  "description": "Get the filing history from a company filing history page",
+  "filters": [
+    {
+      "type": "domain",
+      "domains": ["find-and-update.company-information.service.gov.uk"]
+    },
+    {
+      "type": "path",
+      "patterns": ["/company/[^/]+/filing-history"]
+    }
+  ],
+  "groupId": "companies_house"
+}

@@ -1,0 +1,16 @@
+{
+  "$schema": "../../../schemas/toolMetadata.json",
+  "id": "companies_house_go_to_charges",
+  "description": "Navigate to the charges tab of a company page",
+  "filters": [
+    {
+      "type": "domain",
+      "domains": ["find-and-update.company-information.service.gov.uk"]
+    },
+    {
+      "type": "path",
+      "patterns": ["/company/[^/]+"]
+    }
+  ],
+  "groupId": "companies_house"
+}
