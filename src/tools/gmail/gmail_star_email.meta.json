@@ -1,0 +1,16 @@
+{
+  "$schema": "../../../schemas/toolMetadata.json",
+  "id": "gmail_star_email",
+  "description": "Toggle the star on an email by its index",
+  "groupId": "gmail",
+  "filters": [
+    {
+      "type": "domain",
+      "domains": ["mail.google.com"]
+    },
+    {
+      "type": "path",
+      "patterns": ["/mail/.*"]
+    }
+  ]
+}

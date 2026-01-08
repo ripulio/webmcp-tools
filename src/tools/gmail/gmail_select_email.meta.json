@@ -1,0 +1,16 @@
+{
+  "$schema": "../../../schemas/toolMetadata.json",
+  "id": "gmail_select_email",
+  "description": "Select or deselect an email by its index for bulk actions",
+  "groupId": "gmail",
+  "filters": [
+    {
+      "type": "domain",
+      "domains": ["mail.google.com"]
+    },
+    {
+      "type": "path",
+      "patterns": ["/mail/.*"]
+    }
+  ]
+}

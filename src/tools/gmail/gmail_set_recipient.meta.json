@@ -1,0 +1,16 @@
+{
+  "$schema": "../../../schemas/toolMetadata.json",
+  "id": "gmail_set_recipient",
+  "description": "Set the recipient email address in the compose dialog",
+  "groupId": "gmail",
+  "filters": [
+    {
+      "type": "domain",
+      "domains": ["mail.google.com"]
+    },
+    {
+      "type": "path",
+      "patterns": ["/mail/.*"]
+    }
+  ]
+}
