@@ -36,14 +36,28 @@ export const redditFilterFeed: ToolDefinition = {
       };
     }
 
-    // Find the category chips
-    const chipContainer = document.querySelector('#feed-chip-scroller');
+    // Wait for the category chips to load (dynamic content)
+    const waitForElement = async (
+      selector: string,
+      maxWait = 3000
+    ): Promise<Element | null> => {
+      const start = Date.now();
+      while (Date.now() - start < maxWait) {
+        const el = document.querySelector(selector);
+        if (el) return el;
+        await new Promise((r) => setTimeout(r, 100));
+      }
+      return null;
+    };
+
+    // Find the category chips with retry
+    const chipContainer = await waitForElement('#feed-chip-scroller');
     if (!chipContainer) {
       return {
         content: [
           {
             type: 'text',
-            text: 'Category filter chips not found on this page.'
+            text: 'Category filter chips not found on this page. The feed may still be loading.'
           }
         ],
         isError: true
