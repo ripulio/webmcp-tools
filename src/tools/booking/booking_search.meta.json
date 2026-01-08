@@ -1,0 +1,16 @@
+{
+  "$schema": "../../../schemas/toolMetadata.json",
+  "id": "booking_search",
+  "description": "Search for accommodations on Booking.com by destination",
+  "filters": [
+    {
+      "type": "domain",
+      "domains": ["booking.com", "www.booking.com"]
+    },
+    {
+      "type": "path",
+      "patterns": ["/", "/index.*"]
+    }
+  ],
+  "groupId": "booking"
+}

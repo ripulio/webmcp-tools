@@ -1,0 +1,16 @@
+{
+  "$schema": "../../../schemas/toolMetadata.json",
+  "id": "booking_get_property_details",
+  "description": "Get detailed information about a property on Booking.com",
+  "filters": [
+    {
+      "type": "domain",
+      "domains": ["booking.com", "www.booking.com"]
+    },
+    {
+      "type": "path",
+      "patterns": ["/hotel/.*"]
+    }
+  ],
+  "groupId": "booking"
+}

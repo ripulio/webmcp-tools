@@ -1,0 +1,16 @@
+{
+  "$schema": "../../../schemas/toolMetadata.json",
+  "id": "booking_get_rooms",
+  "description": "Get available room options and prices for a Booking.com property",
+  "filters": [
+    {
+      "type": "domain",
+      "domains": ["booking.com", "www.booking.com"]
+    },
+    {
+      "type": "path",
+      "patterns": ["/hotel/.*"]
+    }
+  ],
+  "groupId": "booking"
+}
