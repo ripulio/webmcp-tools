@@ -1,0 +1,16 @@
+{
+  "$schema": "../../../schemas/toolMetadata.json",
+  "id": "booking_select_room",
+  "description": "Select a room type to reserve on a Booking.com property page",
+  "filters": [
+    {
+      "type": "domain",
+      "domains": ["booking.com", "www.booking.com"]
+    },
+    {
+      "type": "path",
+      "patterns": ["/hotel/.*"]
+    }
+  ],
+  "groupId": "booking"
+}
