@@ -1,0 +1,16 @@
+{
+  "$schema": "../../../schemas/toolMetadata.json",
+  "id": "google_sheets_list_sheets",
+  "description": "List all sheets (tabs) in the currently open spreadsheet",
+  "groupId": "google_sheets",
+  "filters": [
+    {
+      "type": "domain",
+      "domains": ["docs.google.com"]
+    },
+    {
+      "type": "path",
+      "patterns": ["/spreadsheets/d/.*"]
+    }
+  ]
+}
