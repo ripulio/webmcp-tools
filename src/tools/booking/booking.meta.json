@@ -1,0 +1,18 @@
+{
+  "$schema": "../../../schemas/toolRegistryMeta.json",
+  "id": "booking",
+  "name": "Booking.com",
+  "description": "Tools for searching, browsing, and booking accommodations on Booking.com",
+  "tools": [
+    "booking_search",
+    "booking_set_dates",
+    "booking_set_guests",
+    "booking_get_results",
+    "booking_click_result",
+    "booking_sort_results",
+    "booking_filter_results",
+    "booking_get_property_details",
+    "booking_get_rooms",
+    "booking_select_room"
+  ]
+}
