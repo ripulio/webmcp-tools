@@ -19,33 +19,42 @@ export const slackClickDm: ToolDefinition = {
     const {name} = input as {name: string};
     const lowerName = name.toLowerCase();
 
+    // Get all DM items from the virtual list
     const dmItems = document.querySelectorAll<HTMLElement>(
       '.c-virtual_list__item'
     );
 
     let targetItem: HTMLElement | null = null;
 
-    dmItems.forEach((item) => {
-      if (targetItem) return;
-      const text = item.textContent?.toLowerCase() || '';
-      if (text.includes(lowerName)) {
-        targetItem = item;
-      }
-    });
+    for (const item of dmItems) {
+      // Skip the top anchor element
+      if (item.id === 'Xtop-anchor') continue;
 
+      // Look for the DM channel name element (correct selector for Slack DMs view)
+      const nameEl = item.querySelector('.p-dms_channel__name');
+
+      if (nameEl) {
+        const itemName = nameEl.textContent?.toLowerCase() || '';
+        if (itemName.includes(lowerName)) {
+          targetItem = item;
+          break;
+        }
+      }
+    }
+
+    // Fallback: try sidebar DM items if not in DMs view
     if (!targetItem) {
-      // Also try sidebar DM items
       const sidebarDms = document.querySelectorAll<HTMLElement>(
         '.p-channel_sidebar__channel'
       );
-      sidebarDms.forEach((item) => {
-        if (targetItem) return;
+      for (const item of sidebarDms) {
         const nameEl = item.querySelector('.p-channel_sidebar__name');
         const itemName = nameEl?.textContent?.toLowerCase() || '';
         if (itemName.includes(lowerName)) {
           targetItem = item;
+          break;
         }
-      });
+      }
     }
 
     if (!targetItem) {
@@ -60,10 +69,14 @@ export const slackClickDm: ToolDefinition = {
       };
     }
 
-    // Find the clickable element
-    const item = targetItem as HTMLElement;
-    const clickable = item.querySelector<HTMLElement>('a') || item;
-    clickable.click();
+    // Click on the .p-dms_channel element (NOT the <a> tag which may be injected content)
+    const dmChannel = targetItem.querySelector<HTMLElement>('.p-dms_channel');
+    if (dmChannel) {
+      dmChannel.click();
+    } else {
+      // Fallback for sidebar items
+      targetItem.click();
+    }
 
     return {
       content: [

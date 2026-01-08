@@ -24,6 +24,7 @@ export const slackGetDms: ToolDefinition = {
   async execute(input) {
     const {limit = 15} = input as {limit?: number};
 
+    // Get all DM items from the virtual list
     const dmItems = document.querySelectorAll<HTMLElement>(
       '.c-virtual_list__item'
     );
@@ -42,29 +43,29 @@ export const slackGetDms: ToolDefinition = {
 
     const dms: DirectMessage[] = [];
 
-    dmItems.forEach((item) => {
-      if (dms.length >= limit) return;
+    for (const item of dmItems) {
+      if (dms.length >= limit) break;
 
       // Skip anchor elements
-      if (item.id === 'Xtop-anchor') return;
+      if (item.id === 'Xtop-anchor') continue;
 
-      const text = item.textContent?.trim() || '';
-      if (!text) return;
+      // Look for the DM channel name element (correct selector for Slack DMs view)
+      const nameEl = item.querySelector('.p-dms_channel__name');
+      if (!nameEl) continue;
 
-      // Parse the DM item text
-      // Format is typically: "Name (date/time) preview message"
+      const name = nameEl.textContent?.trim() || '';
+      if (!name) continue;
+
+      // Get presence from aria-label
       const presenceEl = item.querySelector('[aria-label]');
       const presence = presenceEl?.getAttribute('aria-label') || 'Unknown';
 
-      // Check if it's a group DM (contains comma in the first part or has multiple avatars)
-      const isGroup = text.includes(',') && !text.startsWith('(you)');
+      // Check if it's a group DM (contains comma in the name)
+      const isGroup = name.includes(',');
 
-      // Extract name - it's the first part before a date or time pattern
-      const parts = text.split(
-        /(\d{1,2}\s+\w+|\d{1,2}:\d{2}\s*[AP]M|Yesterday|Today)/
-      );
-      const name = parts[0]?.trim() || text.substring(0, 50);
-      const preview = parts.slice(2).join('').trim().substring(0, 100);
+      // Get preview text from the message preview element
+      const previewEl = item.querySelector('.p-dms_channel__preview');
+      const preview = previewEl?.textContent?.trim()?.substring(0, 100) || '';
 
       dms.push({
         name,
@@ -72,7 +73,7 @@ export const slackGetDms: ToolDefinition = {
         presence,
         isGroup
       });
-    });
+    }
 
     if (dms.length === 0) {
       return {
