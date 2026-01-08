@@ -14,7 +14,6 @@
     "allrecipes_get_nutrition",
     "allrecipes_print_recipe",
     "allrecipes_get_categories",
-    "allrecipes_go_to_category",
     "allrecipes_get_category_recipes",
     "allrecipes_click_category_item"
   ]
