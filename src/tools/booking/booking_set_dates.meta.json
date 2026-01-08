@@ -1,0 +1,16 @@
+{
+  "$schema": "../../../schemas/toolMetadata.json",
+  "id": "booking_set_dates",
+  "description": "Set check-in and check-out dates for a Booking.com search",
+  "filters": [
+    {
+      "type": "domain",
+      "domains": ["booking.com", "www.booking.com"]
+    },
+    {
+      "type": "path",
+      "patterns": ["/", "/index.*", "/searchresults.*"]
+    }
+  ],
+  "groupId": "booking"
+}

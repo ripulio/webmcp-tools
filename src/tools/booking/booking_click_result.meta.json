@@ -1,0 +1,16 @@
+{
+  "$schema": "../../../schemas/toolMetadata.json",
+  "id": "booking_click_result",
+  "description": "Click on a property from Booking.com search results to view details",
+  "filters": [
+    {
+      "type": "domain",
+      "domains": ["booking.com", "www.booking.com"]
+    },
+    {
+      "type": "path",
+      "patterns": ["/searchresults.*"]
+    }
+  ],
+  "groupId": "booking"
+}
