@@ -1,0 +1,16 @@
+{
+  "$schema": "../../../schemas/toolMetadata.json",
+  "id": "google_docs_create_blank_document",
+  "description": "Start a new blank document in Google Docs",
+  "groupId": "google_docs",
+  "filters": [
+    {
+      "type": "domain",
+      "domains": ["docs.google.com"]
+    },
+    {
+      "type": "path",
+      "patterns": ["/document/u/.*", "/document/?$"]
+    }
+  ]
+}

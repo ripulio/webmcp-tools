@@ -1,0 +1,16 @@
+{
+  "$schema": "../../../schemas/toolMetadata.json",
+  "id": "google_docs_rename_document",
+  "description": "Change the document title",
+  "groupId": "google_docs",
+  "filters": [
+    {
+      "type": "domain",
+      "domains": ["docs.google.com"]
+    },
+    {
+      "type": "path",
+      "patterns": ["/document/d/[^/]+/edit.*"]
+    }
+  ]
+}

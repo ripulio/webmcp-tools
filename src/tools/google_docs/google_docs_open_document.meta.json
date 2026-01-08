@@ -1,0 +1,16 @@
+{
+  "$schema": "../../../schemas/toolMetadata.json",
+  "id": "google_docs_open_document",
+  "description": "Open a document by clicking on it in the document list",
+  "groupId": "google_docs",
+  "filters": [
+    {
+      "type": "domain",
+      "domains": ["docs.google.com"]
+    },
+    {
+      "type": "path",
+      "patterns": ["/document/u/.*", "/document/?$"]
+    }
+  ]
+}
