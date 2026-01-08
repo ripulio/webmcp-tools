@@ -23,11 +23,8 @@ export const tool: ToolDefinition = {
     const {cell, value} = input as {cell: string; value: string};
 
     const nameBox = document.querySelector<HTMLInputElement>('#t-name-box');
-    const formulaBar = document.querySelector<HTMLElement>(
-      '#t-formula-bar-input'
-    );
 
-    if (!nameBox || !formulaBar) {
+    if (!nameBox) {
       return {
         content: [
           {
@@ -53,10 +50,22 @@ export const tool: ToolDefinition = {
       };
     }
 
-    // Navigate to the cell
+    // Navigate to the cell using character-by-character input
     nameBox.focus();
-    nameBox.value = cellRef;
-    nameBox.dispatchEvent(new Event('input', {bubbles: true}));
+    nameBox.select();
+    nameBox.value = '';
+    for (const char of cellRef) {
+      nameBox.value += char;
+      nameBox.dispatchEvent(
+        new InputEvent('input', {
+          bubbles: true,
+          cancelable: true,
+          inputType: 'insertText',
+          data: char
+        })
+      );
+    }
+    nameBox.click();
     nameBox.dispatchEvent(
       new KeyboardEvent('keydown', {
         key: 'Enter',
@@ -67,27 +76,33 @@ export const tool: ToolDefinition = {
       })
     );
 
-    // Wait for navigation
-    await new Promise((r) => setTimeout(r, 100));
+    // Write using ClipboardEvent paste to the formula bar's cell-input
+    const formulaBarInput = document.querySelector<HTMLElement>(
+      '#t-formula-bar-input .cell-input'
+    );
+    if (!formulaBarInput) {
+      return {
+        content: [{type: 'text', text: 'Formula bar input not found.'}],
+        isError: true
+      };
+    }
 
-    // Focus the formula bar and enter the value
-    formulaBar.focus();
-    formulaBar.textContent = value;
-    formulaBar.dispatchEvent(new Event('input', {bubbles: true}));
+    formulaBarInput.focus();
 
-    // Press Enter to confirm
-    formulaBar.dispatchEvent(
-      new KeyboardEvent('keydown', {
-        key: 'Enter',
-        code: 'Enter',
-        keyCode: 13,
-        which: 13,
-        bubbles: true
+    // Clear existing content and paste new value
+    document.execCommand('selectAll', false, undefined);
+    const pasteData = new DataTransfer();
+    pasteData.setData('text/plain', value);
+    formulaBarInput.dispatchEvent(
+      new ClipboardEvent('paste', {
+        bubbles: true,
+        cancelable: true,
+        clipboardData: pasteData
       })
     );
 
-    // Wait for the value to be committed
-    await new Promise((r) => setTimeout(r, 100));
+    // Blur to commit
+    formulaBarInput.blur();
 
     return {
       content: [{type: 'text', text: `Wrote "${value}" to cell ${cellRef}`}],

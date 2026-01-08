@@ -10,22 +10,7 @@ export const tool: ToolDefinition = {
     required: []
   },
   async execute() {
-    const createButton = document.querySelector<HTMLElement>(
-      '#docs-homescreen-add .docs-homescreen-ui-wizfabbutton-fabmenu-menubutton'
-    );
-    if (!createButton) {
-      return {
-        content: [
-          {
-            type: 'text',
-            text: 'Create button not found. Make sure you are on the Google Sheets home page.'
-          }
-        ],
-        isError: true
-      };
-    }
-
-    createButton.click();
+    window.location.href = 'https://docs.google.com/spreadsheets/create';
 
     return {
       content: [{type: 'text', text: 'Creating new spreadsheet...'}]
