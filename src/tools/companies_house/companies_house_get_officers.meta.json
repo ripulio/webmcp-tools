@@ -1,0 +1,16 @@
+{
+  "$schema": "../../../schemas/toolMetadata.json",
+  "id": "companies_house_get_officers",
+  "description": "Get the list of officers from a company officers page",
+  "filters": [
+    {
+      "type": "domain",
+      "domains": ["find-and-update.company-information.service.gov.uk"]
+    },
+    {
+      "type": "path",
+      "patterns": ["/company/[^/]+/officers"]
+    }
+  ],
+  "groupId": "companies_house"
+}
