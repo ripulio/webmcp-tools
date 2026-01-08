@@ -1,0 +1,16 @@
+{
+  "$schema": "../../../schemas/toolMetadata.json",
+  "id": "debug_get_logs",
+  "description": "Get all console.log, console.warn, and console.error calls collected since debug_start_collecting was called. Does not clear logs.",
+  "groupId": "debug",
+  "filters": [
+    {
+      "type": "domain",
+      "domains": ["thesun.co.uk", "www.thesun.co.uk"]
+    },
+    {
+      "type": "path",
+      "patterns": [".*"]
+    }
+  ]
+}
