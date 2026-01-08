@@ -9,24 +9,33 @@ export const tool: ToolDefinition = {
     properties: {
       cell: {
         type: 'string',
+        description: 'Single cell reference (e.g., "A1", "B5")'
+      },
+      cells: {
+        type: 'array',
         description:
-          'Single cell reference (e.g., "A1", "B5"). Use this OR range, not both.'
+          'Array of cell references to read (e.g., ["A1", "C5", "D10"])',
+        items: {type: 'string'},
+        minItems: 1
       },
       range: {
         type: 'string',
-        description:
-          'Cell range in A1 notation (e.g., "A1:C10", "B2:D5"). Use this OR cell, not both.'
+        description: 'Contiguous range in A1 notation (e.g., "A1:C10", "B2:D5")'
       }
     },
     required: []
   },
   async execute(input) {
-    const {cell, range} = input as {cell?: string; range?: string};
+    const {cell, cells, range} = input as {
+      cell?: string;
+      cells?: string[];
+      range?: string;
+    };
 
-    if (!cell && !range) {
+    if (!cell && !cells && !range) {
       return {
         content: [
-          {type: 'text', text: 'Either cell or range must be provided.'}
+          {type: 'text', text: 'Either cell, cells, or range must be provided.'}
         ],
         isError: true
       };
@@ -118,7 +127,41 @@ export const tool: ToolDefinition = {
       };
     }
 
-    // Range read - at this point we know range is defined since we checked !cell && !range above
+    if (cells) {
+      // Validate all cell references first
+      for (const c of cells) {
+        if (!parseCell(c)) {
+          return {
+            content: [
+              {
+                type: 'text',
+                text: `Invalid cell reference: ${c}. Use A1 notation (e.g., "A1", "B5").`
+              }
+            ],
+            isError: true
+          };
+        }
+      }
+
+      // Read all cells
+      const results: Array<{cell: string; content: string}> = [];
+      for (const c of cells) {
+        const cellRef = c.toUpperCase();
+        const content = await readCell(cellRef);
+        results.push({cell: cellRef, content});
+      }
+
+      const textParts = results.map(
+        (r) => `${r.cell}: ${r.content || '(empty)'}`
+      );
+
+      return {
+        content: [{type: 'text', text: textParts.join(' | ')}],
+        structuredContent: {cells: results}
+      };
+    }
+
+    // Range read - at this point we know range is defined
     const rangeValue = range as string;
     const rangeParts = rangeValue.toUpperCase().split(':');
     if (rangeParts.length !== 2) {
