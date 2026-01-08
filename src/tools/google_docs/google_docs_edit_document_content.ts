@@ -81,73 +81,45 @@ export const tool: ToolDefinition = {
     // Focus the editable area
     editableDiv.focus();
 
-    // Use clipboard API to paste text (most reliable for Google Docs)
-    try {
-      // Write to clipboard
-      await navigator.clipboard.writeText(text);
+    // Helper to dispatch Enter key
+    const dispatchEnter = () => {
+      editableDiv.dispatchEvent(
+        new KeyboardEvent('keydown', {
+          key: 'Enter',
+          code: 'Enter',
+          keyCode: 13,
+          which: 13,
+          bubbles: true,
+          cancelable: true
+        })
+      );
+    };
 
-      // Trigger paste via execCommand
-      iframeDoc.execCommand('paste');
+    // Press Enter before if requested
+    if (pressEnterBefore) {
+      dispatchEnter();
+    }
 
-      // Wait a bit for paste to complete
-      await new Promise((r) => setTimeout(r, 100));
-
-      // Handle Enter presses
-      const dispatchEnter = () => {
+    // Type text using beforeinput events (works with Google Docs canvas rendering)
+    for (const char of text) {
+      if (char === '\n') {
+        dispatchEnter();
+      } else {
         editableDiv.dispatchEvent(
-          new KeyboardEvent('keydown', {
-            key: 'Enter',
-            code: 'Enter',
-            keyCode: 13,
-            which: 13,
+          new InputEvent('beforeinput', {
+            data: char,
+            inputType: 'insertText',
             bubbles: true,
-            cancelable: true
+            cancelable: true,
+            composed: true
           })
         );
-      };
+      }
+    }
 
-      if (pressEnterBefore) {
-        // Move cursor to start and add newline
-        dispatchEnter();
-      }
-
-      if (pressEnterAfter) {
-        dispatchEnter();
-      }
-    } catch {
-      // Fallback: type character by character if clipboard fails
-      for (const char of text) {
-        if (char === '\n') {
-          editableDiv.dispatchEvent(
-            new KeyboardEvent('keydown', {
-              key: 'Enter',
-              code: 'Enter',
-              keyCode: 13,
-              which: 13,
-              bubbles: true,
-              cancelable: true
-            })
-          );
-        } else {
-          editableDiv.dispatchEvent(
-            new InputEvent('beforeinput', {
-              data: char,
-              inputType: 'insertText',
-              bubbles: true,
-              cancelable: true
-            })
-          );
-          editableDiv.dispatchEvent(
-            new InputEvent('input', {
-              data: char,
-              inputType: 'insertText',
-              bubbles: true,
-              cancelable: true
-            })
-          );
-        }
-        await new Promise((r) => setTimeout(r, 5));
-      }
+    // Press Enter after if requested
+    if (pressEnterAfter) {
+      dispatchEnter();
     }
 
     return {
