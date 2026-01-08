@@ -1,0 +1,16 @@
+{
+  "$schema": "../../../schemas/toolMetadata.json",
+  "id": "companies_house_filter_results",
+  "description": "Filter search results by type (companies, officers, etc.)",
+  "filters": [
+    {
+      "type": "domain",
+      "domains": ["find-and-update.company-information.service.gov.uk"]
+    },
+    {
+      "type": "path",
+      "patterns": ["/search.*"]
+    }
+  ],
+  "groupId": "companies_house"
+}

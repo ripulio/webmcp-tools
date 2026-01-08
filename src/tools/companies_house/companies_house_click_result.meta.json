@@ -1,0 +1,16 @@
+{
+  "$schema": "../../../schemas/toolMetadata.json",
+  "id": "companies_house_click_result",
+  "description": "Click on a search result to view company or officer details",
+  "filters": [
+    {
+      "type": "domain",
+      "domains": ["find-and-update.company-information.service.gov.uk"]
+    },
+    {
+      "type": "path",
+      "patterns": ["/search.*"]
+    }
+  ],
+  "groupId": "companies_house"
+}
