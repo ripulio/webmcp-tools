@@ -1,0 +1,11 @@
+{
+  "$schema": "../../../schemas/toolMetadata.json",
+  "id": "amazon_click_nav_link",
+  "description": "Click a navigation link in Amazon's main nav bar by text",
+  "filters": [
+    {
+      "type": "domain",
+      "domains": ["amazon.com", "www.amazon.com"]
+    }
+  ]
+}
