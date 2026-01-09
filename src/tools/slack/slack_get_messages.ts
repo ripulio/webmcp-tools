@@ -10,7 +10,7 @@ interface Message {
 export const slackGetMessages: ToolDefinition = {
   name: 'slack_get_messages',
   description:
-    'Get the messages visible in the current channel or conversation. Returns the most recent messages in view.',
+    'Get the most recent messages in the current channel or conversation. Automatically scrolls to the bottom to get the latest messages.',
   inputSchema: {
     type: 'object',
     properties: {
@@ -24,8 +24,21 @@ export const slackGetMessages: ToolDefinition = {
   async execute(input) {
     const {limit = 20} = input as {limit?: number};
 
+    // Use keyboard shortcut to jump to the bottom of the conversation
+    // Cmd+J or End key typically jumps to the most recent message
+    const endEvent = new KeyboardEvent('keydown', {
+      key: 'End',
+      code: 'End',
+      ctrlKey: true,
+      bubbles: true,
+      cancelable: true
+    });
+    document.dispatchEvent(endEvent);
+    await new Promise((resolve) => setTimeout(resolve, 500));
+
+    // Get all message items
     const messageItems = document.querySelectorAll<HTMLElement>(
-      '#message-list .c-virtual_list__item'
+      '.c-virtual_list__item'
     );
 
     if (messageItems.length === 0) {
@@ -42,16 +55,15 @@ export const slackGetMessages: ToolDefinition = {
 
     const messages: Message[] = [];
 
+    // Iterate through all items and extract messages
     messageItems.forEach((item) => {
-      if (messages.length >= limit) return;
-
       const senderEl = item.querySelector('.c-message__sender_button');
       const contentEl = item.querySelector(
         '.p-rich_text_section, .c-message__body'
       );
       const timestampEl = item.querySelector('.c-timestamp__label');
 
-      // Skip items without content (like day dividers that only have buttons)
+      // Skip items without content
       if (!contentEl) return;
 
       const sender = senderEl?.textContent?.trim() || 'System';
@@ -80,7 +92,10 @@ export const slackGetMessages: ToolDefinition = {
       };
     }
 
-    const formatted = messages
+    // Return the last N messages (assuming DOM order approximates chronological)
+    const recentMessages = messages.slice(-limit);
+
+    const formatted = recentMessages
       .map((m) => {
         const prefix = m.isSystemMessage ? '[System]' : `[${m.sender}]`;
         const time = m.timestamp ? ` (${m.timestamp})` : '';
@@ -92,10 +107,10 @@ export const slackGetMessages: ToolDefinition = {
       content: [
         {
           type: 'text',
-          text: `Found ${messages.length} messages:\n\n${formatted}`
+          text: `Found ${recentMessages.length} messages:\n\n${formatted}`
         }
       ],
-      structuredContent: {messages}
+      structuredContent: {messages: recentMessages}
     };
   }
 };
