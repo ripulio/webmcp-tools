@@ -1,0 +1,14 @@
+{
+  "$schema": "../../../schemas/toolMetadata.json",
+  "id": "slack_go_to_dms",
+  "description": "Navigate to the Direct Messages section in Slack",
+  "groupId": "slack",
+  "filters": [
+    {
+      "type": "domain",
+      "domains": [
+        "app.slack.com"
+      ]
+    }
+  ]
+}

@@ -22,6 +22,7 @@
   "scripts": {
     "clean": "premove lib",
     "build": "npm run clean && tsgo",
+    "build:noclean": "tsgo",
     "test": "vitest run",
     "lint": "npm run lint:format && npm run lint:js && npm run lint:meta && npm run lint:script-types",
     "format": "prettier --write src",
