@@ -105,6 +105,23 @@
       },
       "additionalProperties": false
     },
+    "QueryFilter": {
+      "type": "object",
+      "required": ["type", "parameters"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "query"
+        },
+        "parameters": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
     "ToolFilter": {
       "oneOf": [
         {
