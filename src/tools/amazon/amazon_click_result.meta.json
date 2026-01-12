@@ -12,10 +12,16 @@
     },
     {
       "type": "path",
+<<<<<<< HEAD
       "paths": [
         "/s",
         "/s\\?.*"
       ]
+||||||| 55bc401
+      "patterns": ["/s", "/s?*"]
+=======
+      "patterns": ["/s", "/s\\?.*"]
+>>>>>>> feature/google-search
     }
   ],
   "groupId": "amazon"

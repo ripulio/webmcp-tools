@@ -31,7 +31,24 @@
           "type": "array",
           "items": {
             "type": "string",
-            "description": "A regular expression matched against the browser's current path"
+            "description": "A picomatch glob pattern matched against the browser's current path"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "QueryFilter": {
+      "type": "object",
+      "required": ["type", "parameters"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "query"
+        },
+        "parameters": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
           }
         }
       },
