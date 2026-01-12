@@ -9,7 +9,7 @@
     },
     {
       "type": "path",
-      "patterns": ["/company/[^/]+"]
+      "paths": ["/company/[^/]+"]
     }
   ],
   "groupId": "companies_house"
