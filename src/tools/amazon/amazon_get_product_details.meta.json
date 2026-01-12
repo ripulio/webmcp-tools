@@ -12,22 +12,10 @@
     },
     {
       "type": "path",
-<<<<<<< HEAD
-<<<<<<< HEAD
       "paths": [
         "/dp/.*",
         "/gp/product/.*"
       ]
-||||||| 55bc401
-      "patterns": ["/dp/*", "/gp/product/*"]
-=======
-      "patterns": ["/dp/.*", "/gp/product/.*"]
->>>>>>> feature/google-search
-||||||| 46071bc
-      "patterns": ["/dp/*", "/gp/product/*"]
-=======
-      "patterns": ["/dp/.*", "/gp/product/.*"]
->>>>>>> feature/reddit
     }
   ],
   "groupId": "amazon"
