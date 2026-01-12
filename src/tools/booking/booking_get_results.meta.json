@@ -9,7 +9,7 @@
     },
     {
       "type": "path",
-      "patterns": ["/searchresults.*"]
+      "paths": ["/searchresults.*"]
     }
   ],
   "groupId": "booking"
