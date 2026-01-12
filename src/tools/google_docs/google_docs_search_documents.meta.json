@@ -10,7 +10,7 @@
     },
     {
       "type": "path",
-      "patterns": ["/document/u/.*", "/document/?$"]
+      "paths": ["/document/u/.*", "/document/?$"]
     }
   ]
 }

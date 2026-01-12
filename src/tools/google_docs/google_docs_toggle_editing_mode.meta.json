@@ -10,7 +10,7 @@
     },
     {
       "type": "path",
-      "patterns": ["/document/d/[^/]+/edit.*"]
+      "paths": ["/document/d/[^/]+/edit.*"]
     }
   ]
 }
