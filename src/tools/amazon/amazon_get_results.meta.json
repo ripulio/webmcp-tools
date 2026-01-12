@@ -13,6 +13,7 @@
     {
       "type": "path",
 <<<<<<< HEAD
+<<<<<<< HEAD
       "paths": [
         "/s",
         "/s\\?.*"
@@ -22,6 +23,11 @@
 =======
       "patterns": ["/s", "/s\\?.*"]
 >>>>>>> feature/google-search
+||||||| 46071bc
+      "patterns": ["/s", "/s?*"]
+=======
+      "patterns": ["/s", "/s\\?.*"]
+>>>>>>> feature/reddit
     }
   ],
   "groupId": "amazon"
