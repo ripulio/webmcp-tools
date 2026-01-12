@@ -9,7 +9,7 @@
     },
     {
       "type": "path",
-      "patterns": ["/company/[^/]+/filing-history"]
+      "paths": ["/company/[^/]+/filing-history"]
     }
   ],
   "groupId": "companies_house"
