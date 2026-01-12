@@ -9,7 +9,7 @@ const rootDir = resolve(__dirname, '..');
 
 interface Filter {
   type: string;
-  patterns?: string[];
+  paths?: string[];
 }
 
 interface MetaData {
@@ -26,8 +26,8 @@ function validateRegexPatterns(data: MetaData): string[] {
   if (!data.filters) return errors;
 
   for (const filter of data.filters) {
-    if (filter.type === 'path' && filter.patterns) {
-      for (const pattern of filter.patterns) {
+    if (filter.type === 'path' && filter.paths) {
+      for (const pattern of filter.paths) {
         try {
           new RegExp(pattern);
         } catch (e) {
