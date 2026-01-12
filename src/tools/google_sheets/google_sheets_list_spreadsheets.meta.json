@@ -10,7 +10,7 @@
     },
     {
       "type": "path",
-      "patterns": ["/spreadsheets/u/.*"]
+      "paths": ["/spreadsheets/u/.*"]
     }
   ]
 }
