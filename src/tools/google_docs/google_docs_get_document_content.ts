@@ -1,116 +1,103 @@
 import type {ToolDefinition} from 'webmcp-polyfill';
 
+interface ModelChunkItem {
+  ty: string;
+  s?: string;
+  [key: string]: unknown;
+}
+
+interface ModelChunk {
+  chunk: ModelChunkItem[];
+}
+
 export const tool: ToolDefinition = {
   name: 'google_docs_get_document_content',
   description:
-    'Attempt to retrieve text content from the current Google Docs document. Note: Due to canvas rendering, this may not work reliably. Consider using the Google Docs API for programmatic content access.',
+    'Retrieve text content from the current Google Docs document by parsing the internal model data.',
   inputSchema: {
     type: 'object',
     properties: {},
     required: []
   },
   async execute() {
-    // Google Docs uses canvas rendering, so text is not directly accessible from the DOM.
-    // We use keyboard shortcuts to select all and copy, then read from clipboard.
+    // Google Docs stores document content in a DOCS_modelChunk variable within a script tag.
+    // The content is in items with ty='is' (inline string) in the 's' field.
 
-    // Find the text input iframe
-    const textIframe = document.querySelector(
-      '.docs-texteventtarget-iframe'
-    ) as HTMLIFrameElement | null;
-    if (!textIframe) {
-      return {
-        content: [
-          {
-            type: 'text',
-            text: 'Document editor not found. Make sure you are in the Google Docs editor.'
+    const scripts = document.querySelectorAll('script');
+
+    for (const script of scripts) {
+      const text = script.textContent || '';
+
+      // Find the script containing the model chunk data
+      if (!text.includes('DOCS_modelChunk = {"chunk"')) {
+        continue;
+      }
+
+      // Find the start of the JSON object
+      const startMarker = 'DOCS_modelChunk = ';
+      const startIdx = text.indexOf(startMarker) + startMarker.length;
+
+      // Parse JSON by finding matching closing brace
+      let braceCount = 0;
+      let endIdx = startIdx;
+      let inString = false;
+      let escapeNext = false;
+
+      for (let i = startIdx; i < text.length; i++) {
+        const char = text[i];
+
+        if (escapeNext) {
+          escapeNext = false;
+          continue;
+        }
+
+        if (char === '\\') {
+          escapeNext = true;
+          continue;
+        }
+
+        if (char === '"') {
+          inString = !inString;
+          continue;
+        }
+
+        if (!inString) {
+          if (char === '{') braceCount++;
+          if (char === '}') {
+            braceCount--;
+            if (braceCount === 0) {
+              endIdx = i + 1;
+              break;
+            }
           }
-        ],
-        isError: true
-      };
-    }
+        }
+      }
 
-    const iframeDoc =
-      textIframe.contentDocument || textIframe.contentWindow?.document;
-    if (!iframeDoc) {
-      return {
-        content: [
-          {
-            type: 'text',
-            text: 'Cannot access document editor.'
-          }
-        ],
-        isError: true
-      };
-    }
+      const jsonStr = text.substring(startIdx, endIdx);
 
-    const editableDiv = iframeDoc.querySelector(
-      '[contenteditable="true"]'
-    ) as HTMLElement | null;
-    if (!editableDiv) {
-      return {
-        content: [
-          {
-            type: 'text',
-            text: 'Editable content area not found.'
-          }
-        ],
-        isError: true
-      };
-    }
+      try {
+        const data = JSON.parse(jsonStr) as ModelChunk;
+        const textParts = data.chunk
+          .filter((c) => c.ty === 'is' && c.s)
+          .map((c) => c.s as string);
 
-    // Focus the editable area
-    editableDiv.focus();
+        const content = textParts.join('');
 
-    // Detect platform for correct modifier key
-    const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
+        if (!content.trim()) {
+          return {
+            content: [
+              {
+                type: 'text',
+                text: 'Document appears to be empty.'
+              }
+            ],
+            structuredContent: {
+              content: '',
+              length: 0
+            }
+          };
+        }
 
-    // Send Cmd/Ctrl+A to select all
-    editableDiv.dispatchEvent(
-      new KeyboardEvent('keydown', {
-        key: 'a',
-        code: 'KeyA',
-        keyCode: 65,
-        metaKey: isMac,
-        ctrlKey: !isMac,
-        bubbles: true,
-        cancelable: true
-      })
-    );
-
-    // Small delay for selection to complete
-    await new Promise((r) => setTimeout(r, 100));
-
-    // Send Cmd/Ctrl+C to copy
-    editableDiv.dispatchEvent(
-      new KeyboardEvent('keydown', {
-        key: 'c',
-        code: 'KeyC',
-        keyCode: 67,
-        metaKey: isMac,
-        ctrlKey: !isMac,
-        bubbles: true,
-        cancelable: true
-      })
-    );
-
-    // Small delay for copy to complete
-    await new Promise((r) => setTimeout(r, 100));
-
-    // Click to deselect (move cursor to end)
-    editableDiv.dispatchEvent(
-      new KeyboardEvent('keydown', {
-        key: 'ArrowRight',
-        code: 'ArrowRight',
-        keyCode: 39,
-        bubbles: true,
-        cancelable: true
-      })
-    );
-
-    // Try to read from clipboard
-    try {
-      const content = await navigator.clipboard.readText();
-      if (content && content.trim()) {
         return {
           content: [
             {
@@ -123,16 +110,24 @@ export const tool: ToolDefinition = {
             length: content.length
           }
         };
+      } catch {
+        return {
+          content: [
+            {
+              type: 'text',
+              text: 'Failed to parse document model data.'
+            }
+          ],
+          isError: true
+        };
       }
-    } catch {
-      // Clipboard access denied - this is expected in some contexts
     }
 
     return {
       content: [
         {
           type: 'text',
-          text: 'Unable to extract document content. Google Docs uses canvas rendering which prevents direct text extraction. The content has been copied to your clipboard - you can paste it elsewhere. For programmatic access, consider using the Google Docs API.'
+          text: 'Unable to extract document content. The document model data was not found. Make sure you are viewing a Google Docs document.'
         }
       ],
       isError: true
