@@ -74,7 +74,7 @@ export const redditGetSearchResults: ToolDefinition = {
       const subredditLink =
         creditRow?.querySelector<HTMLAnchorElement>('a[href^="/r/"]');
       const textPreviewLink = container.querySelector<HTMLAnchorElement>(
-        'a.text-neutral-content-strong'
+        'a.line-clamp-2'
       );
 
       if (!titleLink) return;
@@ -88,7 +88,7 @@ export const redditGetSearchResults: ToolDefinition = {
       // Try to find score and comment count from the container
       const statsText = container.textContent || '';
       const scoreMatch = statsText.match(
-        /(\d+(?:,\d+)?(?:\.\d+)?[kKmM]?)\s*(?:upvotes?|points?)/i
+        /(\d+(?:,\d+)?(?:\.\d+)?[kKmM]?)\s*(?:upvotes?|votes?|points?)/i
       );
       const commentMatch = statsText.match(/(\d+(?:,\d+)?)\s*comments?/i);
 
