@@ -9,7 +9,6 @@
     "gmail_set_subject",
     "gmail_set_body",
     "gmail_send_email",
-    "gmail_close_compose",
     "gmail_get_emails",
     "gmail_open_email",
     "gmail_get_email_content",
