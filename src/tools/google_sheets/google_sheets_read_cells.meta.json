@@ -1,0 +1,16 @@
+{
+  "$schema": "../../../schemas/toolMetadata.json",
+  "id": "google_sheets_read_cells",
+  "description": "Read cell contents from the currently open Google Sheets spreadsheet",
+  "groupId": "google_sheets",
+  "filters": [
+    {
+      "type": "domain",
+      "domains": ["docs.google.com"]
+    },
+    {
+      "type": "path",
+      "paths": ["/spreadsheets/d/.*"]
+    }
+  ]
+}

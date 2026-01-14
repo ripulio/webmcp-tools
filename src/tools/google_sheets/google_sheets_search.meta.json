@@ -1,0 +1,16 @@
+{
+  "$schema": "../../../schemas/toolMetadata.json",
+  "id": "google_sheets_search",
+  "description": "Search for spreadsheets by name in Google Sheets",
+  "groupId": "google_sheets",
+  "filters": [
+    {
+      "type": "domain",
+      "domains": ["docs.google.com"]
+    },
+    {
+      "type": "path",
+      "paths": ["/spreadsheets/.*"]
+    }
+  ]
+}

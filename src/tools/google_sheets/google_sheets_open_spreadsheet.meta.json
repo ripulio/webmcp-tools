@@ -1,0 +1,16 @@
+{
+  "$schema": "../../../schemas/toolMetadata.json",
+  "id": "google_sheets_open_spreadsheet",
+  "description": "Open a spreadsheet from the Google Sheets home page",
+  "groupId": "google_sheets",
+  "filters": [
+    {
+      "type": "domain",
+      "domains": ["docs.google.com"]
+    },
+    {
+      "type": "path",
+      "paths": ["/spreadsheets/u/.*"]
+    }
+  ]
+}

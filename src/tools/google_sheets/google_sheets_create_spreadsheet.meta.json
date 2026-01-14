@@ -1,0 +1,16 @@
+{
+  "$schema": "../../../schemas/toolMetadata.json",
+  "id": "google_sheets_create_spreadsheet",
+  "description": "Create a new blank spreadsheet",
+  "groupId": "google_sheets",
+  "filters": [
+    {
+      "type": "domain",
+      "domains": ["docs.google.com"]
+    },
+    {
+      "type": "path",
+      "paths": ["/spreadsheets/u/.*"]
+    }
+  ]
+}
