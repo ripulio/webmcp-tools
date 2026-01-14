@@ -1,0 +1,21 @@
+{
+  "$schema": "../../../schemas/toolMetadata.json",
+  "id": "google_click_result",
+  "description": "Click on a specific Google search result by index to navigate to that page",
+  "filters": [
+    {
+      "type": "domain",
+      "domains": [
+        "google.com",
+        "www.google.com"
+      ]
+    },
+    {
+      "type": "path",
+      "paths": [
+        "/search.*"
+      ]
+    }
+  ],
+  "groupId": "google_search"
+}
