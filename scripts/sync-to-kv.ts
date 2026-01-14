@@ -7,7 +7,7 @@ import type {ToolMetadata, ToolRegistryMeta} from '../src/shared.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const rootDir = resolve(__dirname, '..');
-const toolsDir = resolve(rootDir, 'src/tools');
+const libDir = resolve(rootDir, 'lib/tools');
 
 interface SyncResult {
   groups: Map<string, ToolRegistryMeta>;
@@ -18,13 +18,13 @@ async function scanToolsDirectory(): Promise<SyncResult> {
   const groups = new Map<string, ToolRegistryMeta>();
   const tools = new Map<string, ToolMetadata & {groupId: string}>();
 
-  const entries = await readdir(toolsDir, {withFileTypes: true});
+  const entries = await readdir(libDir, {withFileTypes: true});
   const groupDirs = entries
     .filter(entry => entry.isDirectory() && !entry.name.startsWith('.'))
     .map(entry => entry.name);
 
   for (const groupName of groupDirs) {
-    const groupDir = resolve(toolsDir, groupName);
+    const groupDir = resolve(libDir, groupName);
     const groupMetaPath = resolve(groupDir, `${groupName}.meta.json`);
 
     let groupMeta: ToolRegistryMeta;
@@ -40,13 +40,13 @@ async function scanToolsDirectory(): Promise<SyncResult> {
     groups.set(groupMeta.id, groupMeta);
     console.log(`✓ Found group: ${groupMeta.id} (${groupMeta.name})`);
 
-    const tsFiles = await glob(['*.ts'], {
+    const jsFiles = await glob(['*.js'], {
       cwd: groupDir,
       absolute: false
     });
 
-    for (const tsFile of tsFiles) {
-      const toolName = basename(tsFile, '.ts');
+    for (const jsFile of jsFiles) {
+      const toolName = basename(jsFile, '.js');
       const toolMetaPath = resolve(groupDir, `${toolName}.meta.json`);
 
       try {
@@ -169,7 +169,7 @@ function printSummary(result: SyncResult): void {
 }
 
 async function main(): Promise<void> {
-  console.log('🔍 Scanning src/tools directory...\n');
+  console.log('🔍 Scanning lib/tools directory...\n');
   const result = await scanToolsDirectory();
   await uploadToKV(result);
 }

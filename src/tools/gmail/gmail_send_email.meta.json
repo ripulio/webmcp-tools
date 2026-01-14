@@ -1,0 +1,16 @@
+{
+  "$schema": "../../../schemas/toolMetadata.json",
+  "id": "gmail_send_email",
+  "description": "Send the email in the currently open compose dialog",
+  "groupId": "gmail",
+  "filters": [
+    {
+      "type": "domain",
+      "domains": ["mail.google.com"]
+    },
+    {
+      "type": "path",
+      "paths": ["/mail/.*"]
+    }
+  ]
+}

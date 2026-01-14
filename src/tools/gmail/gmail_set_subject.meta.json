@@ -1,0 +1,16 @@
+{
+  "$schema": "../../../schemas/toolMetadata.json",
+  "id": "gmail_set_subject",
+  "description": "Set the subject line in the compose dialog",
+  "groupId": "gmail",
+  "filters": [
+    {
+      "type": "domain",
+      "domains": ["mail.google.com"]
+    },
+    {
+      "type": "path",
+      "paths": ["/mail/.*"]
+    }
+  ]
+}
