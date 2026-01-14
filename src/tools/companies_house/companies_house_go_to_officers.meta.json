@@ -1,0 +1,16 @@
+{
+  "$schema": "../../../schemas/toolMetadata.json",
+  "id": "companies_house_go_to_officers",
+  "description": "Navigate to the officers/people tab of a company page",
+  "filters": [
+    {
+      "type": "domain",
+      "domains": ["find-and-update.company-information.service.gov.uk"]
+    },
+    {
+      "type": "path",
+      "paths": ["/company/[^/]+"]
+    }
+  ],
+  "groupId": "companies_house"
+}
