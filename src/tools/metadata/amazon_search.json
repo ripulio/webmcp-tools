@@ -1,0 +1,6 @@
+{
+  "name": "amazon_search",
+  "userDescription": "Search for products on Amazon",
+  "domains": ["amazon.com", "www.amazon.com"],
+  "pathPattern": "^/$|^/\\?|^/ref="
+}

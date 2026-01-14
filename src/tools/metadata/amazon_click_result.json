@@ -1,0 +1,6 @@
+{
+  "name": "amazon_click_result",
+  "userDescription": "Click on an Amazon search result to view the product",
+  "domains": ["amazon.com", "www.amazon.com"],
+  "pathPattern": "^/s[/?]"
+}

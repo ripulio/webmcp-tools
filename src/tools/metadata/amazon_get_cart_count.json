@@ -1,0 +1,6 @@
+{
+  "name": "amazon_get_cart_count",
+  "userDescription": "Get the number of items in your Amazon cart",
+  "domains": ["amazon.com", "www.amazon.com"],
+  "pathPattern": "^/"
+}

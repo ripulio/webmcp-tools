@@ -1,0 +1,6 @@
+{
+  "name": "amazon_get_results",
+  "userDescription": "Get product listings from Amazon search results",
+  "domains": ["amazon.com", "www.amazon.com"],
+  "pathPattern": "^/s[/?]"
+}
