@@ -1,0 +1,16 @@
+{
+  "$schema": "../../../schemas/toolMetadata.json",
+  "id": "google_docs_insert_comment",
+  "description": "Add a comment to the current selection",
+  "groupId": "google_docs",
+  "filters": [
+    {
+      "type": "domain",
+      "domains": ["docs.google.com"]
+    },
+    {
+      "type": "path",
+      "paths": ["/document/d/[^/]+/edit.*"]
+    }
+  ]
+}

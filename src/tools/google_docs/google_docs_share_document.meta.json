@@ -1,0 +1,16 @@
+{
+  "$schema": "../../../schemas/toolMetadata.json",
+  "id": "google_docs_share_document",
+  "description": "Open the sharing dialog to share the document",
+  "groupId": "google_docs",
+  "filters": [
+    {
+      "type": "domain",
+      "domains": ["docs.google.com"]
+    },
+    {
+      "type": "path",
+      "paths": ["/document/d/[^/]+/edit.*"]
+    }
+  ]
+}

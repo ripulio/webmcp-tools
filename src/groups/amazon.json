@@ -1,0 +1,15 @@
+{
+  "name": "amazon",
+  "description": "Tools for browsing and shopping on Amazon",
+  "tools": [
+    "amazon_search",
+    "amazon_get_cart_count",
+    "amazon_go_to_cart",
+    "amazon_get_results",
+    "amazon_click_result",
+    "amazon_next_page",
+    "amazon_get_product_details",
+    "amazon_add_to_cart",
+    "amazon_select_variant"
+  ]
+}

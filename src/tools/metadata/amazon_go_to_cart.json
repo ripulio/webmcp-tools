@@ -1,0 +1,6 @@
+{
+  "name": "amazon_go_to_cart",
+  "userDescription": "Go to your Amazon shopping cart",
+  "domains": ["amazon.com", "www.amazon.com"],
+  "pathPattern": "^/"
+}

@@ -1,0 +1,14 @@
+{
+  "$schema": "../../../schemas/toolMetadata.json",
+  "id": "slack_get_notification_count",
+  "description": "Get the notification count from the Activity button",
+  "groupId": "slack",
+  "filters": [
+    {
+      "type": "domain",
+      "domains": [
+        "app.slack.com"
+      ]
+    }
+  ]
+}

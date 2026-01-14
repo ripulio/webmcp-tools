@@ -1,0 +1,14 @@
+{
+  "$schema": "../../../schemas/toolMetadata.json",
+  "id": "slack_go_to_home",
+  "description": "Navigate to the Home view in Slack",
+  "groupId": "slack",
+  "filters": [
+    {
+      "type": "domain",
+      "domains": [
+        "app.slack.com"
+      ]
+    }
+  ]
+}

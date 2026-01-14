@@ -1,0 +1,6 @@
+{
+  "name": "amazon_select_variant",
+  "userDescription": "Select a product variant (color, size, style)",
+  "domains": ["amazon.com", "www.amazon.com"],
+  "pathPattern": "^/(dp|gp/product)/[A-Z0-9]+"
+}

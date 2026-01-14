@@ -1,0 +1,16 @@
+{
+  "$schema": "../../../schemas/toolMetadata.json",
+  "id": "google_docs_toggle_editing_mode",
+  "description": "Switch between Editing, Suggesting, and Viewing modes",
+  "groupId": "google_docs",
+  "filters": [
+    {
+      "type": "domain",
+      "domains": ["docs.google.com"]
+    },
+    {
+      "type": "path",
+      "paths": ["/document/d/[^/]+/edit.*"]
+    }
+  ]
+}

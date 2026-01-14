@@ -1,0 +1,6 @@
+{
+  "name": "amazon_get_product_details",
+  "userDescription": "Get details about an Amazon product",
+  "domains": ["amazon.com", "www.amazon.com"],
+  "pathPattern": "^/(dp|gp/product)/[A-Z0-9]+"
+}

@@ -1,0 +1,16 @@
+{
+  "$schema": "../../../schemas/toolMetadata.json",
+  "id": "booking_filter_results",
+  "description": "Apply filters to Booking.com search results (property type, stars, amenities, etc.)",
+  "filters": [
+    {
+      "type": "domain",
+      "domains": ["booking.com", "www.booking.com"]
+    },
+    {
+      "type": "path",
+      "paths": ["/searchresults.*"]
+    }
+  ],
+  "groupId": "booking"
+}

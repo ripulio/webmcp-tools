@@ -1,0 +1,6 @@
+{
+  "name": "amazon_next_page",
+  "userDescription": "Go to the next page of Amazon search results",
+  "domains": ["amazon.com", "www.amazon.com"],
+  "pathPattern": "^/s[/?]"
+}
