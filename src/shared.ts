@@ -5,10 +5,15 @@ export interface DomainFilter {
 
 export interface PathFilter {
   type: 'path';
-  patterns: string[];
+  paths: string[];
 }
 
-export type ToolFilter = DomainFilter | PathFilter;
+export interface QueryFilter {
+  type: 'query';
+  parameters: Record<string, string>;
+}
+
+export type ToolFilter = DomainFilter | PathFilter | QueryFilter;
 
 export interface ToolMetadata {
   id: string;
