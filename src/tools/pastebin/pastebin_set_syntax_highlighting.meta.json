@@ -1,0 +1,16 @@
+{
+  "$schema": "../../../schemas/toolMetadata.json",
+  "id": "pastebin_set_syntax_highlighting",
+  "description": "Set the syntax highlighting format for a new paste",
+  "groupId": "pastebin",
+  "filters": [
+    {
+      "type": "domain",
+      "domains": ["pastebin.com", "*.pastebin.com"]
+    },
+    {
+      "type": "path",
+      "paths": ["/"]
+    }
+  ]
+}

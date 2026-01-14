@@ -1,0 +1,16 @@
+{
+  "$schema": "../../../schemas/toolMetadata.json",
+  "id": "pastebin_get_paste_content",
+  "description": "Get the content/text of the currently viewed paste",
+  "groupId": "pastebin",
+  "filters": [
+    {
+      "type": "domain",
+      "domains": ["pastebin.com", "*.pastebin.com"]
+    },
+    {
+      "type": "path",
+      "paths": ["/.*"]
+    }
+  ]
+}

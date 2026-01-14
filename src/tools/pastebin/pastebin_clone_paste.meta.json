@@ -1,0 +1,16 @@
+{
+  "$schema": "../../../schemas/toolMetadata.json",
+  "id": "pastebin_clone_paste",
+  "description": "Clone the current paste to create a new one",
+  "groupId": "pastebin",
+  "filters": [
+    {
+      "type": "domain",
+      "domains": ["pastebin.com", "*.pastebin.com"]
+    },
+    {
+      "type": "path",
+      "paths": ["/.*"]
+    }
+  ]
+}
