@@ -1,0 +1,21 @@
+{
+  "$schema": "../../../schemas/toolMetadata.json",
+  "id": "reddit_get_comments",
+  "description": "Extract comments from a Reddit post page",
+  "filters": [
+    {
+      "type": "domain",
+      "domains": [
+        "reddit.com",
+        "www.reddit.com"
+      ]
+    },
+    {
+      "type": "path",
+      "paths": [
+        "/r/.*/comments/.*"
+      ]
+    }
+  ],
+  "groupId": "reddit"
+}

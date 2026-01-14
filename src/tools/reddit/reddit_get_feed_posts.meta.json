@@ -1,0 +1,23 @@
+{
+  "$schema": "../../../schemas/toolMetadata.json",
+  "id": "reddit_get_feed_posts",
+  "description": "Extract posts from the current Reddit feed or subreddit",
+  "filters": [
+    {
+      "type": "domain",
+      "domains": [
+        "reddit.com",
+        "www.reddit.com"
+      ]
+    },
+    {
+      "type": "path",
+      "paths": [
+        "/",
+        "/r/.*",
+        "/r/.*/"
+      ]
+    }
+  ],
+  "groupId": "reddit"
+}
