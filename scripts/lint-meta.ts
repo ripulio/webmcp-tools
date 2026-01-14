@@ -7,6 +7,39 @@ import {fileURLToPath} from 'node:url';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const rootDir = resolve(__dirname, '..');
 
+interface Filter {
+  type: string;
+  paths?: string[];
+}
+
+interface MetaData {
+  filters?: Filter[];
+}
+
+/**
+ * Validate that all patterns in filters are valid regular expressions.
+ * Uses the same RegExp constructor that the extension uses at runtime.
+ */
+function validateRegexPatterns(data: MetaData): string[] {
+  const errors: string[] = [];
+
+  if (!data.filters) return errors;
+
+  for (const filter of data.filters) {
+    if (filter.type === 'path' && filter.paths) {
+      for (const pattern of filter.paths) {
+        try {
+          new RegExp(pattern);
+        } catch (e) {
+          errors.push(`"${pattern}": ${(e as Error).message}`);
+        }
+      }
+    }
+  }
+
+  return errors;
+}
+
 async function validateMetaFiles(): Promise<void> {
   const ajv = new Ajv({
     loadSchema: async (uri: string) => {
@@ -69,7 +102,18 @@ async function validateMetaFiles(): Promise<void> {
         console.error(`   - ${error.instancePath || '/'} ${error.message}`);
       }
     } else {
-      console.log(`✓ ${file}`);
+      // Validate regex patterns in filters
+      const regexErrors = validateRegexPatterns(data);
+      if (regexErrors.length > 0) {
+        hasErrors = true;
+        console.error(`\n❌ ${file}`);
+        console.error(`   Invalid regex patterns:`);
+        for (const error of regexErrors) {
+          console.error(`   - ${error}`);
+        }
+      } else {
+        console.log(`✓ ${file}`);
+      }
     }
   }
 
