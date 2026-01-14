@@ -1,1 +1,1 @@
-export type {ToolMetadata, ToolGroup} from './shared.js';
+export type {ToolMetadata, ToolRegistryMeta} from './shared.js';

@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "target": "es2022",
+    "module": "node18",
+    "moduleResolution": "node16",
+    "noEmit": true,
+    "types": ["node"],
+    "isolatedModules": true,
+    "isolatedDeclarations": false,
+    "erasableSyntaxOnly": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "skipLibCheck": true,
+    "sourceMap": false
+  },
+  "include": ["scripts"]
+}

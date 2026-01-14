@@ -14,7 +14,23 @@ Tools are automatically published to the catalog on merge. To contribute:
 
 1. Fork this repository
 
-2. Create a tool file in `src/tools/` exporting a `ToolDefinition`:
+1. Fork this repository.
+2. Add your tool to the `src/tools` directory following this structure:
+   - Create a directory for your tool group (e.g., `src/tools/my-group/`)
+   - Create a group metadata file named `{group-name}.meta.json` with:
+     - `id`: The group identifier
+     - `name`: Display name for the group
+     - `description`: Description of the tool group
+     - `tools`: Array of tool IDs in this group
+   - For each tool, create:
+     - A tool implementation file (e.g., `my-tool.ts`)
+     - A tool metadata file (e.g., `my-tool.meta.json`) with:
+       - `id`: The tool identifier
+       - `description`: Description of the tool
+       - `filters`: Optional filters defining where the tool is available (e.g., domain filters)
+3. Create a pull request to merge your changes into the main repository
+
+See the `src/tools/example-group/` directory for a complete example.
 
    ```typescript
    import {ToolDefinition} from 'webmcp-polyfill';
