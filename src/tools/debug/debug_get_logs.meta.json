@@ -6,7 +6,7 @@
   "filters": [
     {
       "type": "domain",
-      "domains": ["thesun.co.uk", "www.thesun.co.uk"]
+      "domains": ["*"]
     },
     {
       "type": "path",
