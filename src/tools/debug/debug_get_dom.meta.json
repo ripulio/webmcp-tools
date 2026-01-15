@@ -1,7 +1,7 @@
 {
   "$schema": "../../../schemas/toolMetadata.json",
-  "id": "debug_pick_element",
-  "description": "Prompts the user to interactively select an element on the page. Returns element info including selector.",
+  "id": "debug_get_dom",
+  "description": "Extract DOM structure with filtering. Use selector to scope extraction. Returns element tree with attributes and truncation metadata.",
   "groupId": "debug",
   "filters": [
     {

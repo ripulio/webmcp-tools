@@ -1,7 +1,7 @@
 {
   "$schema": "../../../schemas/toolMetadata.json",
-  "id": "debug_pick_element",
-  "description": "Prompts the user to interactively select an element on the page. Returns element info including selector.",
+  "id": "debug_get_forms",
+  "description": "Extract form structures including fields, types, names, and select options. Use to understand form layout before filling.",
   "groupId": "debug",
   "filters": [
     {

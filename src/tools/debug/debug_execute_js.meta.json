@@ -1,7 +1,7 @@
 {
   "$schema": "../../../schemas/toolMetadata.json",
-  "id": "debug_pick_element",
-  "description": "Prompts the user to interactively select an element on the page. Returns element info including selector.",
+  "id": "debug_execute_js",
+  "description": "Execute JavaScript code in the page context. Use to interact with elements (click, type, scroll), read values, or modify the DOM.",
   "groupId": "debug",
   "filters": [
     {
