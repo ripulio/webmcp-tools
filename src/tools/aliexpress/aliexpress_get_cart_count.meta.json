@@ -1,0 +1,16 @@
+{
+  "$schema": "../../../schemas/toolMetadata.json",
+  "id": "aliexpress_get_cart_count",
+  "description": "Get the number of items in the shopping cart",
+  "groupId": "aliexpress",
+  "filters": [
+    {
+      "type": "domain",
+      "domains": ["aliexpress.com", "www.aliexpress.com", "aliexpress.us", "www.aliexpress.us"]
+    },
+    {
+      "type": "path",
+      "paths": ["/"]
+    }
+  ]
+}

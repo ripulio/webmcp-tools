@@ -1,0 +1,16 @@
+{
+  "$schema": "../../../schemas/toolMetadata.json",
+  "id": "aliexpress_add_to_cart",
+  "description": "Add the current product to the shopping cart",
+  "groupId": "aliexpress",
+  "filters": [
+    {
+      "type": "domain",
+      "domains": ["aliexpress.com", "www.aliexpress.com", "aliexpress.us", "www.aliexpress.us"]
+    },
+    {
+      "type": "path",
+      "paths": ["/item/"]
+    }
+  ]
+}

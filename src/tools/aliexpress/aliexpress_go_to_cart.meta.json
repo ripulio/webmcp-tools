@@ -1,0 +1,16 @@
+{
+  "$schema": "../../../schemas/toolMetadata.json",
+  "id": "aliexpress_go_to_cart",
+  "description": "Navigate to the shopping cart page",
+  "groupId": "aliexpress",
+  "filters": [
+    {
+      "type": "domain",
+      "domains": ["aliexpress.com", "www.aliexpress.com", "aliexpress.us", "www.aliexpress.us"]
+    },
+    {
+      "type": "path",
+      "paths": ["/"]
+    }
+  ]
+}

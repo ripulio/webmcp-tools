@@ -1,0 +1,16 @@
+{
+  "$schema": "../../../schemas/toolMetadata.json",
+  "id": "aliexpress_search",
+  "description": "Search for products on AliExpress by entering a query",
+  "groupId": "aliexpress",
+  "filters": [
+    {
+      "type": "domain",
+      "domains": ["aliexpress.com", "www.aliexpress.com", "aliexpress.us", "www.aliexpress.us"]
+    },
+    {
+      "type": "path",
+      "paths": ["/"]
+    }
+  ]
+}
