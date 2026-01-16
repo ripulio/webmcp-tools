@@ -1,0 +1,16 @@
+{
+  "$schema": "../../../schemas/toolMetadata.json",
+  "id": "google_flights_filter_stops",
+  "description": "Filter flight results by number of stops",
+  "groupId": "google_flights",
+  "filters": [
+    {
+      "type": "domain",
+      "domains": ["google.com", "www.google.com"]
+    },
+    {
+      "type": "path",
+      "paths": ["/travel/flights"]
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "$schema": "../../../schemas/toolMetadata.json",
+  "id": "google_flights_open_passengers",
+  "description": "Open the passenger selection dialog",
+  "groupId": "google_flights",
+  "filters": [
+    {
+      "type": "domain",
+      "domains": ["google.com", "www.google.com"]
+    },
+    {
+      "type": "path",
+      "paths": ["/travel/flights"]
+    }
+  ]
+}

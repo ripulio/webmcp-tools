@@ -1,0 +1,18 @@
+{
+  "$schema": "../../../schemas/toolRegistryMeta.json",
+  "id": "google_flights",
+  "name": "Google Flights",
+  "description": "Tools for searching and browsing flights on Google Flights",
+  "tools": [
+    "google_flights_set_origin",
+    "google_flights_set_destination",
+    "google_flights_set_dates",
+    "google_flights_open_passengers",
+    "google_flights_search",
+    "google_flights_get_search_state",
+    "google_flights_get_results",
+    "google_flights_click_result",
+    "google_flights_filter_stops",
+    "google_flights_get_flight_details"
+  ]
+}
