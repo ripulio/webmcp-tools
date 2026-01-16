@@ -10,10 +10,33 @@ export const tool: ToolDefinition = {
     required: []
   },
   async execute() {
+    // Try multiple selectors for the search button
     const searchButton = document.querySelector<HTMLButtonElement>(
-      'button[aria-label*="Search for flights"]'
+      'button[aria-label*="Search" i], button[aria-label*="flight" i], button.VfPpkd-LgbsSe[jsname], .MXvFbd button, button[jsname="vLv7Lb"]'
     );
+
     if (!searchButton) {
+      // Fallback: try to find by text content
+      const buttons = document.querySelectorAll<HTMLButtonElement>('button');
+      for (const btn of buttons) {
+        const text = btn.textContent?.toLowerCase() || '';
+        if (
+          text.includes('search') ||
+          text.includes('explore') ||
+          text.includes('done')
+        ) {
+          btn.click();
+          return {
+            content: [
+              {
+                type: 'text',
+                text: 'Searching for flights. Use google_flights_get_results to retrieve the results after the page loads.'
+              }
+            ]
+          };
+        }
+      }
+
       return {
         content: [
           {
