@@ -17,63 +17,13 @@ export const tool: ToolDefinition = {
   async execute(input) {
     const {query} = input as {query: string};
 
-    // Try multiple selectors for the search input
-    const searchInput = document.querySelector<HTMLInputElement>(
-      '#search-words, input[name="SearchText"], input[class*="search"][class*="input"], .search-key input, input[placeholder*="search" i]'
-    );
-    if (!searchInput) {
-      return {
-        content: [
-          {
-            type: 'text',
-            text: 'Search input not found. Make sure you are on an AliExpress page.'
-          }
-        ],
-        isError: true
-      };
-    }
+    // AliExpress uses React with controlled inputs that don't respond to DOM manipulation
+    // Use URL-based navigation instead for reliable search
+    const encodedQuery = query.toLowerCase().replace(/\s+/g, '-');
+    const searchUrl = `https://www.aliexpress.us/w/wholesale-${encodeURIComponent(encodedQuery)}.html`;
 
-    // Clear and set the value
-    searchInput.focus();
-    searchInput.value = '';
-    searchInput.dispatchEvent(new Event('input', {bubbles: true}));
-    searchInput.value = query;
-    searchInput.dispatchEvent(new Event('input', {bubbles: true}));
-    searchInput.dispatchEvent(new Event('change', {bubbles: true}));
-
-    // Find the search button using multiple selectors
-    // Look for submit input, button with search icon, or form submission
-    const searchButton =
-      document.querySelector<HTMLElement>(
-        'input[type="submit"][class*="search"], button[class*="search"][class*="submit"], .search-button input, .search-submit, button[class*="SearchButton"]'
-      ) ||
-      // Fallback: find the form and look for any submit element
-      searchInput
-        .closest('form')
-        ?.querySelector<HTMLElement>(
-          'input[type="submit"], button[type="submit"], button:not([type])'
-        );
-
-    if (searchButton) {
-      searchButton.click();
-    } else {
-      // Fallback: submit the form directly or press Enter
-      const form = searchInput.closest('form');
-      if (form) {
-        form.submit();
-      } else {
-        // Simulate pressing Enter
-        searchInput.dispatchEvent(
-          new KeyboardEvent('keydown', {
-            key: 'Enter',
-            code: 'Enter',
-            keyCode: 13,
-            which: 13,
-            bubbles: true
-          })
-        );
-      }
-    }
+    // Use location.assign for more reliable navigation in tool context
+    window.location.assign(searchUrl);
 
     return {
       content: [

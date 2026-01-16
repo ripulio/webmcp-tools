@@ -10,33 +10,26 @@ export const tool: ToolDefinition = {
     required: []
   },
   async execute() {
-    // Try multiple selectors for the search button
-    const searchButton = document.querySelector<HTMLButtonElement>(
-      'button[aria-label*="Search" i], button[aria-label*="flight" i], button.VfPpkd-LgbsSe[jsname], .MXvFbd button, button[jsname="vLv7Lb"]'
+    // Find the Explore/Search button in the search form area
+    // The button is typically inside .MXvFbd or .xFFcie containers
+    let searchButton = document.querySelector<HTMLButtonElement>(
+      '.xFFcie button, .MXvFbd button.VfPpkd-LgbsSe'
     );
 
+    // Fallback: find button by text content "Explore" or "Search"
     if (!searchButton) {
-      // Fallback: try to find by text content
       const buttons = document.querySelectorAll<HTMLButtonElement>('button');
       for (const btn of buttons) {
-        const text = btn.textContent?.toLowerCase() || '';
-        if (
-          text.includes('search') ||
-          text.includes('explore') ||
-          text.includes('done')
-        ) {
-          btn.click();
-          return {
-            content: [
-              {
-                type: 'text',
-                text: 'Searching for flights. Use google_flights_get_results to retrieve the results after the page loads.'
-              }
-            ]
-          };
+        const text = btn.textContent?.trim().toLowerCase() || '';
+        // Match exact "explore" or "search" to avoid matching "Explore destinations" etc.
+        if (text === 'explore' || text === 'search' || text === 'done') {
+          searchButton = btn;
+          break;
         }
       }
+    }
 
+    if (!searchButton) {
       return {
         content: [
           {
