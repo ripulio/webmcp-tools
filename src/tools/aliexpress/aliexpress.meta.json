@@ -1,0 +1,15 @@
+{
+  "$schema": "../../../schemas/toolRegistryMeta.json",
+  "id": "aliexpress",
+  "name": "AliExpress",
+  "description": "Tools for searching, browsing, and shopping on AliExpress",
+  "tools": [
+    "aliexpress_search",
+    "aliexpress_get_results",
+    "aliexpress_click_result",
+    "aliexpress_get_product_details",
+    "aliexpress_add_to_cart",
+    "aliexpress_get_cart_count",
+    "aliexpress_go_to_cart"
+  ]
+}
