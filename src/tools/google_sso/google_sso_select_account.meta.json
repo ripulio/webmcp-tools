@@ -1,0 +1,11 @@
+{
+  "$schema": "../../../schemas/toolMetadata.json",
+  "id": "google_sso_select_account",
+  "description": "Select a Google account from the account chooser page by index or email",
+  "filters": [
+    {
+      "type": "domain",
+      "domains": ["accounts.google.com"]
+    }
+  ]
+}

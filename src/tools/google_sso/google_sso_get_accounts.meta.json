@@ -1,0 +1,11 @@
+{
+  "$schema": "../../../schemas/toolMetadata.json",
+  "id": "google_sso_get_accounts",
+  "description": "Get the list of available Google accounts on the account chooser page",
+  "filters": [
+    {
+      "type": "domain",
+      "domains": ["accounts.google.com"]
+    }
+  ]
+}

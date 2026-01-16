@@ -1,0 +1,12 @@
+{
+  "$schema": "../../../schemas/toolRegistryMeta.json",
+  "id": "google_sso",
+  "name": "Google SSO",
+  "description": "Tools for navigating Google Single Sign-On account selection. Helps select accounts or initiate credential entry without entering credentials.",
+  "tools": [
+    "google_sso_get_page_state",
+    "google_sso_get_accounts",
+    "google_sso_select_account",
+    "google_sso_use_another_account"
+  ]
+}
