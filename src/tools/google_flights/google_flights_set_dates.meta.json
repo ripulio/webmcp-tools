@@ -1,0 +1,16 @@
+{
+  "$schema": "../../../schemas/toolMetadata.json",
+  "id": "google_flights_set_dates",
+  "description": "Set departure and return dates for a flight search",
+  "groupId": "google_flights",
+  "filters": [
+    {
+      "type": "domain",
+      "domains": ["google.com", "www.google.com"]
+    },
+    {
+      "type": "path",
+      "paths": ["/travel/flights"]
+    }
+  ]
+}

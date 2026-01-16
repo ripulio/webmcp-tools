@@ -1,0 +1,16 @@
+{
+  "$schema": "../../../schemas/toolMetadata.json",
+  "id": "google_flights_get_flight_details",
+  "description": "Get detailed information about a selected flight",
+  "groupId": "google_flights",
+  "filters": [
+    {
+      "type": "domain",
+      "domains": ["google.com", "www.google.com"]
+    },
+    {
+      "type": "path",
+      "paths": ["/travel/flights"]
+    }
+  ]
+}
