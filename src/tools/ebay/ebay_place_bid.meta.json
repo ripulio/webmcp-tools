@@ -1,0 +1,16 @@
+{
+  "$schema": "../../../schemas/toolMetadata.json",
+  "id": "ebay_place_bid",
+  "description": "Place a bid on an auction item on eBay",
+  "groupId": "ebay",
+  "filters": [
+    {
+      "type": "domain",
+      "domains": ["ebay.com", "www.ebay.com"]
+    },
+    {
+      "type": "path",
+      "paths": ["/itm/"]
+    }
+  ]
+}

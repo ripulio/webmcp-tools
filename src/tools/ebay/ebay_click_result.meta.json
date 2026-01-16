@@ -1,0 +1,16 @@
+{
+  "$schema": "../../../schemas/toolMetadata.json",
+  "id": "ebay_click_result",
+  "description": "Click on an item from eBay search results to view its listing page",
+  "groupId": "ebay",
+  "filters": [
+    {
+      "type": "domain",
+      "domains": ["ebay.com", "www.ebay.com"]
+    },
+    {
+      "type": "path",
+      "paths": ["/sch/"]
+    }
+  ]
+}
