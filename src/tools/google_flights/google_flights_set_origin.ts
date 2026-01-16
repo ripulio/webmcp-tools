@@ -18,8 +18,38 @@ export const tool: ToolDefinition = {
   async execute(input) {
     const {origin} = input as {origin: string};
 
+    // Helper to simulate typing with keyboard events
+    const simulateTyping = async (element: HTMLInputElement, text: string) => {
+      element.focus();
+      // Clear existing value
+      element.select();
+      document.execCommand('delete');
+
+      for (const char of text) {
+        element.dispatchEvent(
+          new KeyboardEvent('keydown', {key: char, bubbles: true})
+        );
+        element.value += char;
+        element.dispatchEvent(new Event('input', {bubbles: true}));
+        element.dispatchEvent(
+          new KeyboardEvent('keyup', {key: char, bubbles: true})
+        );
+        await new Promise((r) => setTimeout(r, 30));
+      }
+    };
+
+    // First, try to find and click the origin chip/button to activate the input
+    const originChip = document.querySelector<HTMLElement>(
+      '[data-placeholder="Where from?"], [aria-label*="Where from"], [aria-label*="origin"], .e5F5td input, input[placeholder*="Where from"]'
+    );
+    if (originChip) {
+      originChip.click();
+      await new Promise((r) => setTimeout(r, 200));
+    }
+
+    // Now find the input - it might be a combobox input
     const originInput = document.querySelector<HTMLInputElement>(
-      'input[aria-label*="Where from"]'
+      'input[aria-label*="Where from"], input[aria-label*="origin" i], input[placeholder*="Where from"], .II2One input, input[aria-autocomplete="list"]'
     );
     if (!originInput) {
       return {
@@ -33,23 +63,19 @@ export const tool: ToolDefinition = {
       };
     }
 
-    // Focus and clear the input
-    originInput.focus();
-    originInput.value = '';
-    originInput.dispatchEvent(new Event('input', {bubbles: true}));
+    // Simulate typing the origin
+    await simulateTyping(originInput, origin);
 
-    // Type the origin
-    originInput.value = origin;
-    originInput.dispatchEvent(new Event('input', {bubbles: true}));
+    // Wait for autocomplete dropdown to appear
+    await new Promise((resolve) => setTimeout(resolve, 600));
 
-    // Wait for autocomplete dropdown to appear and select first result
-    await new Promise((resolve) => setTimeout(resolve, 500));
-
+    // Try multiple selectors for the autocomplete results
     const firstResult = document.querySelector<HTMLElement>(
-      'ul[role="listbox"] li[role="option"]'
+      'ul[role="listbox"] li[role="option"], [role="listbox"] [role="option"], .DFGgtd [role="option"], .n4HaVc'
     );
     if (firstResult) {
       firstResult.click();
+      await new Promise((r) => setTimeout(r, 200));
       return {
         content: [
           {
