@@ -3,7 +3,7 @@ import type {ToolDefinition} from 'webmcp-polyfill';
 export const ebayClickResult: ToolDefinition = {
   name: 'ebay_click_result',
   description:
-    'Click on an item from the search results to navigate to its listing page. Use either the result index (from ebay_get_results) or the item ID.',
+    'Click on an item from the search results to open its listing page in a new tab. Use either the result index (from ebay_get_results) or the item ID. After clicking, use list_tabs to find the new tab.',
   inputSchema: {
     type: 'object',
     properties: {
@@ -88,18 +88,14 @@ export const ebayClickResult: ToolDefinition = {
     const titleEl = targetElement.querySelector('.s-card__title');
     const title = titleEl?.textContent?.trim() || 'Unknown';
 
-    // Navigate in same tab instead of clicking (links have target="_blank")
-    if (href) {
-      window.location.href = href;
-    } else {
-      productLink.click();
-    }
+    // Click opens in new tab (eBay's default behavior)
+    productLink.click();
 
     return {
       content: [
         {
           type: 'text',
-          text: `Navigating to item: "${title.substring(0, 80)}${title.length > 80 ? '...' : ''}" (Item ID: ${foundItemId}). Use ebay_get_product_details after the page loads.`
+          text: `Opened item in new tab: "${title.substring(0, 80)}${title.length > 80 ? '...' : ''}" (Item ID: ${foundItemId}). Use list_tabs to find the new tab, then ebay_get_product_details.`
         }
       ]
     };
