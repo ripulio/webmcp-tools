@@ -1,0 +1,11 @@
+{
+  "$schema": "../../../schemas/toolMetadata.json",
+  "id": "google_sso_use_another_account",
+  "description": "Click the 'Use another account' option to go to email input",
+  "filters": [
+    {
+      "type": "domain",
+      "domains": ["accounts.google.com"]
+    }
+  ]
+}
