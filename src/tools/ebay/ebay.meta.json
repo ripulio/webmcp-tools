@@ -1,0 +1,17 @@
+{
+  "$schema": "../../../schemas/toolRegistryMeta.json",
+  "id": "ebay",
+  "name": "eBay",
+  "description": "Tools for searching, browsing, bidding, and shopping on eBay.com",
+  "tools": [
+    "ebay_search",
+    "ebay_get_results",
+    "ebay_click_result",
+    "ebay_get_product_details",
+    "ebay_add_to_cart",
+    "ebay_get_cart_count",
+    "ebay_go_to_cart",
+    "ebay_place_bid",
+    "ebay_watch_item"
+  ]
+}

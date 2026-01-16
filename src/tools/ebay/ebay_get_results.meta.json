@@ -1,0 +1,16 @@
+{
+  "$schema": "../../../schemas/toolMetadata.json",
+  "id": "ebay_get_results",
+  "description": "Get the list of item search results from an eBay search results page",
+  "groupId": "ebay",
+  "filters": [
+    {
+      "type": "domain",
+      "domains": ["ebay.com", "www.ebay.com"]
+    },
+    {
+      "type": "path",
+      "paths": ["/sch/"]
+    }
+  ]
+}
