@@ -28,9 +28,17 @@ export const tool: ToolDefinition = {
   async execute(input) {
     const {limit = 10} = input as {limit?: number};
 
-    const resultElements = document.querySelectorAll<HTMLAnchorElement>(
-      '#card-list .search-card-item'
+    // Try multiple selectors for search results
+    let resultElements = document.querySelectorAll<HTMLElement>(
+      '#card-list .search-card-item, .search-card-item, [class*="SearchProductFeed"] a[href*="/item/"], .list--gallery--C2f2tvm a[href*="/item/"]'
     );
+
+    // Fallback: try to find product cards by structure
+    if (resultElements.length === 0) {
+      resultElements = document.querySelectorAll<HTMLElement>(
+        'a[href*="/item/"][href*=".html"]'
+      );
+    }
 
     if (resultElements.length === 0) {
       return {
@@ -48,33 +56,45 @@ export const tool: ToolDefinition = {
 
     for (let i = 0; i < Math.min(limit, resultElements.length); i++) {
       const el = resultElements[i];
-      const url = el.href || '';
+      const url =
+        el instanceof HTMLAnchorElement
+          ? el.href
+          : el.querySelector('a')?.href || '';
 
-      // Get title from img alt or card text
+      // Get title from img alt or various title selectors
       const img = el.querySelector('img');
       const titleFromAlt = img?.alt || '';
+      const titleEl = el.querySelector(
+        '[class*="title"], [class*="Title"], h3, h2'
+      );
+      const titleFromEl = titleEl?.textContent?.trim() || '';
       const titleFromText = el.innerText.split('\n')[0] || '';
-      const title = titleFromAlt || titleFromText;
+      const title = titleFromAlt || titleFromEl || titleFromText;
 
-      // Parse price from innerText
+      // Parse price - look for price element first
+      const priceEl = el.querySelector(
+        '[class*="price" i], [class*="Price" i]'
+      );
+      const priceText = priceEl?.textContent || el.innerText || '';
+
       // Note: AliExpress uses various currency symbols including fullwidth variants
-      // £ (U+00A3), ￡ (U+FFE1), $ (U+0024), ＄ (U+FF04), € (U+20AC)
-      const innerText = el.innerText || '';
-      const priceRegex = /[£￡$＄€]\d+\.?\d*/g;
-      const allPrices = innerText.match(priceRegex);
-      const price = allPrices ? allPrices[0] : null;
+      // £ (U+00A3), ￡ (U+FFE1), $ (U+0024), ＄ (U+FF04), € (U+20AC), US (for "US $")
+      const priceRegex = /(?:US\s*)?[£￡$＄€]\s*\d+[,.\d]*/gi;
+      const allPrices = priceText.match(priceRegex);
+      const price = allPrices ? allPrices[0].trim() : null;
 
       // Look for original price (strikethrough price, typically the second price)
       const originalPrice =
-        allPrices && allPrices.length > 1 ? allPrices[1] : null;
+        allPrices && allPrices.length > 1 ? allPrices[1].trim() : null;
 
-      // Get rating - look for rating pattern before sold count
-      // Ratings are typically 1.0-5.0 followed by sold info, avoid matching version numbers like "5.3"
-      const ratingMatch = innerText.match(/\n(\d\.\d)\n/);
+      // Get rating - look for star rating
+      const ratingEl = el.querySelector('[class*="star" i], [class*="rating" i]');
+      const ratingText = ratingEl?.textContent || el.innerText || '';
+      const ratingMatch = ratingText.match(/(\d\.\d)/);
       const rating = ratingMatch ? ratingMatch[1] : null;
 
       // Get sold count
-      const soldMatch = innerText.match(/(\d+[,\d]*\+?)\s*sold/i);
+      const soldMatch = el.innerText.match(/(\d+[,\d]*\+?)\s*sold/i);
       const sold = soldMatch ? soldMatch[1] + ' sold' : null;
 
       results.push({
