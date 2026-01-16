@@ -88,13 +88,18 @@ export const ebayClickResult: ToolDefinition = {
     const titleEl = targetElement.querySelector('.s-card__title');
     const title = titleEl?.textContent?.trim() || 'Unknown';
 
-    productLink.click();
+    // Navigate in same tab instead of clicking (links have target="_blank")
+    if (href) {
+      window.location.href = href;
+    } else {
+      productLink.click();
+    }
 
     return {
       content: [
         {
           type: 'text',
-          text: `Clicking on item: "${title.substring(0, 80)}${title.length > 80 ? '...' : ''}" (Item ID: ${foundItemId}). Use ebay_get_product_details after the page loads.`
+          text: `Navigating to item: "${title.substring(0, 80)}${title.length > 80 ? '...' : ''}" (Item ID: ${foundItemId}). Use ebay_get_product_details after the page loads.`
         }
       ]
     };
