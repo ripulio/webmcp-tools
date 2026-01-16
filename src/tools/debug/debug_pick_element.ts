@@ -3,7 +3,7 @@ import type {ToolDefinition} from 'webmcp-polyfill';
 export const tool: ToolDefinition = {
   name: 'debug_pick_element',
   description:
-    'Prompts the user to interactively select an element on the page. Returns information about the selected element including tag, id, classes, and a CSS selector.',
+    'Opens an interactive element picker in the browser UI. The user will see a visual overlay and can click any element to select it. Returns the selected element\'s tag, id, classes, and a CSS selector. Press ESC to cancel.',
   inputSchema: {
     type: 'object',
     properties: {},
