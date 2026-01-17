@@ -21,17 +21,34 @@
     },
     "PathFilter": {
       "type": "object",
-      "required": ["type", "patterns"],
+      "required": ["type", "paths"],
       "properties": {
         "type": {
           "type": "string",
           "const": "path"
         },
-        "patterns": {
+        "paths": {
           "type": "array",
           "items": {
             "type": "string",
             "description": "A regular expression matched against the browser's current path"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "QueryFilter": {
+      "type": "object",
+      "required": ["type", "parameters"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "query"
+        },
+        "parameters": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
           }
         }
       },
@@ -44,6 +61,9 @@
         },
         {
           "$ref": "#/definitions/PathFilter"
+        },
+        {
+          "$ref": "#/definitions/QueryFilter"
         }
       ]
     },
@@ -62,6 +82,10 @@
           "items": {
             "$ref": "#/definitions/ToolFilter"
           }
+        },
+        "groupId": {
+          "type": "string",
+          "description": "The ID of the tool group this tool belongs to"
         }
       },
       "additionalProperties": false
