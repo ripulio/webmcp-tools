@@ -34,7 +34,7 @@ jobs:
         run: node --experimental-strip-types scripts/sync-to-kv.ts
 
   publish-production:
-    if: github.event_name == 'push' || (github.event_name == 'release' && !github.event.release.prerelease) || github.event_name == 'workflow_dispatch'
+    if: "!github.event.release.prerelease"
     runs-on: ubuntu-latest
     permissions:
       contents: read
