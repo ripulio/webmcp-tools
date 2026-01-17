@@ -3,13 +3,10 @@ name: Publish to Catalog
 on:
   release:
     types: [published]
-  push:
-    branches: [main]
-  workflow_dispatch:
 
 jobs:
   publish-staging:
-    if: github.event_name == 'release' && github.event.release.prerelease
+    if: github.event.release.prerelease
     runs-on: ubuntu-latest
     permissions:
       contents: read
