@@ -8,7 +8,9 @@ TBD
 
 ## Contributing Tools
 
-In order to publish tools to the WebMCP catalog, they must be added to this repository. They will then automatically be published to the catalog when the next sync occurs.
+In order to publish tools to the WebMCP catalog, they must be added to this repository. Tools are automatically published to production when your PR is merged to `main`.
+
+**Testing in staging**: To test your tools before merging, create a [prerelease](https://docs.github.com/en/repositories/releasing-projects-on-github/managing-releases-in-a-repository#creating-a-release) from your branch. This will deploy your tools to the staging environment for validation.
 
 If you'd like to contribute a tool, please follow these steps:
 
