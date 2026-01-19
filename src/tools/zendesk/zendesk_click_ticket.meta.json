@@ -1,0 +1,11 @@
+{
+  "$schema": "../../../schemas/toolMetadata.json",
+  "id": "zendesk_click_ticket",
+  "description": "Click on a ticket to open it",
+  "filters": [
+    {
+      "type": "domain",
+      "domains": ["zendesk.com"]
+    }
+  ]
+}

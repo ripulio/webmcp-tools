@@ -1,0 +1,11 @@
+{
+  "$schema": "../../../schemas/toolMetadata.json",
+  "id": "zendesk_add_tags",
+  "description": "Add tags to the current ticket",
+  "filters": [
+    {
+      "type": "domain",
+      "domains": ["zendesk.com"]
+    }
+  ]
+}
