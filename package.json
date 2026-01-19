@@ -46,7 +46,7 @@
     "premove": "^4.0.0",
     "prettier": "^3.8.0",
     "tinyglobby": "^0.2.15",
-    "typescript-eslint": "^8.53.0",
+    "typescript-eslint": "^8.53.1",
     "vitest": "^4.0.14"
   },
   "dependencies": {
