@@ -1,0 +1,11 @@
+{
+  "$schema": "../../../schemas/toolMetadata.json",
+  "id": "zendesk_update_status",
+  "description": "Update the status of the current ticket",
+  "filters": [
+    {
+      "type": "domain",
+      "domains": ["zendesk.com"]
+    }
+  ]
+}

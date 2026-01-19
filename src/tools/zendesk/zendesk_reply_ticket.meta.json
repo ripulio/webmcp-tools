@@ -1,0 +1,11 @@
+{
+  "$schema": "../../../schemas/toolMetadata.json",
+  "id": "zendesk_reply_ticket",
+  "description": "Add a reply or internal note to the current ticket",
+  "filters": [
+    {
+      "type": "domain",
+      "domains": ["zendesk.com"]
+    }
+  ]
+}

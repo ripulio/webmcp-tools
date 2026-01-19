@@ -1,0 +1,11 @@
+{
+  "$schema": "../../../schemas/toolMetadata.json",
+  "id": "zendesk_get_ticket_details",
+  "description": "Get detailed information about the current ticket",
+  "filters": [
+    {
+      "type": "domain",
+      "domains": ["zendesk.com"]
+    }
+  ]
+}
