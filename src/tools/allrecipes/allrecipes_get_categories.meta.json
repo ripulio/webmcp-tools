@@ -5,10 +5,7 @@
   "filters": [
     {
       "type": "domain",
-      "domains": [
-        "allrecipes.com",
-        "www.allrecipes.com"
-      ]
+      "domains": ["allrecipes.com", "www.allrecipes.com"]
     }
   ],
   "groupId": "allrecipes"

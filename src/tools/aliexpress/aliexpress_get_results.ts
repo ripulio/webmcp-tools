@@ -88,7 +88,9 @@ export const tool: ToolDefinition = {
         allPrices && allPrices.length > 1 ? allPrices[1].trim() : null;
 
       // Get rating - look for star rating
-      const ratingEl = el.querySelector('[class*="star" i], [class*="rating" i]');
+      const ratingEl = el.querySelector(
+        '[class*="star" i], [class*="rating" i]'
+      );
       const ratingText = ratingEl?.textContent || el.innerText || '';
       const ratingMatch = ratingText.match(/(\d\.\d)/);
       const rating = ratingMatch ? ratingMatch[1] : null;

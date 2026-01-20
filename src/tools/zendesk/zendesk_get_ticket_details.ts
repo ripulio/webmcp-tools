@@ -47,46 +47,65 @@ export const tool: ToolDefinition = {
     }
 
     // Extract subject from omni header
-    const subjectEl = document.querySelector('[data-test-id="omni-header-subject"]');
+    const subjectEl = document.querySelector(
+      '[data-test-id="omni-header-subject"]'
+    );
     if (subjectEl) {
       details.subject = subjectEl.textContent?.trim() || '';
     }
 
     // Extract status from footer status view
-    const statusEl = document.querySelector('[data-test-id="ticket-fields-status-view"]');
+    const statusEl = document.querySelector(
+      '[data-test-id="ticket-fields-status-view"]'
+    );
     if (statusEl) {
       details.status = statusEl.textContent?.trim() || '';
     }
 
     // Extract priority
-    const priorityEl = document.querySelector('[data-test-id="ticket-fields-priority-select"]');
+    const priorityEl = document.querySelector(
+      '[data-test-id="ticket-fields-priority-select"]'
+    );
     if (priorityEl) {
-      const valueEl = priorityEl.querySelector('[data-garden-id="dropdowns.combobox.value"]') || priorityEl;
+      const valueEl =
+        priorityEl.querySelector(
+          '[data-garden-id="dropdowns.combobox.value"]'
+        ) || priorityEl;
       details.priority = valueEl.textContent?.trim() || '';
     }
 
     // Extract type
-    const typeEl = document.querySelector('[data-test-id="ticket-fields-type-select"]');
+    const typeEl = document.querySelector(
+      '[data-test-id="ticket-fields-type-select"]'
+    );
     if (typeEl) {
-      const valueEl = typeEl.querySelector('[data-garden-id="dropdowns.combobox.value"]') || typeEl;
+      const valueEl =
+        typeEl.querySelector('[data-garden-id="dropdowns.combobox.value"]') ||
+        typeEl;
       details.type = valueEl.textContent?.trim() || '';
     }
 
     // Extract requester
-    const requesterEl = document.querySelector('[data-test-id="ticket-system-field-requester-select"]');
+    const requesterEl = document.querySelector(
+      '[data-test-id="ticket-system-field-requester-select"]'
+    );
     if (requesterEl) {
       details.requester = requesterEl.textContent?.trim() || '';
     }
 
     // Extract assignee
-    const assigneeEl = document.querySelector('[data-test-id="assignee-field"]');
+    const assigneeEl = document.querySelector(
+      '[data-test-id="assignee-field"]'
+    );
     if (assigneeEl) {
       details.assignee = assigneeEl.textContent?.trim() || '';
     }
 
     // Extract tags
-    const tagItems = document.querySelectorAll('[data-test-id="ticket-system-field-tags-item-selected"]');
-    tagItems.forEach(tag => {
+    const tagItems = document.querySelectorAll(
+      '[data-test-id="ticket-system-field-tags-item-selected"]'
+    );
+    tagItems.forEach((tag) => {
       const tagText = tag.textContent?.trim();
       if (tagText) {
         // Remove the 'x' delete button text
@@ -95,12 +114,22 @@ export const tool: ToolDefinition = {
     });
 
     // Extract comments from conversation log
-    const commentItems = document.querySelectorAll('[data-test-id="omni-log-comment-item"]');
-    commentItems.forEach(comment => {
-      const authorEl = comment.querySelector('[data-test-id="omni-log-comment-user-link"]');
-      const timestampEl = comment.querySelector('[data-test-id="timestamp-relative"]');
-      const contentEl = comment.querySelector('[data-test-id="omni-log-message-content"]');
-      const isInternal = comment.querySelector('[data-test-id="omni-log-internal-note-tag"]') !== null;
+    const commentItems = document.querySelectorAll(
+      '[data-test-id="omni-log-comment-item"]'
+    );
+    commentItems.forEach((comment) => {
+      const authorEl = comment.querySelector(
+        '[data-test-id="omni-log-comment-user-link"]'
+      );
+      const timestampEl = comment.querySelector(
+        '[data-test-id="timestamp-relative"]'
+      );
+      const contentEl = comment.querySelector(
+        '[data-test-id="omni-log-message-content"]'
+      );
+      const isInternal =
+        comment.querySelector('[data-test-id="omni-log-internal-note-tag"]') !==
+        null;
 
       if (contentEl) {
         details.comments.push({
@@ -114,7 +143,12 @@ export const tool: ToolDefinition = {
 
     if (!details.id && !details.subject) {
       return {
-        content: [{type: 'text', text: 'Could not find ticket details. Make sure a ticket is open.'}],
+        content: [
+          {
+            type: 'text',
+            text: 'Could not find ticket details. Make sure a ticket is open.'
+          }
+        ],
         isError: true
       };
     }

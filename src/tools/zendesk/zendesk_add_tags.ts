@@ -31,18 +31,26 @@ export const tool: ToolDefinition = {
 
     if (!tagsField) {
       return {
-        content: [{type: 'text', text: 'Tags field not found. Make sure a ticket is open.'}],
+        content: [
+          {
+            type: 'text',
+            text: 'Tags field not found. Make sure a ticket is open.'
+          }
+        ],
         isError: true
       };
     }
 
     // Click to focus/open the field
     tagsField.click();
-    await new Promise(resolve => setTimeout(resolve, 200));
+    await new Promise((resolve) => setTimeout(resolve, 200));
 
     // Find the input within the tags field
-    const tagsInput = tagsField.querySelector<HTMLInputElement>('input') ||
-      document.querySelector<HTMLInputElement>('[data-test-id="ticket-fields-tags"] input');
+    const tagsInput =
+      tagsField.querySelector<HTMLInputElement>('input') ||
+      document.querySelector<HTMLInputElement>(
+        '[data-test-id="ticket-fields-tags"] input'
+      );
 
     if (!tagsInput) {
       return {
@@ -60,23 +68,30 @@ export const tool: ToolDefinition = {
       tagsInput.dispatchEvent(new Event('input', {bubbles: true}));
 
       // Wait for autocomplete
-      await new Promise(resolve => setTimeout(resolve, 200));
+      await new Promise((resolve) => setTimeout(resolve, 200));
 
       // Press Enter to add the tag
-      tagsInput.dispatchEvent(new KeyboardEvent('keydown', {
-        key: 'Enter',
-        code: 'Enter',
-        keyCode: 13,
-        which: 13,
-        bubbles: true
-      }));
+      tagsInput.dispatchEvent(
+        new KeyboardEvent('keydown', {
+          key: 'Enter',
+          code: 'Enter',
+          keyCode: 13,
+          which: 13,
+          bubbles: true
+        })
+      );
 
-      await new Promise(resolve => setTimeout(resolve, 150));
+      await new Promise((resolve) => setTimeout(resolve, 150));
       addedTags.push(tag);
     }
 
     return {
-      content: [{type: 'text', text: `Added ${addedTags.length} tag(s): ${addedTags.join(', ')}. Remember to submit the ticket to save changes.`}]
+      content: [
+        {
+          type: 'text',
+          text: `Added ${addedTags.length} tag(s): ${addedTags.join(', ')}. Remember to submit the ticket to save changes.`
+        }
+      ]
     };
   }
 };

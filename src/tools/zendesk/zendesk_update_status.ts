@@ -8,17 +8,22 @@ export const tool: ToolDefinition = {
     properties: {
       status: {
         type: 'string',
-        description: 'The new status (e.g., "new", "open", "pending", "hold", "solved", "closed")'
+        description:
+          'The new status (e.g., "new", "open", "pending", "hold", "solved", "closed")'
       },
       submit: {
         type: 'boolean',
-        description: 'Whether to submit the ticket after changing status. Defaults to false.'
+        description:
+          'Whether to submit the ticket after changing status. Defaults to false.'
       }
     },
     required: ['status']
   },
   async execute(input) {
-    const {status, submit = false} = input as {status: string; submit?: boolean};
+    const {status, submit = false} = input as {
+      status: string;
+      submit?: boolean;
+    };
     const normalizedStatus = status.toLowerCase();
 
     // Click the submit menu button to open status options
@@ -28,17 +33,24 @@ export const tool: ToolDefinition = {
 
     if (!submitMenuBtn) {
       return {
-        content: [{type: 'text', text: 'Submit button not found. Make sure a ticket is open.'}],
+        content: [
+          {
+            type: 'text',
+            text: 'Submit button not found. Make sure a ticket is open.'
+          }
+        ],
         isError: true
       };
     }
 
     // Open the dropdown menu
     submitMenuBtn.click();
-    await new Promise(resolve => setTimeout(resolve, 300));
+    await new Promise((resolve) => setTimeout(resolve, 300));
 
     // Find and click the status option
-    const menuItems = document.querySelectorAll('[role="menuitem"], [role="option"]');
+    const menuItems = document.querySelectorAll(
+      '[role="menuitem"], [role="option"]'
+    );
     let found = false;
 
     for (const item of menuItems) {
@@ -54,14 +66,19 @@ export const tool: ToolDefinition = {
       // Close the menu if we didn't find the status
       document.body.click();
       return {
-        content: [{type: 'text', text: `Status option "${status}" not found. Available statuses may vary by your Zendesk configuration.`}],
+        content: [
+          {
+            type: 'text',
+            text: `Status option "${status}" not found. Available statuses may vary by your Zendesk configuration.`
+          }
+        ],
         isError: true
       };
     }
 
     // If submit is true, click the main submit button
     if (submit) {
-      await new Promise(resolve => setTimeout(resolve, 200));
+      await new Promise((resolve) => setTimeout(resolve, 200));
       const submitBtn = document.querySelector<HTMLElement>(
         '[data-test-id="submit_button-button"]'
       );
@@ -74,7 +91,12 @@ export const tool: ToolDefinition = {
     }
 
     return {
-      content: [{type: 'text', text: `Status set to "${status}". Click Submit to save changes.`}]
+      content: [
+        {
+          type: 'text',
+          text: `Status set to "${status}". Click Submit to save changes.`
+        }
+      ]
     };
   }
 };

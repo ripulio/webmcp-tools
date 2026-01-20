@@ -66,7 +66,8 @@ export const ebayGetResults: ToolDefinition = {
       const subtitleEl = el.querySelector('.s-card__subtitle');
 
       const innerText = (el.innerText || '').toLowerCase();
-      const isFreeShipping = innerText.includes('free delivery') ||
+      const isFreeShipping =
+        innerText.includes('free delivery') ||
         innerText.includes('free shipping') ||
         innerText.includes('free postage');
 

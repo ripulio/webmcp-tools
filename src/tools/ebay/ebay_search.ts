@@ -30,9 +30,8 @@ export const ebaySearch: ToolDefinition = {
       };
     }
 
-    const searchButton = document.querySelector<HTMLButtonElement>(
-      '#gh-search-btn'
-    );
+    const searchButton =
+      document.querySelector<HTMLButtonElement>('#gh-search-btn');
     if (!searchButton) {
       return {
         content: [

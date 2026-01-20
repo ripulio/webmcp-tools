@@ -6,9 +6,7 @@
   "filters": [
     {
       "type": "domain",
-      "domains": [
-        "app.slack.com"
-      ]
+      "domains": ["app.slack.com"]
     }
   ]
 }

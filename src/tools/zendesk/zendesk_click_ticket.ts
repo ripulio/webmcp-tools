@@ -8,7 +8,8 @@ export const tool: ToolDefinition = {
     properties: {
       index: {
         type: 'number',
-        description: 'The index of the ticket to click (from zendesk_get_tickets results)'
+        description:
+          'The index of the ticket to click (from zendesk_get_tickets results)'
       }
     },
     required: ['index']
@@ -17,11 +18,18 @@ export const tool: ToolDefinition = {
     const {index} = input as {index: number};
 
     // Find all ticket rows
-    const ticketRows = document.querySelectorAll('[data-test-id="generic-table-row"]');
+    const ticketRows = document.querySelectorAll(
+      '[data-test-id="generic-table-row"]'
+    );
 
     if (index < 0 || index >= ticketRows.length) {
       return {
-        content: [{type: 'text', text: `Invalid index ${index}. Available range: 0-${ticketRows.length - 1}`}],
+        content: [
+          {
+            type: 'text',
+            text: `Invalid index ${index}. Available range: 0-${ticketRows.length - 1}`
+          }
+        ],
         isError: true
       };
     }
@@ -36,7 +44,12 @@ export const tool: ToolDefinition = {
     if (ticketLink) {
       ticketLink.click();
       return {
-        content: [{type: 'text', text: `Clicked ticket at index ${index}. Use zendesk_get_ticket_details after the page loads.`}]
+        content: [
+          {
+            type: 'text',
+            text: `Clicked ticket at index ${index}. Use zendesk_get_ticket_details after the page loads.`
+          }
+        ]
       };
     }
 
@@ -44,7 +57,12 @@ export const tool: ToolDefinition = {
     (row as HTMLElement).click();
 
     return {
-      content: [{type: 'text', text: `Clicked ticket row at index ${index}. Use zendesk_get_ticket_details after the page loads.`}]
+      content: [
+        {
+          type: 'text',
+          text: `Clicked ticket row at index ${index}. Use zendesk_get_ticket_details after the page loads.`
+        }
+      ]
     };
   }
 };

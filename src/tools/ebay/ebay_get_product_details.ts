@@ -71,8 +71,11 @@ export const ebayGetProductDetails: ToolDefinition = {
       itemId,
       title: titleEl.textContent?.trim() || 'Unknown',
       price: priceEl?.textContent?.trim().split('or')[0].trim() || null,
-      condition: conditionEl?.textContent?.trim().replace('Condition:', '').trim() || null,
-      shipping: shippingEl?.textContent?.trim().replace('Shipping:', '').trim() || null,
+      condition:
+        conditionEl?.textContent?.trim().replace('Condition:', '').trim() ||
+        null,
+      shipping:
+        shippingEl?.textContent?.trim().replace('Shipping:', '').trim() || null,
       sellerName: sellerNameEl?.textContent?.trim() || null,
       sellerFeedback,
       canBuyNow: !!buyNowBtn,
@@ -87,13 +90,15 @@ export const ebayGetProductDetails: ToolDefinition = {
       `Condition: ${details.condition || 'N/A'}`,
       `Shipping: ${details.shipping || 'N/A'}`,
       `Seller: ${details.sellerName || 'N/A'}${details.sellerFeedback ? ` (${details.sellerFeedback})` : ''}`,
-      `Actions: ${[
-        details.canBuyNow ? 'Buy Now' : null,
-        details.canAddToCart ? 'Add to Cart' : null,
-        details.canWatch ? 'Watch' : null
-      ]
-        .filter(Boolean)
-        .join(', ') || 'None'}`
+      `Actions: ${
+        [
+          details.canBuyNow ? 'Buy Now' : null,
+          details.canAddToCart ? 'Add to Cart' : null,
+          details.canWatch ? 'Watch' : null
+        ]
+          .filter(Boolean)
+          .join(', ') || 'None'
+      }`
     ];
 
     return {

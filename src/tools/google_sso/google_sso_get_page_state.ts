@@ -11,10 +11,15 @@ export const googleSsoGetPageState: ToolDefinition = {
   },
   async execute() {
     // Check for account chooser page
-    const headingText = document.querySelector('#headingText')?.textContent?.trim();
+    const headingText = document
+      .querySelector('#headingText')
+      ?.textContent?.trim();
     const accountList = document.querySelector('ul.Dl08I');
 
-    if (headingText?.toLowerCase().includes('choose an account') && accountList) {
+    if (
+      headingText?.toLowerCase().includes('choose an account') &&
+      accountList
+    ) {
       const accounts = accountList.querySelectorAll('li.aZvCDf:not(.mIVEJc)');
       return {
         content: [
@@ -32,7 +37,9 @@ export const googleSsoGetPageState: ToolDefinition = {
     }
 
     // Check for email input page
-    const emailInput = document.querySelector<HTMLInputElement>('input[type="email"]');
+    const emailInput = document.querySelector<HTMLInputElement>(
+      'input[type="email"]'
+    );
     if (emailInput || headingText?.toLowerCase().includes('sign in')) {
       return {
         content: [
@@ -50,12 +57,17 @@ export const googleSsoGetPageState: ToolDefinition = {
     }
 
     // Check for password input page
-    const passwordInput = document.querySelector<HTMLInputElement>('input[type="password"]');
+    const passwordInput = document.querySelector<HTMLInputElement>(
+      'input[type="password"]'
+    );
     if (passwordInput) {
-      const identifierEl = document.querySelector('[data-identifier], [data-email]');
-      const identifier = identifierEl?.getAttribute('data-identifier') ||
-                        identifierEl?.getAttribute('data-email') ||
-                        document.querySelector('#profileIdentifier')?.textContent?.trim();
+      const identifierEl = document.querySelector(
+        '[data-identifier], [data-email]'
+      );
+      const identifier =
+        identifierEl?.getAttribute('data-identifier') ||
+        identifierEl?.getAttribute('data-email') ||
+        document.querySelector('#profileIdentifier')?.textContent?.trim();
       return {
         content: [
           {
@@ -73,7 +85,10 @@ export const googleSsoGetPageState: ToolDefinition = {
 
     // Check for 2FA/verification page
     const verificationHeadings = ['2-step verification', 'verify', 'confirm'];
-    if (headingText && verificationHeadings.some(v => headingText.toLowerCase().includes(v))) {
+    if (
+      headingText &&
+      verificationHeadings.some((v) => headingText.toLowerCase().includes(v))
+    ) {
       return {
         content: [
           {

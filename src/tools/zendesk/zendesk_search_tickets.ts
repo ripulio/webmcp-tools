@@ -8,7 +8,8 @@ export const tool: ToolDefinition = {
     properties: {
       query: {
         type: 'string',
-        description: 'The search query (e.g., "status:open", "assignee:me", "priority:high", or free text)'
+        description:
+          'The search query (e.g., "status:open", "assignee:me", "priority:high", or free text)'
       }
     },
     required: ['query']
@@ -28,7 +29,7 @@ export const tool: ToolDefinition = {
       );
       if (searchBox) {
         searchBox.click();
-        await new Promise(resolve => setTimeout(resolve, 300));
+        await new Promise((resolve) => setTimeout(resolve, 300));
         searchInput = document.querySelector<HTMLInputElement>(
           '[data-test-id="search-dialog-input"]'
         );
@@ -44,7 +45,12 @@ export const tool: ToolDefinition = {
 
     if (!searchInput) {
       return {
-        content: [{type: 'text', text: 'Search input not found. Make sure you are on a Zendesk Agent Workspace page.'}],
+        content: [
+          {
+            type: 'text',
+            text: 'Search input not found. Make sure you are on a Zendesk Agent Workspace page.'
+          }
+        ],
         isError: true
       };
     }
@@ -60,16 +66,23 @@ export const tool: ToolDefinition = {
     searchInput.dispatchEvent(new Event('change', {bubbles: true}));
 
     // Submit the search by pressing Enter
-    searchInput.dispatchEvent(new KeyboardEvent('keydown', {
-      key: 'Enter',
-      code: 'Enter',
-      keyCode: 13,
-      which: 13,
-      bubbles: true
-    }));
+    searchInput.dispatchEvent(
+      new KeyboardEvent('keydown', {
+        key: 'Enter',
+        code: 'Enter',
+        keyCode: 13,
+        which: 13,
+        bubbles: true
+      })
+    );
 
     return {
-      content: [{type: 'text', text: `Searching for: "${query}". Use zendesk_get_tickets to retrieve the results after the page loads.`}]
+      content: [
+        {
+          type: 'text',
+          text: `Searching for: "${query}". Use zendesk_get_tickets to retrieve the results after the page loads.`
+        }
+      ]
     };
   }
 };

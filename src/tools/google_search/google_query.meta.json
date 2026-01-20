@@ -5,10 +5,7 @@
   "filters": [
     {
       "type": "domain",
-      "domains": [
-        "google.com",
-        "www.google.com"
-      ]
+      "domains": ["google.com", "www.google.com"]
     }
   ],
   "groupId": "google_search"

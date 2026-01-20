@@ -10,9 +10,8 @@ export const ebayWatchItem: ToolDefinition = {
     required: []
   },
   async execute() {
-    const watchBtn = document.querySelector<HTMLButtonElement>(
-      '.x-watch-heart-btn'
-    );
+    const watchBtn =
+      document.querySelector<HTMLButtonElement>('.x-watch-heart-btn');
 
     if (!watchBtn) {
       return {

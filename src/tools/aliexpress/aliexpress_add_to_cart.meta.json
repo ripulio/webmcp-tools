@@ -6,7 +6,12 @@
   "filters": [
     {
       "type": "domain",
-      "domains": ["aliexpress.com", "www.aliexpress.com", "aliexpress.us", "www.aliexpress.us"]
+      "domains": [
+        "aliexpress.com",
+        "www.aliexpress.com",
+        "aliexpress.us",
+        "www.aliexpress.us"
+      ]
     },
     {
       "type": "path",

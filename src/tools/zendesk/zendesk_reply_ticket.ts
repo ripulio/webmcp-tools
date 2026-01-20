@@ -12,13 +12,17 @@ export const tool: ToolDefinition = {
       },
       internal: {
         type: 'boolean',
-        description: 'Whether this is an internal note (true) or public reply (false). Defaults to false.'
+        description:
+          'Whether this is an internal note (true) or public reply (false). Defaults to false.'
       }
     },
     required: ['message']
   },
   async execute(input) {
-    const {message, internal = false} = input as {message: string; internal?: boolean};
+    const {message, internal = false} = input as {
+      message: string;
+      internal?: boolean;
+    };
 
     // Switch channel if needed using the channel switcher
     if (internal) {
@@ -27,16 +31,16 @@ export const tool: ToolDefinition = {
       );
       if (channelSwitcher) {
         channelSwitcher.click();
-        await new Promise(resolve => setTimeout(resolve, 200));
+        await new Promise((resolve) => setTimeout(resolve, 200));
 
         // Look for internal note option in the menu
         const internalOption = document.querySelector<HTMLElement>(
           '[data-test-id="omnichannel-channel-switcher-menu"] [data-value="internal"],' +
-          '[role="option"]:has-text("Internal note")'
+            '[role="option"]:has-text("Internal note")'
         );
         if (internalOption) {
           internalOption.click();
-          await new Promise(resolve => setTimeout(resolve, 200));
+          await new Promise((resolve) => setTimeout(resolve, 200));
         }
       }
     }
@@ -48,7 +52,12 @@ export const tool: ToolDefinition = {
 
     if (!editor) {
       return {
-        content: [{type: 'text', text: 'Reply composer not found. Make sure a ticket is open.'}],
+        content: [
+          {
+            type: 'text',
+            text: 'Reply composer not found. Make sure a ticket is open.'
+          }
+        ],
         isError: true
       };
     }
@@ -65,7 +74,12 @@ export const tool: ToolDefinition = {
 
     const replyType = internal ? 'internal note' : 'public reply';
     return {
-      content: [{type: 'text', text: `${replyType.charAt(0).toUpperCase() + replyType.slice(1)} composed. Click Submit to send, or use zendesk_update_status to submit with a status change.`}]
+      content: [
+        {
+          type: 'text',
+          text: `${replyType.charAt(0).toUpperCase() + replyType.slice(1)} composed. Click Submit to send, or use zendesk_update_status to submit with a status change.`
+        }
+      ]
     };
   }
 };

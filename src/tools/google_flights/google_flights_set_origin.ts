@@ -87,7 +87,8 @@ export const tool: ToolDefinition = {
 
     // Click on the container to open the location picker
     // The clickable area is the parent container with class cQnuXe or e5F5td
-    const container = originInput.closest('.cQnuXe') || originInput.closest('.e5F5td');
+    const container =
+      originInput.closest('.cQnuXe') || originInput.closest('.e5F5td');
     if (container) {
       (container as HTMLElement).click();
     } else {
@@ -96,9 +97,10 @@ export const tool: ToolDefinition = {
     await new Promise((r) => setTimeout(r, 300));
 
     // Now find the input that's active/focused - it may be a different input in a dialog
-    const activeInput = document.querySelector<HTMLInputElement>(
-      'input.II2One:focus, input[aria-expanded="true"], input.II2One[aria-label="Where from?"]'
-    ) || originInput;
+    const activeInput =
+      document.querySelector<HTMLInputElement>(
+        'input.II2One:focus, input[aria-expanded="true"], input.II2One[aria-label="Where from?"]'
+      ) || originInput;
 
     // Simulate typing the origin
     await simulateTyping(activeInput, origin);

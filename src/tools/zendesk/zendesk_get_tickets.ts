@@ -22,11 +22,18 @@ export const tool: ToolDefinition = {
     const tickets: TicketInfo[] = [];
 
     // Find ticket rows in the generic table (search results, views)
-    const ticketRows = document.querySelectorAll('[data-test-id="generic-table-row"]');
+    const ticketRows = document.querySelectorAll(
+      '[data-test-id="generic-table-row"]'
+    );
 
     if (ticketRows.length === 0) {
       return {
-        content: [{type: 'text', text: 'No tickets found on the current page. Make sure you are viewing a ticket list or search results.'}],
+        content: [
+          {
+            type: 'text',
+            text: 'No tickets found on the current page. Make sure you are viewing a ticket list or search results.'
+          }
+        ],
         isError: true
       };
     }
@@ -43,16 +50,21 @@ export const tool: ToolDefinition = {
       };
 
       // Extract ticket ID
-      const idCell = row.querySelector('[data-test-id="generic-table-cells-id"]');
+      const idCell = row.querySelector(
+        '[data-test-id="generic-table-cells-id"]'
+      );
       if (idCell) {
         ticket.id = idCell.textContent?.trim().replace('#', '') || '';
       }
 
       // Extract subject
-      const subjectCell = row.querySelector('[data-test-id="ticket-table-cells-subject"]');
+      const subjectCell = row.querySelector(
+        '[data-test-id="ticket-table-cells-subject"]'
+      );
       if (subjectCell) {
         const link = subjectCell.querySelector('a');
-        ticket.subject = link?.textContent?.trim() || subjectCell.textContent?.trim() || '';
+        ticket.subject =
+          link?.textContent?.trim() || subjectCell.textContent?.trim() || '';
       }
 
       // Extract status from status badge
@@ -62,7 +74,9 @@ export const tool: ToolDefinition = {
       }
 
       // Extract dates (first is updated, second is created)
-      const dateCells = row.querySelectorAll('[data-test-id="generic-table-cells-date"]');
+      const dateCells = row.querySelectorAll(
+        '[data-test-id="generic-table-cells-date"]'
+      );
       if (dateCells.length >= 1) {
         ticket.updated = dateCells[0]?.textContent?.trim() || '';
       }
@@ -71,7 +85,9 @@ export const tool: ToolDefinition = {
       }
 
       // Extract assignee
-      const assigneeCell = row.querySelector('[data-test-id="ticket-table-cells-assignee"]');
+      const assigneeCell = row.querySelector(
+        '[data-test-id="ticket-table-cells-assignee"]'
+      );
       if (assigneeCell) {
         ticket.assignee = assigneeCell.textContent?.trim() || '';
       }
@@ -79,12 +95,20 @@ export const tool: ToolDefinition = {
       tickets.push(ticket);
     });
 
-    const ticketSummary = tickets.map(t =>
-      `[${t.index}] #${t.id}: ${t.subject} (${t.status}${t.assignee ? `, ${t.assignee}` : ''})`
-    ).join('\n');
+    const ticketSummary = tickets
+      .map(
+        (t) =>
+          `[${t.index}] #${t.id}: ${t.subject} (${t.status}${t.assignee ? `, ${t.assignee}` : ''})`
+      )
+      .join('\n');
 
     return {
-      content: [{type: 'text', text: `Found ${tickets.length} tickets:\n\n${ticketSummary}\n\nUse zendesk_click_ticket with the index number to open a ticket.`}],
+      content: [
+        {
+          type: 'text',
+          text: `Found ${tickets.length} tickets:\n\n${ticketSummary}\n\nUse zendesk_click_ticket with the index number to open a ticket.`
+        }
+      ],
       structuredContent: {tickets}
     };
   }

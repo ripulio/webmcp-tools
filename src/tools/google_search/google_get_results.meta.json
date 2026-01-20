@@ -5,16 +5,11 @@
   "filters": [
     {
       "type": "domain",
-      "domains": [
-        "google.com",
-        "www.google.com"
-      ]
+      "domains": ["google.com", "www.google.com"]
     },
     {
       "type": "path",
-      "paths": [
-        "/search.*"
-      ]
+      "paths": ["/search.*"]
     }
   ],
   "groupId": "google_search"

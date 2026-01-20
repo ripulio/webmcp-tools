@@ -73,9 +73,8 @@ export const redditGetSearchResults: ToolDefinition = {
       const creditRow = container.querySelector('.post-credit-row');
       const subredditLink =
         creditRow?.querySelector<HTMLAnchorElement>('a[href^="/r/"]');
-      const textPreviewLink = container.querySelector<HTMLAnchorElement>(
-        'a.line-clamp-2'
-      );
+      const textPreviewLink =
+        container.querySelector<HTMLAnchorElement>('a.line-clamp-2');
 
       if (!titleLink) return;
 
