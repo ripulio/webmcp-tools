@@ -63,15 +63,17 @@ export const tool: ToolDefinition = {
       summarizeLists = true
     } = (params as GetDomParams) || {};
 
-    const excludeTagsSet = new Set(excludeTags.map(t => t.toUpperCase()));
+    const excludeTagsSet = new Set(excludeTags.map((t) => t.toUpperCase()));
     let elementCount = 0;
     let truncated = false;
 
     function isVisible(el: Element): boolean {
       if ((el as HTMLElement).offsetParent !== null) return true;
       const style = getComputedStyle(el);
-      if (style.display === 'none' || style.visibility === 'hidden') return false;
-      if (style.position === 'fixed' || style.position === 'sticky') return true;
+      if (style.display === 'none' || style.visibility === 'hidden')
+        return false;
+      if (style.position === 'fixed' || style.position === 'sticky')
+        return true;
       if (el === document.body || el === document.documentElement) return true;
       return false;
     }
@@ -79,7 +81,12 @@ export const tool: ToolDefinition = {
     function getSelector(el: Element): string {
       if (el.id) return '#' + el.id;
       if (el.className && typeof el.className === 'string') {
-        const classes = el.className.trim().split(/\s+/).filter(c => c).slice(0, 2).join('.');
+        const classes = el.className
+          .trim()
+          .split(/\s+/)
+          .filter((c) => c)
+          .slice(0, 2)
+          .join('.');
         if (classes) return el.tagName.toLowerCase() + '.' + classes;
       }
       return el.tagName.toLowerCase();
@@ -140,9 +147,9 @@ export const tool: ToolDefinition = {
       if (children.length > 0) result.children = children;
 
       const directText = Array.from(el.childNodes)
-        .filter(n => n.nodeType === Node.TEXT_NODE)
-        .map(n => (n.textContent || '').trim())
-        .filter(t => t)
+        .filter((n) => n.nodeType === Node.TEXT_NODE)
+        .map((n) => (n.textContent || '').trim())
+        .filter((t) => t)
         .join(' ');
       if (directText) result.text = directText.slice(0, 200);
 
@@ -152,7 +159,9 @@ export const tool: ToolDefinition = {
     const root = document.querySelector(selector);
     if (!root) {
       return {
-        content: [{type: 'text', text: `Error: Selector not found: ${selector}`}],
+        content: [
+          {type: 'text', text: `Error: Selector not found: ${selector}`}
+        ],
         structuredContent: {
           dom: null,
           meta: {elementCount: 0, truncated: false, maxElements, maxDepth},

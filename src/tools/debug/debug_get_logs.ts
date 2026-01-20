@@ -2,7 +2,11 @@ import type {ToolDefinition} from 'webmcp-polyfill';
 
 declare global {
   interface Window {
-    __webmcp_debug_logs: Array<{timestamp: number; level: string; args: unknown[]}>;
+    __webmcp_debug_logs: Array<{
+      timestamp: number;
+      level: string;
+      args: unknown[];
+    }>;
     __webmcp_original_console_log: typeof console.log | undefined;
   }
 }
