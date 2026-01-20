@@ -3,7 +3,7 @@ import type {ToolDefinition} from 'webmcp-polyfill';
 export const tool: ToolDefinition = {
   name: 'debug_pick_element',
   description:
-    'Opens an interactive element picker in the browser UI. The user will see a visual overlay and can click any element to select it. Returns the selected element\'s tag, id, classes, and a CSS selector. Press ESC to cancel.',
+    "Opens an interactive element picker in the browser UI. The user will see a visual overlay and can click any element to select it. Returns the selected element's tag, id, classes, and a CSS selector. Press ESC to cancel.",
   inputSchema: {
     type: 'object',
     properties: {},
@@ -81,8 +81,14 @@ export const tool: ToolDefinition = {
             selector = `#${current.id}`;
             parts.unshift(selector);
             break;
-          } else if (current.className && typeof current.className === 'string') {
-            const classes = current.className.trim().split(/\s+/).filter(c => !c.startsWith('__webmcp'));
+          } else if (
+            current.className &&
+            typeof current.className === 'string'
+          ) {
+            const classes = current.className
+              .trim()
+              .split(/\s+/)
+              .filter((c) => !c.startsWith('__webmcp'));
             if (classes.length > 0) {
               selector += '.' + classes.slice(0, 2).join('.');
             }
@@ -90,7 +96,9 @@ export const tool: ToolDefinition = {
 
           const parent: Element | null = current.parentElement;
           if (parent) {
-            const siblings = Array.from(parent.children).filter((c: Element) => c.tagName === current!.tagName);
+            const siblings = Array.from(parent.children).filter(
+              (c: Element) => c.tagName === current!.tagName
+            );
             if (siblings.length > 1) {
               const index = siblings.indexOf(current) + 1;
               selector += `:nth-of-type(${index})`;
@@ -106,7 +114,10 @@ export const tool: ToolDefinition = {
 
       const onMouseOver = (e: MouseEvent) => {
         const target = e.target as Element;
-        if (target === banner || target.classList.contains('__webmcp_picker_banner')) {
+        if (
+          target === banner ||
+          target.classList.contains('__webmcp_picker_banner')
+        ) {
           return;
         }
         if (currentElement) {
@@ -145,7 +156,9 @@ export const tool: ToolDefinition = {
           structuredContent: {
             tag: target.tagName.toLowerCase(),
             id: target.id || null,
-            classes: target.className ? target.className.split(/\s+/).filter(Boolean) : [],
+            classes: target.className
+              ? target.className.split(/\s+/).filter(Boolean)
+              : [],
             selector: selector,
             text: (target.textContent || '').trim().slice(0, 500),
             rect: {

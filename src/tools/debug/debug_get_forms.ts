@@ -29,7 +29,11 @@ export const tool: ToolDefinition = {
     required: []
   },
   async execute(params: unknown) {
-    const {limit = 5, maxFieldsPerForm = 20, maxSelectOptions = 5} = (params as GetFormsParams) || {};
+    const {
+      limit = 5,
+      maxFieldsPerForm = 20,
+      maxSelectOptions = 5
+    } = (params as GetFormsParams) || {};
     const forms: Array<{[key: string]: unknown}> = [];
     let totalForms = 0;
 
@@ -40,32 +44,42 @@ export const tool: ToolDefinition = {
       const fields: Array<{[key: string]: unknown}> = [];
       let totalFields = 0;
 
-      form.querySelectorAll('input:not([type="hidden"]), textarea, select').forEach(el => {
-        totalFields++;
-        if (fields.length >= maxFieldsPerForm) return;
+      form
+        .querySelectorAll('input:not([type="hidden"]), textarea, select')
+        .forEach((el) => {
+          totalFields++;
+          if (fields.length >= maxFieldsPerForm) return;
 
-        const inputEl = el as HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement;
-        let options: Array<{value: string; text: string}> | undefined;
+          const inputEl = el as
+            | HTMLInputElement
+            | HTMLTextAreaElement
+            | HTMLSelectElement;
+          let options: Array<{value: string; text: string}> | undefined;
 
-        if (el.tagName === 'SELECT') {
-          const selectEl = el as HTMLSelectElement;
-          const allOptions = Array.from(selectEl.options);
-          options = allOptions.slice(0, maxSelectOptions).map(o => ({value: o.value, text: o.text}));
-          if (allOptions.length > maxSelectOptions) {
-            options.push({value: '...', text: `[${allOptions.length - maxSelectOptions} more options]`});
+          if (el.tagName === 'SELECT') {
+            const selectEl = el as HTMLSelectElement;
+            const allOptions = Array.from(selectEl.options);
+            options = allOptions
+              .slice(0, maxSelectOptions)
+              .map((o) => ({value: o.value, text: o.text}));
+            if (allOptions.length > maxSelectOptions) {
+              options.push({
+                value: '...',
+                text: `[${allOptions.length - maxSelectOptions} more options]`
+              });
+            }
           }
-        }
 
-        fields.push({
-          tag: el.tagName.toLowerCase(),
-          type: (inputEl as HTMLInputElement).type || '',
-          name: inputEl.name || '',
-          id: inputEl.id || '',
-          placeholder: (inputEl as HTMLInputElement).placeholder || '',
-          required: inputEl.required || false,
-          options
+          fields.push({
+            tag: el.tagName.toLowerCase(),
+            type: (inputEl as HTMLInputElement).type || '',
+            name: inputEl.name || '',
+            id: inputEl.id || '',
+            placeholder: (inputEl as HTMLInputElement).placeholder || '',
+            required: inputEl.required || false,
+            options
+          });
         });
-      });
 
       forms.push({
         index,
@@ -82,16 +96,25 @@ export const tool: ToolDefinition = {
       });
     });
 
-    const summary = forms.map(f => {
-      const fieldsSummary = (f.fields as Array<{[key: string]: unknown}>).map(field => {
-        const req = field.required ? ' *' : '';
-        return `    - ${field.tag}[${field.type || field.tag}] name="${field.name}"${req}`;
-      }).join('\n');
-      return `Form ${f.index} (${f.selector}):\n  action: ${f.action || '(none)'}\n  method: ${f.method}\n  fields (${(f.fieldsMeta as {total: number}).total}):\n${fieldsSummary}`;
-    }).join('\n\n');
+    const summary = forms
+      .map((f) => {
+        const fieldsSummary = (f.fields as Array<{[key: string]: unknown}>)
+          .map((field) => {
+            const req = field.required ? ' *' : '';
+            return `    - ${field.tag}[${field.type || field.tag}] name="${field.name}"${req}`;
+          })
+          .join('\n');
+        return `Form ${f.index} (${f.selector}):\n  action: ${f.action || '(none)'}\n  method: ${f.method}\n  fields (${(f.fieldsMeta as {total: number}).total}):\n${fieldsSummary}`;
+      })
+      .join('\n\n');
 
     return {
-      content: [{type: 'text', text: `Found ${totalForms} form(s):\n\n${summary || '(no forms found)'}`}],
+      content: [
+        {
+          type: 'text',
+          text: `Found ${totalForms} form(s):\n\n${summary || '(no forms found)'}`
+        }
+      ],
       structuredContent: {
         forms,
         meta: {

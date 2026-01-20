@@ -3,5 +3,14 @@
   "id": "debug",
   "name": "Debug",
   "description": "Tools for debugging by intercepting and collecting console logs",
-  "tools": ["debug_start_collecting", "debug_get_logs", "debug_pick_element", "debug_get_page_summary", "debug_get_dom", "debug_get_interactive_elements", "debug_get_forms", "debug_execute_js"]
+  "tools": [
+    "debug_start_collecting",
+    "debug_get_logs",
+    "debug_pick_element",
+    "debug_get_page_summary",
+    "debug_get_dom",
+    "debug_get_interactive_elements",
+    "debug_get_forms",
+    "debug_execute_js"
+  ]
 }

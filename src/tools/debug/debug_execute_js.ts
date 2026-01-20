@@ -13,7 +13,8 @@ export const tool: ToolDefinition = {
     properties: {
       code: {
         type: 'string',
-        description: 'JavaScript code to execute. Can use await. Last expression is returned.'
+        description:
+          'JavaScript code to execute. Can use await. Last expression is returned.'
       }
     },
     required: ['code']
@@ -21,10 +22,10 @@ export const tool: ToolDefinition = {
   async execute(params: unknown) {
     const {code} = params as ExecuteJsParams;
     try {
-      // Wrap in async function to support await, evaluate last expression
-      const wrappedCode = `(async () => { return ${code} })()`;
-      // eslint-disable-next-line no-eval
-      const result = await eval(wrappedCode);
+      // Wrap in async function to support await
+      // Using new Function for scope isolation (no access to local variables)
+      const fn = new Function('return (async () => { ' + code + ' })()');
+      const result = await fn();
 
       // Serialize result for display
       let serialized: string;
@@ -39,7 +40,10 @@ export const tool: ToolDefinition = {
       } else if (result instanceof Element) {
         serialized = `<${result.tagName.toLowerCase()}${result.id ? ' id="' + result.id + '"' : ''}>`;
         resultType = 'Element';
-      } else if (result instanceof NodeList || result instanceof HTMLCollection) {
+      } else if (
+        result instanceof NodeList ||
+        result instanceof HTMLCollection
+      ) {
         serialized = `[${result.length} elements]`;
         resultType = 'NodeList';
       } else {
@@ -53,7 +57,9 @@ export const tool: ToolDefinition = {
       }
 
       return {
-        content: [{type: 'text', text: `Result (${resultType}): ${serialized}`}],
+        content: [
+          {type: 'text', text: `Result (${resultType}): ${serialized}`}
+        ],
         structuredContent: {result: serialized, type: resultType}
       };
     } catch (error) {

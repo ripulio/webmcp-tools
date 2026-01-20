@@ -18,12 +18,20 @@ export const tool: ToolDefinition = {
       url: location.href,
       structure: {
         forms: document.querySelectorAll('form').length,
-        buttons: document.querySelectorAll('button, [role="button"], input[type="button"], input[type="submit"]').length,
+        buttons: document.querySelectorAll(
+          'button, [role="button"], input[type="button"], input[type="submit"]'
+        ).length,
         links: document.querySelectorAll('a[href]').length,
-        inputs: document.querySelectorAll('input:not([type="hidden"]), textarea, select').length
+        inputs: document.querySelectorAll(
+          'input:not([type="hidden"]), textarea, select'
+        ).length
       },
-      landmarks: [...document.querySelectorAll('header, nav, main, aside, footer, [role="banner"], [role="navigation"], [role="main"], [role="complementary"], [role="contentinfo"]')]
-        .map(el => {
+      landmarks: [
+        ...document.querySelectorAll(
+          'header, nav, main, aside, footer, [role="banner"], [role="navigation"], [role="main"], [role="complementary"], [role="contentinfo"]'
+        )
+      ]
+        .map((el) => {
           const tag = el.tagName.toLowerCase();
           const role = el.getAttribute('role');
           const id = el.id ? '#' + el.id : '';

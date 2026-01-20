@@ -25,15 +25,18 @@ export const tool: ToolDefinition = {
     required: []
   },
   async execute(params: unknown) {
-    const {type: typeFilter = 'all', limit = 50} = (params as GetInteractiveParams) || {};
+    const {type: typeFilter = 'all', limit = 50} =
+      (params as GetInteractiveParams) || {};
     const results: Array<{[key: string]: unknown}> = [];
     let total = 0;
 
     function isVisible(el: Element): boolean {
       if ((el as HTMLElement).offsetParent !== null) return true;
       const style = getComputedStyle(el);
-      if (style.display === 'none' || style.visibility === 'hidden') return false;
-      if (style.position === 'fixed' || style.position === 'sticky') return true;
+      if (style.display === 'none' || style.visibility === 'hidden')
+        return false;
+      if (style.position === 'fixed' || style.position === 'sticky')
+        return true;
       if (el === document.body || el === document.documentElement) return true;
       return false;
     }
@@ -50,12 +53,18 @@ export const tool: ToolDefinition = {
           break;
         }
         if (current.className && typeof current.className === 'string') {
-          const classes = current.className.trim().split(/\s+/).filter(c => c && !c.includes(':')).slice(0, 2);
+          const classes = current.className
+            .trim()
+            .split(/\s+/)
+            .filter((c) => c && !c.includes(':'))
+            .slice(0, 2);
           if (classes.length) selector += '.' + classes.join('.');
         }
         const parent: Element | null = current.parentElement;
         if (parent) {
-          const siblings = Array.from(parent.children).filter((c: Element) => c.tagName === current!.tagName);
+          const siblings = Array.from(parent.children).filter(
+            (c: Element) => c.tagName === current!.tagName
+          );
           if (siblings.length > 1) {
             const index = siblings.indexOf(current) + 1;
             selector += ':nth-of-type(' + index + ')';
@@ -77,20 +86,27 @@ export const tool: ToolDefinition = {
 
     // Buttons
     if (typeFilter === 'all' || typeFilter === 'button') {
-      document.querySelectorAll('button, [role="button"], input[type="button"], input[type="submit"]').forEach(el => {
-        if (!isVisible(el)) return;
-        addResult({
-          type: 'button',
-          selector: getSelector(el),
-          text: (el.textContent?.trim().slice(0, 50) || (el as HTMLInputElement).value || ''),
-          disabled: (el as HTMLButtonElement).disabled || false
+      document
+        .querySelectorAll(
+          'button, [role="button"], input[type="button"], input[type="submit"]'
+        )
+        .forEach((el) => {
+          if (!isVisible(el)) return;
+          addResult({
+            type: 'button',
+            selector: getSelector(el),
+            text:
+              el.textContent?.trim().slice(0, 50) ||
+              (el as HTMLInputElement).value ||
+              '',
+            disabled: (el as HTMLButtonElement).disabled || false
+          });
         });
-      });
     }
 
     // Links
     if (typeFilter === 'all' || typeFilter === 'link') {
-      document.querySelectorAll('a[href]').forEach(el => {
+      document.querySelectorAll('a[href]').forEach((el) => {
         if (!isVisible(el)) return;
         addResult({
           type: 'link',
@@ -103,28 +119,41 @@ export const tool: ToolDefinition = {
 
     // Inputs
     if (typeFilter === 'all' || typeFilter === 'input') {
-      document.querySelectorAll('input:not([type="hidden"]), textarea, select').forEach(el => {
-        if (!isVisible(el)) return;
-        const inputEl = el as HTMLInputElement;
-        addResult({
-          type: 'input',
-          selector: getSelector(el),
-          inputType: inputEl.type || el.tagName.toLowerCase(),
-          name: inputEl.name || '',
-          placeholder: inputEl.placeholder || '',
-          value: inputEl.type === 'password' ? '***' : (inputEl.value?.slice(0, 50) || '')
+      document
+        .querySelectorAll('input:not([type="hidden"]), textarea, select')
+        .forEach((el) => {
+          if (!isVisible(el)) return;
+          const inputEl = el as HTMLInputElement;
+          addResult({
+            type: 'input',
+            selector: getSelector(el),
+            inputType: inputEl.type || el.tagName.toLowerCase(),
+            name: inputEl.name || '',
+            placeholder: inputEl.placeholder || '',
+            value:
+              inputEl.type === 'password'
+                ? '***'
+                : inputEl.value?.slice(0, 50) || ''
+          });
         });
-      });
     }
 
-    const summary = results.map(el => {
-      if (el.type === 'button') return `[button] ${el.selector} - "${el.text}"`;
-      if (el.type === 'link') return `[link] ${el.selector} - "${el.text}"`;
-      return `[input:${el.inputType}] ${el.selector} - name="${el.name}"`;
-    }).join('\n');
+    const summary = results
+      .map((el) => {
+        if (el.type === 'button')
+          return `[button] ${el.selector} - "${el.text}"`;
+        if (el.type === 'link') return `[link] ${el.selector} - "${el.text}"`;
+        return `[input:${el.inputType}] ${el.selector} - name="${el.name}"`;
+      })
+      .join('\n');
 
     return {
-      content: [{type: 'text', text: `Found ${total} interactive elements (showing ${results.length}):\n\n${summary}`}],
+      content: [
+        {
+          type: 'text',
+          text: `Found ${total} interactive elements (showing ${results.length}):\n\n${summary}`
+        }
+      ],
       structuredContent: {
         elements: results,
         meta: {
