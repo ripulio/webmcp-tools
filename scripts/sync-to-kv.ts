@@ -59,6 +59,7 @@ async function scanToolsDirectory(): Promise<SyncResult> {
         });
         console.log(`  ✓ Found tool: ${toolMeta.id}`);
       } catch (error) {
+        console.warn(`  ⚠️  Skipping tool ${toolName} in group ${groupName}: missing or invalid ${toolName}.meta.json`);
         continue;
       }
     }
