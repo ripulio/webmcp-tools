@@ -5,16 +5,11 @@
   "filters": [
     {
       "type": "domain",
-      "domains": [
-        "reddit.com",
-        "www.reddit.com"
-      ]
+      "domains": ["reddit.com", "www.reddit.com"]
     },
     {
       "type": "path",
-      "paths": [
-        "/search.*"
-      ]
+      "paths": ["/search.*"]
     }
   ],
   "groupId": "reddit"
