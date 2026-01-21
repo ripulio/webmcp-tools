@@ -9,11 +9,13 @@ export const googleSsoSelectAccount: ToolDefinition = {
     properties: {
       index: {
         type: 'number',
-        description: 'The index of the account to select (0-based). Use google_sso_get_accounts to see available indices.'
+        description:
+          'The index of the account to select (0-based). Use google_sso_get_accounts to see available indices.'
       },
       email: {
         type: 'string',
-        description: 'The email address of the account to select. Alternative to using index.'
+        description:
+          'The email address of the account to select. Alternative to using index.'
       }
     },
     required: []
@@ -124,7 +126,9 @@ export const googleSsoSelectAccount: ToolDefinition = {
     selectedEmail = emailEl?.textContent?.trim() || null;
 
     // Find the clickable element within the account item
-    const clickableEl = targetItem.querySelector<HTMLElement>('div.VV3oRb[role="link"]');
+    const clickableEl = targetItem.querySelector<HTMLElement>(
+      'div.VV3oRb[role="link"]'
+    );
     if (!clickableEl) {
       return {
         content: [

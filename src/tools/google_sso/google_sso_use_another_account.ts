@@ -39,7 +39,9 @@ export const googleSsoUseAnotherAccount: ToolDefinition = {
     }
 
     // Find the clickable element
-    const clickableEl = useAnotherItem.querySelector<HTMLElement>('div.VV3oRb[role="link"]');
+    const clickableEl = useAnotherItem.querySelector<HTMLElement>(
+      'div.VV3oRb[role="link"]'
+    );
     if (!clickableEl) {
       return {
         content: [
