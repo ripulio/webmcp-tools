@@ -1,0 +1,16 @@
+{
+  "$schema": "../../../schemas/toolMetadata.json",
+  "id": "debug_get_interactive_elements",
+  "description": "Get interactive elements (buttons, links, inputs) with their selectors and properties. Use to discover clickable/typeable elements.",
+  "groupId": "debug",
+  "filters": [
+    {
+      "type": "domain",
+      "domains": ["*"]
+    },
+    {
+      "type": "path",
+      "paths": [".*"]
+    }
+  ]
+}

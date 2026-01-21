@@ -1,0 +1,16 @@
+{
+  "$schema": "../../../schemas/toolMetadata.json",
+  "id": "debug_get_forms",
+  "description": "Extract form structures including fields, types, names, and select options. Use to understand form layout before filling.",
+  "groupId": "debug",
+  "filters": [
+    {
+      "type": "domain",
+      "domains": ["*"]
+    },
+    {
+      "type": "path",
+      "paths": [".*"]
+    }
+  ]
+}

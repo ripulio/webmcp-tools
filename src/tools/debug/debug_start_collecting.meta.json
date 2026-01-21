@@ -1,0 +1,16 @@
+{
+  "$schema": "../../../schemas/toolMetadata.json",
+  "id": "debug_start_collecting",
+  "description": "Start collecting console.log, console.warn, and console.error calls",
+  "groupId": "debug",
+  "filters": [
+    {
+      "type": "domain",
+      "domains": ["*"]
+    },
+    {
+      "type": "path",
+      "paths": [".*"]
+    }
+  ]
+}
