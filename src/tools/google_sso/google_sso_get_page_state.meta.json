@@ -1,0 +1,11 @@
+{
+  "$schema": "../../../schemas/toolMetadata.json",
+  "id": "google_sso_get_page_state",
+  "description": "Detect the current state of the Google SSO page",
+  "filters": [
+    {
+      "type": "domain",
+      "domains": ["accounts.google.com"]
+    }
+  ]
+}
