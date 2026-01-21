@@ -9,7 +9,8 @@ export const tool: ToolDefinition = {
     properties: {
       index: {
         type: 'number',
-        description: 'The index of the spreadsheet to open (from list_spreadsheets).'
+        description:
+          'The index of the spreadsheet to open (from list_spreadsheets).'
       }
     },
     required: ['index']
