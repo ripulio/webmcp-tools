@@ -1,0 +1,20 @@
+{
+  "$schema": "../../../schemas/toolRegistryMeta.json",
+  "id": "slack",
+  "name": "Slack",
+  "description": "Tools for navigating and messaging in the Slack web app",
+  "tools": [
+    "slack_go_to_home",
+    "slack_get_channels",
+    "slack_click_channel",
+    "slack_get_current_channel",
+    "slack_send_message",
+    "slack_clear_message_input",
+    "slack_get_messages",
+    "slack_go_to_dms",
+    "slack_get_dms",
+    "slack_click_dm",
+    "slack_go_to_activity",
+    "slack_get_notification_count"
+  ]
+}

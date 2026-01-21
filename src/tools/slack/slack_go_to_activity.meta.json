@@ -1,0 +1,12 @@
+{
+  "$schema": "../../../schemas/toolMetadata.json",
+  "id": "slack_go_to_activity",
+  "description": "Navigate to the Activity feed in Slack",
+  "groupId": "slack",
+  "filters": [
+    {
+      "type": "domain",
+      "domains": ["app.slack.com"]
+    }
+  ]
+}

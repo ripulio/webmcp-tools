@@ -1,0 +1,12 @@
+{
+  "$schema": "../../../schemas/toolMetadata.json",
+  "id": "slack_get_channels",
+  "description": "Get the list of channels visible in the Slack sidebar",
+  "groupId": "slack",
+  "filters": [
+    {
+      "type": "domain",
+      "domains": ["app.slack.com"]
+    }
+  ]
+}
