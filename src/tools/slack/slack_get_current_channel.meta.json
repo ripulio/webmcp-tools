@@ -1,0 +1,12 @@
+{
+  "$schema": "../../../schemas/toolMetadata.json",
+  "id": "slack_get_current_channel",
+  "description": "Get the name of the currently open channel or conversation",
+  "groupId": "slack",
+  "filters": [
+    {
+      "type": "domain",
+      "domains": ["app.slack.com"]
+    }
+  ]
+}

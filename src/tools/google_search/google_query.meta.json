@@ -1,0 +1,12 @@
+{
+  "$schema": "../../../schemas/toolMetadata.json",
+  "id": "google_query",
+  "description": "Perform a Google search by entering a query and submitting the form",
+  "filters": [
+    {
+      "type": "domain",
+      "domains": ["google.com", "www.google.com"]
+    }
+  ],
+  "groupId": "google_search"
+}
