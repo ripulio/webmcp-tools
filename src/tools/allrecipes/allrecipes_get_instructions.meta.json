@@ -1,0 +1,16 @@
+{
+  "$schema": "../../../schemas/toolMetadata.json",
+  "id": "allrecipes_get_instructions",
+  "description": "Get the cooking instructions for a recipe",
+  "filters": [
+    {
+      "type": "domain",
+      "domains": ["allrecipes.com", "www.allrecipes.com"]
+    },
+    {
+      "type": "path",
+      "paths": ["/recipe/.*"]
+    }
+  ],
+  "groupId": "allrecipes"
+}

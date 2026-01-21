@@ -1,0 +1,16 @@
+{
+  "$schema": "../../../schemas/toolMetadata.json",
+  "id": "allrecipes_get_search_results",
+  "description": "Get recipe search results from the current page",
+  "filters": [
+    {
+      "type": "domain",
+      "domains": ["allrecipes.com", "www.allrecipes.com"]
+    },
+    {
+      "type": "path",
+      "paths": ["/search.*"]
+    }
+  ],
+  "groupId": "allrecipes"
+}

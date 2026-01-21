@@ -1,0 +1,12 @@
+{
+  "$schema": "../../../schemas/toolMetadata.json",
+  "id": "allrecipes_search",
+  "description": "Search for recipes by keyword or ingredient",
+  "filters": [
+    {
+      "type": "domain",
+      "domains": ["allrecipes.com", "www.allrecipes.com"]
+    }
+  ],
+  "groupId": "allrecipes"
+}

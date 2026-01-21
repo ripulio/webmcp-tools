@@ -1,0 +1,16 @@
+{
+  "$schema": "../../../schemas/toolMetadata.json",
+  "id": "allrecipes_get_recipe_details",
+  "description": "Get recipe title, description, rating, and cooking times",
+  "filters": [
+    {
+      "type": "domain",
+      "domains": ["allrecipes.com", "www.allrecipes.com"]
+    },
+    {
+      "type": "path",
+      "paths": ["/recipe/.*"]
+    }
+  ],
+  "groupId": "allrecipes"
+}
