@@ -1,0 +1,18 @@
+{
+  "$schema": "../../../schemas/toolRegistryMeta.json",
+  "id": "pastebin",
+  "name": "Pastebin",
+  "description": "Tools for creating and viewing pastes on Pastebin",
+  "tools": [
+    "pastebin_set_paste_content",
+    "pastebin_set_paste_title",
+    "pastebin_set_syntax_highlighting",
+    "pastebin_set_expiration",
+    "pastebin_set_visibility",
+    "pastebin_submit_paste",
+    "pastebin_get_paste_content",
+    "pastebin_get_paste_metadata",
+    "pastebin_get_raw_content",
+    "pastebin_clone_paste"
+  ]
+}

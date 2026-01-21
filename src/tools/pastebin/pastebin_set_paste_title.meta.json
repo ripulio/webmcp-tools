@@ -1,0 +1,16 @@
+{
+  "$schema": "../../../schemas/toolMetadata.json",
+  "id": "pastebin_set_paste_title",
+  "description": "Set the title/name for a new paste",
+  "groupId": "pastebin",
+  "filters": [
+    {
+      "type": "domain",
+      "domains": ["pastebin.com", "*.pastebin.com"]
+    },
+    {
+      "type": "path",
+      "paths": ["/"]
+    }
+  ]
+}
