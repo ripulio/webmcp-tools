@@ -18,7 +18,9 @@ export const tool: ToolDefinition = {
   async execute(input) {
     const {index} = input as {index: number};
 
-    const listItems = document.querySelectorAll('.docs-homescreen-list-item');
+    const listItems = document.querySelectorAll<HTMLElement>(
+      '.docs-homescreen-list-item'
+    );
     if (listItems.length === 0) {
       return {
         content: [
@@ -43,7 +45,7 @@ export const tool: ToolDefinition = {
       };
     }
 
-    const targetItem = listItems[index] as HTMLElement;
+    const targetItem = listItems[index];
     const title =
       targetItem
         .querySelector('.docs-homescreen-list-item-title-value')
