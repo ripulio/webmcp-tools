@@ -1,0 +1,19 @@
+{
+  "$schema": "../../../schemas/toolRegistryMeta.json",
+  "id": "amazon",
+  "name": "Amazon",
+  "description": "Tools for searching, browsing, and shopping on Amazon.com",
+  "tools": [
+    "amazon_search",
+    "amazon_get_results",
+    "amazon_click_result",
+    "amazon_get_product_details",
+    "amazon_add_to_cart",
+    "amazon_get_cart_count",
+    "amazon_go_to_cart",
+    "amazon_go_to_deals",
+    "amazon_open_menu",
+    "amazon_get_nav_links",
+    "amazon_click_nav_link"
+  ]
+}

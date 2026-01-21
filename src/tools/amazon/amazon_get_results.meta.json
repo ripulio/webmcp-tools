@@ -1,0 +1,15 @@
+{
+  "$schema": "../../../schemas/toolMetadata.json",
+  "id": "amazon_get_results",
+  "description": "Get product search results from Amazon search page",
+  "filters": [
+    {
+      "type": "domain",
+      "domains": ["amazon.com", "www.amazon.com"]
+    },
+    {
+      "type": "path",
+      "paths": ["/s", "/s\\?.*"]
+    }
+  ]
+}

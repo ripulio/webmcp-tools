@@ -1,0 +1,7 @@
+{
+  "$schema": "../../../schemas/toolRegistryMeta.json",
+  "id": "google_search",
+  "name": "Google Search",
+  "description": "Tools for searching and navigating Google search results",
+  "tools": ["google_query", "google_get_results", "google_click_result"]
+}
