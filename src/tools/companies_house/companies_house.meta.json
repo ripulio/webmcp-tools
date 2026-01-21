@@ -1,0 +1,21 @@
+{
+  "$schema": "../../../schemas/toolRegistryMeta.json",
+  "id": "companies_house",
+  "name": "UK Companies House",
+  "description": "Tools for searching and viewing company information on the UK Companies House register",
+  "tools": [
+    "companies_house_search",
+    "companies_house_get_results",
+    "companies_house_click_result",
+    "companies_house_filter_results",
+    "companies_house_next_page",
+    "companies_house_go_to_company",
+    "companies_house_get_company_overview",
+    "companies_house_go_to_officers",
+    "companies_house_get_officers",
+    "companies_house_go_to_filings",
+    "companies_house_get_filings",
+    "companies_house_go_to_charges",
+    "companies_house_get_charges"
+  ]
+}
