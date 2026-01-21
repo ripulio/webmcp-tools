@@ -1,5 +1,5 @@
 import {glob} from 'tinyglobby';
-import {copyFile, mkdir} from 'node:fs/promises';
+import {readFile, writeFile, mkdir} from 'node:fs/promises';
 import {dirname, resolve} from 'node:path';
 import {fileURLToPath} from 'node:url';
 
@@ -18,7 +18,13 @@ async function copyAssets(): Promise<void> {
     const destDir = dirname(resolve(rootDir, destPath));
 
     await mkdir(destDir, {recursive: true});
-    await copyFile(resolve(rootDir, file), resolve(rootDir, destPath));
+
+    // Remove $schema since it wont resolve to anything valid at runtime
+    // for now.
+    const content = await readFile(resolve(rootDir, file), 'utf-8');
+    const json = JSON.parse(content);
+    delete json.$schema;
+    await writeFile(resolve(rootDir, destPath), JSON.stringify(json, null, 2) + '\n');
   }
 
   console.log(`✓ Copied ${files.length} asset files to lib/`);
