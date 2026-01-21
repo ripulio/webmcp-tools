@@ -1,0 +1,12 @@
+{
+  "$schema": "../../../schemas/toolMetadata.json",
+  "id": "slack_get_dms",
+  "description": "Get the list of direct message conversations in the DMs view",
+  "groupId": "slack",
+  "filters": [
+    {
+      "type": "domain",
+      "domains": ["app.slack.com"]
+    }
+  ]
+}

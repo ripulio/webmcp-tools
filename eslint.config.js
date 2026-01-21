@@ -5,7 +5,7 @@ import globals from "globals";
 
 export default defineConfig([
   {
-    files: ['src/**/*.ts', 'test/**/*.ts'],
+    files: ['src/**/*.ts', 'src/**/*.test.ts'],
     plugins: {
       eslint: eslintjs,
       typescript: tseslint
@@ -25,7 +25,7 @@ export default defineConfig([
     ]
   },
   {
-    files: ['test/**/*.ts'],
+    files: ['src/**/*.test.ts'],
     rules: {
       '@typescript-eslint/no-non-null-assertion': 'off'
     }

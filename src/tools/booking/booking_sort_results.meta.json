@@ -1,0 +1,16 @@
+{
+  "$schema": "../../../schemas/toolMetadata.json",
+  "id": "booking_sort_results",
+  "description": "Sort Booking.com search results by price, rating, reviews, or distance",
+  "filters": [
+    {
+      "type": "domain",
+      "domains": ["booking.com", "www.booking.com"]
+    },
+    {
+      "type": "path",
+      "paths": ["/searchresults.*"]
+    }
+  ],
+  "groupId": "booking"
+}

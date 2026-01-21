@@ -1,0 +1,12 @@
+{
+  "$schema": "../../../schemas/toolMetadata.json",
+  "id": "slack_clear_message_input",
+  "description": "Clear the message input field in the current channel",
+  "groupId": "slack",
+  "filters": [
+    {
+      "type": "domain",
+      "domains": ["app.slack.com"]
+    }
+  ]
+}

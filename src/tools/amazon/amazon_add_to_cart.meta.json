@@ -1,0 +1,15 @@
+{
+  "$schema": "../../../schemas/toolMetadata.json",
+  "id": "amazon_add_to_cart",
+  "description": "Add current product to Amazon shopping cart",
+  "filters": [
+    {
+      "type": "domain",
+      "domains": ["amazon.com", "www.amazon.com"]
+    },
+    {
+      "type": "path",
+      "paths": ["/dp/.*", "/gp/product/.*"]
+    }
+  ]
+}
