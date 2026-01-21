@@ -5,16 +5,11 @@
   "filters": [
     {
       "type": "domain",
-      "domains": [
-        "allrecipes.com",
-        "www.allrecipes.com"
-      ]
+      "domains": ["allrecipes.com", "www.allrecipes.com"]
     },
     {
       "type": "path",
-      "paths": [
-        "/recipes/.*"
-      ]
+      "paths": ["/recipes/.*"]
     }
   ],
   "groupId": "allrecipes"
