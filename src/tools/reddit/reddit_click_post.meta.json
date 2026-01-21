@@ -1,0 +1,16 @@
+{
+  "$schema": "../../../schemas/toolMetadata.json",
+  "id": "reddit_click_post",
+  "description": "Click on a post to view its details and comments",
+  "filters": [
+    {
+      "type": "domain",
+      "domains": ["reddit.com", "www.reddit.com"]
+    },
+    {
+      "type": "path",
+      "paths": ["/", "/r/.*", "/r/.*/"]
+    }
+  ],
+  "groupId": "reddit"
+}

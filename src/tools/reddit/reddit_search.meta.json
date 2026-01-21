@@ -1,0 +1,16 @@
+{
+  "$schema": "../../../schemas/toolMetadata.json",
+  "id": "reddit_search",
+  "description": "Search for content on Reddit by entering a query",
+  "filters": [
+    {
+      "type": "domain",
+      "domains": ["reddit.com", "www.reddit.com", "old.reddit.com"]
+    },
+    {
+      "type": "path",
+      "paths": ["/.*"]
+    }
+  ],
+  "groupId": "reddit"
+}
