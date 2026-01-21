@@ -1,6 +1,5 @@
-import {glob} from 'tinyglobby';
 import {readFile, readdir} from 'node:fs/promises';
-import {resolve, dirname, basename} from 'node:path';
+import {resolve, dirname} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import Cloudflare from 'cloudflare';
 import type {ToolMetadata, ToolRegistryMeta} from '../src/shared.js';
@@ -40,14 +39,10 @@ async function scanToolsDirectory(): Promise<SyncResult> {
     groups.set(groupMeta.id, groupMeta);
     console.log(`✓ Found group: ${groupMeta.id} (${groupMeta.name})`);
 
-    const jsFiles = await glob(['*.js'], {
-      cwd: groupDir,
-      absolute: false
-    });
+    const toolIds = groupMeta.tools ?? [];
 
-    for (const jsFile of jsFiles) {
-      const toolName = basename(jsFile, '.js');
-      const toolMetaPath = resolve(groupDir, `${toolName}.meta.json`);
+    for (const toolId of toolIds) {
+      const toolMetaPath = resolve(groupDir, `${toolId}.meta.json`);
 
       try {
         const content = await readFile(toolMetaPath, 'utf-8');
@@ -59,7 +54,7 @@ async function scanToolsDirectory(): Promise<SyncResult> {
         });
         console.log(`  ✓ Found tool: ${toolMeta.id}`);
       } catch (error) {
-        console.warn(`  ⚠️  Skipping tool ${toolName} in group ${groupName}: missing or invalid ${toolName}.meta.json`);
+        console.warn(`  ⚠️  Skipping tool ${toolId} in group ${groupName}: missing or invalid ${toolId}.meta.json`);
         continue;
       }
     }
