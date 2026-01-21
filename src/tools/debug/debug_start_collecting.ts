@@ -50,7 +50,7 @@ export const tool: ToolDefinition = {
         level: 'log',
         args: args
       });
-      window.__webmcp_original_console_log!.apply(console, args);
+      window.__webmcp_original_console_log?.apply(console, args);
     };
 
     // Override console.warn
@@ -60,7 +60,7 @@ export const tool: ToolDefinition = {
         level: 'warn',
         args: args
       });
-      window.__webmcp_original_console_warn!.apply(console, args);
+      window.__webmcp_original_console_warn?.apply(console, args);
     };
 
     // Override console.error
@@ -70,7 +70,7 @@ export const tool: ToolDefinition = {
         level: 'error',
         args: args
       });
-      window.__webmcp_original_console_error!.apply(console, args);
+      window.__webmcp_original_console_error?.apply(console, args);
     };
 
     return {
