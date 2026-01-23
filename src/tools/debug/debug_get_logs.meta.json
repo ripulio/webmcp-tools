@@ -1,7 +1,7 @@
 {
   "$schema": "../../../schemas/toolMetadata.json",
   "id": "debug_get_logs",
-  "description": "Get all console.log, console.warn, and console.error calls collected since debug_start_collecting was called. Does not clear logs.",
+  "description": "Get collected console logs, warnings, and errors",
   "groupId": "debug",
   "filters": [
     {
