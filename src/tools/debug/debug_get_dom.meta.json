@@ -1,7 +1,7 @@
 {
   "$schema": "../../../schemas/toolMetadata.json",
   "id": "debug_get_dom",
-  "description": "Extract DOM structure with filtering. Use selector to scope extraction. Returns element tree with attributes and truncation metadata.",
+  "description": "Extract DOM structure with optional filtering",
   "groupId": "debug",
   "filters": [
     {

@@ -1,7 +1,7 @@
 {
   "$schema": "../../../schemas/toolMetadata.json",
   "id": "debug_get_page_summary",
-  "description": "Get a compact overview of the page including title, URL, element counts (forms, buttons, links, inputs), landmarks, and suggested main content selector.",
+  "description": "Get page overview with element counts and landmarks",
   "groupId": "debug",
   "filters": [
     {
