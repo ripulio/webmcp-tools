@@ -1,6 +1,6 @@
 import {glob} from 'tinyglobby';
 import {Ajv, type ValidateFunction} from 'ajv';
-import {readFile} from 'node:fs/promises';
+import {readFile, access} from 'node:fs/promises';
 import {resolve, dirname} from 'node:path';
 import {fileURLToPath} from 'node:url';
 
@@ -14,6 +14,40 @@ interface Filter {
 
 interface MetaData {
   filters?: Filter[];
+  tools?: string[];
+}
+
+/**
+ * Check if a file exists.
+ */
+async function fileExists(path: string): Promise<boolean> {
+  try {
+    await access(path);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Validate that all tools listed in the meta file exist as .ts files in the same directory.
+ */
+async function validateToolsExist(
+  data: MetaData,
+  metaFileDir: string
+): Promise<string[]> {
+  const errors: string[] = [];
+
+  if (!data.tools) return errors;
+
+  for (const toolId of data.tools) {
+    const toolPath = resolve(metaFileDir, `${toolId}.ts`);
+    if (!(await fileExists(toolPath))) {
+      errors.push(`Tool "${toolId}" not found (expected ${toolPath})`);
+    }
+  }
+
+  return errors;
 }
 
 /**
@@ -104,12 +138,23 @@ async function validateMetaFiles(): Promise<void> {
     } else {
       // Validate regex patterns in filters
       const regexErrors = validateRegexPatterns(data);
-      if (regexErrors.length > 0) {
+      // Validate that listed tools exist on disk
+      const toolErrors = await validateToolsExist(data, metaFileDir);
+
+      if (regexErrors.length > 0 || toolErrors.length > 0) {
         hasErrors = true;
         console.error(`\n❌ ${file}`);
-        console.error(`   Invalid regex patterns:`);
-        for (const error of regexErrors) {
-          console.error(`   - ${error}`);
+        if (regexErrors.length > 0) {
+          console.error(`   Invalid regex patterns:`);
+          for (const error of regexErrors) {
+            console.error(`   - ${error}`);
+          }
+        }
+        if (toolErrors.length > 0) {
+          console.error(`   Missing tools:`);
+          for (const error of toolErrors) {
+            console.error(`   - ${error}`);
+          }
         }
       } else {
         console.log(`✓ ${file}`);
