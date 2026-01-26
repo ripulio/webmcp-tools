@@ -11,11 +11,13 @@ const libDir = resolve(rootDir, 'lib/tools');
 interface SyncResult {
   groups: Map<string, ToolRegistryMeta>;
   tools: Map<string, ToolMetadata & {groupId: string}>;
+  sources: Map<string, string>; // toolId -> JS source code
 }
 
 async function scanToolsDirectory(): Promise<SyncResult> {
   const groups = new Map<string, ToolRegistryMeta>();
   const tools = new Map<string, ToolMetadata & {groupId: string}>();
+  const sources = new Map<string, string>();
 
   const entries = await readdir(libDir, {withFileTypes: true});
   const groupDirs = entries
@@ -43,6 +45,7 @@ async function scanToolsDirectory(): Promise<SyncResult> {
 
     for (const toolId of toolIds) {
       const toolMetaPath = resolve(groupDir, `${toolId}.meta.json`);
+      const toolJsPath = resolve(groupDir, `${toolId}.js`);
 
       try {
         const content = await readFile(toolMetaPath, 'utf-8');
@@ -53,14 +56,19 @@ async function scanToolsDirectory(): Promise<SyncResult> {
           groupId: groupMeta.id
         });
         console.log(`  ✓ Found tool: ${toolMeta.id}`);
+
+        // Read the JS source file
+        const jsSource = await readFile(toolJsPath, 'utf-8');
+        sources.set(toolMeta.id, jsSource);
+        console.log(`    ✓ Found source: ${toolId}.js`);
       } catch (error) {
-        console.warn(`  ⚠️  Skipping tool ${toolId} in group ${groupName}: missing or invalid ${toolId}.meta.json`);
+        console.warn(`  ⚠️  Skipping tool ${toolId} in group ${groupName}: missing or invalid ${toolId}.meta.json or ${toolId}.js`);
         continue;
       }
     }
   }
 
-  return {groups, tools};
+  return {groups, tools, sources};
 }
 
 async function uploadToKV(result: SyncResult): Promise<void> {
@@ -128,6 +136,28 @@ async function uploadToKV(result: SyncResult): Promise<void> {
     }
   }
 
+  // Upload sources
+  console.log('\n📤 Uploading tool sources to KV...');
+  for (const [toolId, source] of result.sources) {
+    const key = `source_${toolId}`;
+
+    try {
+      await client.kv.namespaces.values.update(
+        namespaceId,
+        key,
+        {
+          account_id: accountId,
+          value: source // Raw string, not JSON
+        }
+      );
+
+      console.log(`  ✓ Uploaded source: ${key}`);
+    } catch (error) {
+      console.error(`  ❌ Failed to upload ${key}:`, error);
+      throw error;
+    }
+  }
+
   // Upload an index for easier querying (optional but recommended)
   const index = {
     groups: Array.from(result.groups.keys()),
@@ -159,8 +189,9 @@ async function uploadToKV(result: SyncResult): Promise<void> {
 
 function printSummary(result: SyncResult): void {
   console.log('\n📊 Summary:');
-  console.log(`   Groups: ${result.groups.size}`);
-  console.log(`   Tools:  ${result.tools.size}`);
+  console.log(`   Groups:  ${result.groups.size}`);
+  console.log(`   Tools:   ${result.tools.size}`);
+  console.log(`   Sources: ${result.sources.size}`);
   console.log('\n✅ Sync completed successfully\n');
 }
 
