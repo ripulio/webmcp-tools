@@ -1,7 +1,6 @@
 import {readFile, readdir} from 'node:fs/promises';
 import {resolve, dirname} from 'node:path';
 import {fileURLToPath} from 'node:url';
-import Cloudflare from 'cloudflare';
 import type {ToolMetadata, ToolRegistryMeta} from '../src/shared.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -72,116 +71,149 @@ async function scanToolsDirectory(): Promise<SyncResult> {
 }
 
 async function uploadToKV(result: SyncResult): Promise<void> {
-  const accountId = process.env.CF_ACCOUNT_ID;
-  const namespaceId = process.env.CF_KV_NAMESPACE_ID;
-  const apiToken = process.env.CF_API_TOKEN;
-  const dryRun = process.env.CF_DRY_RUN === 'true';
+  const baseUrl = process.env.CATALOG_BASE_URL;
+  const token = process.env.CATALOG_SERVICE_TOKEN;
+  const dryRun = process.env.DRY_RUN === 'true';
 
   if (dryRun) {
-    console.log('\n🏃 DRY RUN MODE - Not uploading to KV\n');
+    console.log('\n🏃 DRY RUN MODE - Not uploading\n');
     printSummary(result);
     return;
   }
 
-  if (!accountId || !namespaceId || !apiToken) {
+  if (!baseUrl || !token) {
     console.error('\n❌ Missing required environment variables:');
-    console.error('   CF_ACCOUNT_ID, CF_KV_NAMESPACE_ID, CF_API_TOKEN');
-    console.error('\n   Or set CF_DRY_RUN=true to skip upload\n');
+    console.error('   CATALOG_BASE_URL, CATALOG_SERVICE_TOKEN');
+    console.error('\n   Or set DRY_RUN=true to skip upload\n');
     process.exit(1);
   }
 
-  const client = new Cloudflare({apiToken});
-
-  // Upload groups
-  console.log('\n📤 Uploading groups to KV...');
-  for (const [id, group] of result.groups) {
-    const key = `group_${id}`;
-
-    try {
-      await client.kv.namespaces.values.update(
-        namespaceId,
-        key,
-        {
-          account_id: accountId,
-          value: JSON.stringify(group)
-        }
-      );
-
-      console.log(`  ✓ Uploaded group: ${key}`);
-    } catch (error) {
-      console.error(`  ❌ Failed to upload ${key}:`, error);
-      throw error;
-    }
-  }
-
-  // Upload tools
-  console.log('\n📤 Uploading tools to KV...');
-  for (const [, tool] of result.tools) {
-    const key = `tool_${tool.id}`;
-
-    try {
-      await client.kv.namespaces.values.update(
-        namespaceId,
-        key,
-        {
-          account_id: accountId,
-          value: JSON.stringify(tool)
-        }
-      );
-
-      console.log(`  ✓ Uploaded tool: ${key}`);
-    } catch (error) {
-      console.error(`  ❌ Failed to upload ${key}:`, error);
-      throw error;
-    }
-  }
-
-  // Upload sources
-  console.log('\n📤 Uploading tool sources to KV...');
-  for (const [toolId, source] of result.sources) {
-    const key = `source_${toolId}`;
-
-    try {
-      await client.kv.namespaces.values.update(
-        namespaceId,
-        key,
-        {
-          account_id: accountId,
-          value: source // Raw string, not JSON
-        }
-      );
-
-      console.log(`  ✓ Uploaded source: ${key}`);
-    } catch (error) {
-      console.error(`  ❌ Failed to upload ${key}:`, error);
-      throw error;
-    }
-  }
-
-  // Upload an index for easier querying (optional but recommended)
-  const index = {
-    groups: Array.from(result.groups.keys()),
-    tools: Array.from(result.tools.values()).map(t => ({
-      id: t.id,
-      groupId: t.groupId
-    })),
-    lastUpdated: new Date().toISOString()
+  const headers = {
+    Authorization: `Bearer ${token}`,
+    'Content-Type': 'application/json'
   };
 
-  try {
-    await client.kv.namespaces.values.update(
-      namespaceId,
-      '_registry_index',
-      {
-        account_id: accountId,
-        value: JSON.stringify(index)
+  // Sync groups
+  console.log('\n📤 Syncing groups...');
+  for (const [id, group] of result.groups) {
+    const existing = await fetch(`${baseUrl}/api/groups/${id}`, {headers});
+    if (existing.status === 404) {
+      const res = await fetch(`${baseUrl}/api/groups/${id}`, {
+        method: 'PUT',
+        headers,
+        body: JSON.stringify(group)
+      });
+      if (res.ok) {
+        console.log(`  ✓ ${id} (created)`);
+      } else {
+        console.error(`  ❌ ${id}: ${res.status} ${await res.text()}`);
+        process.exit(1);
       }
-    );
+    } else if (existing.ok) {
+      const {revision: _, ...current} = await existing.json();
+      if (JSON.stringify(current) !== JSON.stringify(group)) {
+        const res = await fetch(`${baseUrl}/api/groups/${id}`, {
+          method: 'POST',
+          headers,
+          body: JSON.stringify(group)
+        });
+        if (res.ok) {
+          console.log(`  ✓ ${id} (updated)`);
+        } else {
+          console.error(`  ❌ ${id}: ${res.status} ${await res.text()}`);
+          process.exit(1);
+        }
+      } else {
+        console.log(`  - ${id} (unchanged)`);
+      }
+    } else {
+      console.error(`  ❌ ${id}: failed to fetch (${existing.status})`);
+      process.exit(1);
+    }
+  }
 
-    console.log('\n  ✓ Uploaded registry index: _registry_index');
-  } catch (error) {
-    console.error('  ❌ Failed to upload index:', error);
-    throw error;
+  // Sync tools
+  console.log('\n📤 Syncing tools...');
+  for (const [, tool] of result.tools) {
+    const existing = await fetch(`${baseUrl}/api/tools/${tool.id}`, {headers});
+    if (existing.status === 404) {
+      const res = await fetch(`${baseUrl}/api/tools/${tool.id}`, {
+        method: 'PUT',
+        headers,
+        body: JSON.stringify(tool)
+      });
+      if (res.ok) {
+        console.log(`  ✓ ${tool.id} (created)`);
+      } else {
+        console.error(`  ❌ ${tool.id}: ${res.status} ${await res.text()}`);
+        process.exit(1);
+      }
+    } else if (existing.ok) {
+      const {revision: _, ...current} = await existing.json();
+      if (JSON.stringify(current) !== JSON.stringify(tool)) {
+        const res = await fetch(`${baseUrl}/api/tools/${tool.id}`, {
+          method: 'POST',
+          headers,
+          body: JSON.stringify(tool)
+        });
+        if (res.ok) {
+          console.log(`  ✓ ${tool.id} (updated)`);
+        } else {
+          console.error(`  ❌ ${tool.id}: ${res.status} ${await res.text()}`);
+          process.exit(1);
+        }
+      } else {
+        console.log(`  - ${tool.id} (unchanged)`);
+      }
+    } else {
+      console.error(`  ❌ ${tool.id}: failed to fetch (${existing.status})`);
+      process.exit(1);
+    }
+  }
+
+  // Sync sources
+  console.log('\n📤 Syncing tool sources...');
+  const sourceHeaders = {
+    Authorization: `Bearer ${token}`,
+    'Content-Type': 'application/javascript'
+  };
+  for (const [toolId, source] of result.sources) {
+    const existing = await fetch(`${baseUrl}/api/tools/${toolId}/source`, {
+      headers: {Authorization: `Bearer ${token}`}
+    });
+    if (existing.status === 404) {
+      const res = await fetch(`${baseUrl}/api/tools/${toolId}/source`, {
+        method: 'PUT',
+        headers: sourceHeaders,
+        body: source
+      });
+      if (res.ok) {
+        console.log(`  ✓ ${toolId} (created)`);
+      } else {
+        console.error(`  ❌ ${toolId}: ${res.status} ${await res.text()}`);
+        process.exit(1);
+      }
+    } else if (existing.ok) {
+      const current = await existing.text();
+      if (current !== source) {
+        const res = await fetch(`${baseUrl}/api/tools/${toolId}/source`, {
+          method: 'POST',
+          headers: sourceHeaders,
+          body: source
+        });
+        if (res.ok) {
+          console.log(`  ✓ ${toolId} (updated)`);
+        } else {
+          console.error(`  ❌ ${toolId}: ${res.status} ${await res.text()}`);
+          process.exit(1);
+        }
+      } else {
+        console.log(`  - ${toolId} (unchanged)`);
+      }
+    } else {
+      console.error(`  ❌ ${toolId}: failed to fetch (${existing.status})`);
+      process.exit(1);
+    }
   }
 
   printSummary(result);
