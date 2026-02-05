@@ -1,0 +1,16 @@
+{
+  "$schema": "../../../schemas/toolMetadata.json",
+  "id": "debug_get_computed_styles",
+  "description": "Get computed CSS styles from elements matching a selector",
+  "groupId": "debug",
+  "filters": [
+    {
+      "type": "domain",
+      "domains": ["*"]
+    },
+    {
+      "type": "path",
+      "paths": [".*"]
+    }
+  ]
+}
