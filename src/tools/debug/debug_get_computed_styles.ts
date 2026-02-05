@@ -2,7 +2,7 @@ import type {ToolDefinition} from 'webmcp-polyfill';
 
 interface GetComputedStylesParams {
   selector: string;
-  multiSelect?: boolean;
+  multiple?: boolean;
   limit?: number;
   styleProperties?: string[];
 }
@@ -24,8 +24,7 @@ function getElementInfo(el: Element): ElementInfo {
   return {
     tagName: el.tagName.toLowerCase(),
     id: el.id || '',
-    className:
-      typeof el.className === 'string' ? el.className.trim() : ''
+    className: typeof el.className === 'string' ? el.className.trim() : ''
   };
 }
 
@@ -75,7 +74,7 @@ export const tool: ToolDefinition = {
         type: 'string',
         description: 'CSS selector to find element(s)'
       },
-      multiSelect: {
+      multiple: {
         type: 'boolean',
         description:
           'If true, return styles for all matching elements. If false (default), return styles for first match only.'
@@ -83,7 +82,7 @@ export const tool: ToolDefinition = {
       limit: {
         type: 'number',
         description:
-          'Maximum number of elements to return styles for when multiSelect is true (default: 50)'
+          'Maximum number of elements to return styles for when multiple is true (default: 50)'
       },
       styleProperties: {
         type: 'array',
@@ -97,12 +96,12 @@ export const tool: ToolDefinition = {
   async execute(params: unknown) {
     const {
       selector,
-      multiSelect = false,
+      multiple = false,
       limit = 50,
       styleProperties
     } = (params as GetComputedStylesParams) || {};
 
-    if (multiSelect) {
+    if (multiple) {
       const elements = document.querySelectorAll(selector);
       if (elements.length === 0) {
         return {
@@ -152,7 +151,10 @@ export const tool: ToolDefinition = {
       if (!el) {
         return {
           content: [
-            {type: 'text', text: `Error: No element found matching: ${selector}`}
+            {
+              type: 'text',
+              text: `Error: No element found matching: ${selector}`
+            }
           ],
           structuredContent: {
             selector,
