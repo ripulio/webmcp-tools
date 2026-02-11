@@ -110,12 +110,12 @@ async function uploadToKV(result: SyncResult): Promise<void> {
         process.exit(1);
       }
     } else if (existing.ok) {
-      const {revision: _, ...current} = await existing.json();
+      const {revision, ...current} = await existing.json();
       if (JSON.stringify(current) !== JSON.stringify(group)) {
         const res = await fetch(`${baseUrl}/api/groups/${id}`, {
           method: 'POST',
           headers,
-          body: JSON.stringify(group)
+          body: JSON.stringify({...group, revision})
         });
         if (res.ok) {
           console.log(`  ✓ ${id} (updated)`);
@@ -135,38 +135,39 @@ async function uploadToKV(result: SyncResult): Promise<void> {
   // Sync tools
   console.log('\n📤 Syncing tools...');
   for (const [, tool] of result.tools) {
-    const existing = await fetch(`${baseUrl}/api/tools/${tool.id}`, {headers});
+    const {groupId: _, ...toolData} = tool;
+    const existing = await fetch(`${baseUrl}/api/tools/${toolData.id}`, {headers});
     if (existing.status === 404) {
-      const res = await fetch(`${baseUrl}/api/tools/${tool.id}`, {
+      const res = await fetch(`${baseUrl}/api/tools/${toolData.id}`, {
         method: 'PUT',
         headers,
-        body: JSON.stringify(tool)
+        body: JSON.stringify(toolData)
       });
       if (res.ok) {
-        console.log(`  ✓ ${tool.id} (created)`);
+        console.log(`  ✓ ${toolData.id} (created)`);
       } else {
-        console.error(`  ❌ ${tool.id}: ${res.status} ${await res.text()}`);
+        console.error(`  ❌ ${toolData.id}: ${res.status} ${await res.text()}`);
         process.exit(1);
       }
     } else if (existing.ok) {
-      const {revision: _, ...current} = await existing.json();
-      if (JSON.stringify(current) !== JSON.stringify(tool)) {
-        const res = await fetch(`${baseUrl}/api/tools/${tool.id}`, {
+      const {revision, ...current} = await existing.json();
+      if (JSON.stringify(current) !== JSON.stringify(toolData)) {
+        const res = await fetch(`${baseUrl}/api/tools/${toolData.id}`, {
           method: 'POST',
           headers,
-          body: JSON.stringify(tool)
+          body: JSON.stringify({...toolData, revision})
         });
         if (res.ok) {
-          console.log(`  ✓ ${tool.id} (updated)`);
+          console.log(`  ✓ ${toolData.id} (updated)`);
         } else {
-          console.error(`  ❌ ${tool.id}: ${res.status} ${await res.text()}`);
+          console.error(`  ❌ ${toolData.id}: ${res.status} ${await res.text()}`);
           process.exit(1);
         }
       } else {
-        console.log(`  - ${tool.id} (unchanged)`);
+        console.log(`  - ${toolData.id} (unchanged)`);
       }
     } else {
-      console.error(`  ❌ ${tool.id}: failed to fetch (${existing.status})`);
+      console.error(`  ❌ ${toolData.id}: failed to fetch (${existing.status})`);
       process.exit(1);
     }
   }
