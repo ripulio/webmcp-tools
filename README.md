@@ -2,10 +2,6 @@
 
 This repository is the source collection for tools made available by the [WebMCP catalog](https://github.com/ripulio/webmcp-catalog).
 
-## Available Tools
-
-TBD
-
 ## Contributing Tools
 
 In order to publish tools to the WebMCP catalog, they must be added to this repository. Tools are automatically published to production when your PR is merged to `main`.
