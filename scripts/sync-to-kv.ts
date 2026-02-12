@@ -31,7 +31,8 @@ async function scanToolsDirectory(): Promise<SyncResult> {
 
     try {
       const content = await readFile(groupMetaPath, 'utf-8');
-      groupMeta = JSON.parse(content);
+      const {$schema: _, ...rest} = JSON.parse(content);
+      groupMeta = rest;
     } catch (error) {
       console.warn(`⚠️  Skipping ${groupName}: missing or invalid ${groupName}.meta.json`);
       continue;
@@ -48,7 +49,8 @@ async function scanToolsDirectory(): Promise<SyncResult> {
 
       try {
         const content = await readFile(toolMetaPath, 'utf-8');
-        const toolMeta: ToolMetadata = JSON.parse(content);
+        const {$schema: _, ...rest} = JSON.parse(content);
+        const toolMeta: ToolMetadata = rest;
 
         tools.set(`${groupMeta.id}:${toolMeta.id}`, {
           ...toolMeta,
